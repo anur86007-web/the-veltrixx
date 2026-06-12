@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-const PRODUCT_API = "http://localhost:5000/api/products";
-const ORDER_API = "http://localhost:5000/api/orders/admin/all";
-const UPDATE_ORDER_API = "http://localhost:5000/api/orders/admin/update";
-const DELETE_ORDER_API = "http://localhost:5000/api/orders/admin/delete";
-const REVIEW_API = "http://localhost:5000/api/reviews/admin/all";
-const DELETE_REVIEW_API = "http://localhost:5000/api/reviews/admin/delete";
+const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
+const ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/all";
+const UPDATE_ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/update";
+const DELETE_ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/delete";
+const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/all";
+const DELETE_REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/delete";
 
 function Admin({ refreshProducts }) {
   const [activeTab, setActiveTab] = useState("products");

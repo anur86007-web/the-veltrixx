@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const ORDER_API = "http://localhost:5000/api/orders";
-const PAYMENT_API = "http://localhost:5000/api/payment";
+const ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders";
+const PAYMENT_API = "https://the-veltrixx-backend.onrender.com/api/payment";
 
 function Payment({ cart, placeOrder }) {
   const navigate = useNavigate();

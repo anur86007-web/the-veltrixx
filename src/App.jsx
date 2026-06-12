@@ -12,7 +12,7 @@ import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 
-const API = "http://localhost:5000/api";
+const API = "https://the-veltrixx-backend.onrender.com/api";
 
 function App() {
   const navigate = useNavigate();

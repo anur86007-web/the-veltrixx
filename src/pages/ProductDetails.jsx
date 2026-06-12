@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-const REVIEW_API = "http://localhost:5000/api/reviews";
-const PRODUCT_API = "http://localhost:5000/api/products";
+const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
+const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 
 function ProductDetails({ products, addToCart }) {
   const { id } = useParams();

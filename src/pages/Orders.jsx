@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const API = "http://localhost:5000/api/orders/my-orders";
-const CANCEL_API = "http://localhost:5000/api/orders/cancel";
+const API = "https://the-veltrixx-backend.onrender.com/api/orders/my-orders";
+const CANCEL_API = "https://the-veltrixx-backend.onrender.com/api/orders/cancel";
 
 function Orders() {
   const [orders, setOrders] = useState([]);

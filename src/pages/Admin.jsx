@@ -50,10 +50,8 @@ function Admin({ refreshProducts }) {
   };
 
   useEffect(() => {
-    fetchProducts();
-    fetchOrders();
-    fetchReviews();
-  }, []);
+  fetchProducts();
+}, []);
 
   const handleAdd = async () => {
     if (!form.name || !form.brand || !form.model || !form.price || !form.image) {

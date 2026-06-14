@@ -50,6 +50,13 @@ function Cart({ cart, increaseQty, decreaseQty, removeFromCart }) {
 
     setDiscount(Number(data.discount || 0));
     setAppliedCoupon(data.coupon.code);
+    localStorage.setItem(
+  "veltrixx_coupon",
+  JSON.stringify({
+    code: data.coupon.code,
+    discount: Number(data.discount || 0),
+  })
+);
     alert("Coupon applied successfully");
   };
 

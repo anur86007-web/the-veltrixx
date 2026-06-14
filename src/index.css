@@ -2281,3 +2281,20 @@ button, a {
   align-items: center;
   justify-content: center;
 }
+.floatingCartBtn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  background: #111;
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.floatingCartBtn:hover {
+  transform: translateY(-2px);
+}

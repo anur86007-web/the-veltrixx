@@ -50,15 +50,19 @@ function App() {
   );
 
   const [products, setProducts] = useState([]);
+
   const [cart, setCart] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_cart")) || []
   );
+
   const [wishlist, setWishlist] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_wishlist")) || []
   );
+
   const [orders, setOrders] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_orders")) || []
   );
+
   const [toast, setToast] = useState("");
 
   const fetchProducts = async () => {
@@ -109,15 +113,16 @@ function App() {
       navigate("/login");
       return false;
     }
+
     return true;
   };
 
   const getId = (product) => product._id || product.id;
 
   const getCartKey = (product) => {
-    return `${getId(product)}-${product.selectedModel || product.model || "Default"}-${
-      product.selectedColor || "Default"
-    }`;
+    return `${getId(product)}-${
+      product.selectedModel || product.model || "Default"
+    }-${product.selectedColor || "Default"}`;
   };
 
   const addToCart = (product) => {
@@ -281,6 +286,12 @@ function App() {
 
         <Route path="/profile" element={<Profile user={user} />} />
       </Routes>
+
+      {cart.length > 0 && (
+        <Link to="/cart" className="floatingCartBtn">
+          Go To Cart ({cart.length})
+        </Link>
+      )}
     </>
   );
 }

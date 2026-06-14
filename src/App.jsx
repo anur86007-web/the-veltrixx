@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Home from "./pages/Home";
@@ -14,6 +14,34 @@ import Navbar from "./components/Navbar";
 
 const API = "https://the-veltrixx-backend.onrender.com/api";
 
+function AdminProtectedRoute({ user, children }) {
+  if (!user) {
+    return (
+      <div className="pageContainer">
+        <h1>Admin Login Required</h1>
+        <p>Please login with an admin account to open dashboard.</p>
+        <Link to="/login">
+          <button>Go to Login</button>
+        </Link>
+      </div>
+    );
+  }
+
+  if (user.role !== "admin") {
+    return (
+      <div className="pageContainer">
+        <h1>Access Denied</h1>
+        <p>You are not allowed to access the admin dashboard.</p>
+        <Link to="/">
+          <button>Back to Home</button>
+        </Link>
+      </div>
+    );
+  }
+
+  return children;
+}
+
 function App() {
   const navigate = useNavigate();
 
@@ -22,19 +50,15 @@ function App() {
   );
 
   const [products, setProducts] = useState([]);
-
   const [cart, setCart] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_cart")) || []
   );
-
   const [wishlist, setWishlist] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_wishlist")) || []
   );
-
   const [orders, setOrders] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_orders")) || []
   );
-
   const [toast, setToast] = useState("");
 
   const fetchProducts = async () => {
@@ -43,7 +67,7 @@ function App() {
       const data = await res.json();
 
       if (data.success) {
-        setProducts(data.products);
+        setProducts(data.products || []);
       }
     } catch (error) {
       console.log("Product fetch error:", error);
@@ -69,6 +93,8 @@ function App() {
   useEffect(() => {
     if (user) {
       localStorage.setItem("veltrixx_user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("veltrixx_user");
     }
   }, [user]);
 
@@ -83,75 +109,76 @@ function App() {
       navigate("/login");
       return false;
     }
-
     return true;
   };
 
   const getId = (product) => product._id || product.id;
 
-const getCartKey = (product) => {
-  return `${getId(product)}-${product.selectedModel || product.model || "Default"}-${product.selectedColor || "Default"}`;
-};
+  const getCartKey = (product) => {
+    return `${getId(product)}-${product.selectedModel || product.model || "Default"}-${
+      product.selectedColor || "Default"
+    }`;
+  };
 
-const addToCart = (product) => {
-  if (!requireLogin()) return;
+  const addToCart = (product) => {
+    if (!requireLogin()) return;
 
-  const key = getCartKey(product);
+    const key = getCartKey(product);
 
-  if (product.qtyAction === "minus") {
+    if (product.qtyAction === "minus") {
+      setCart(
+        cart
+          .map((item) =>
+            getCartKey(item) === key ? { ...item, qty: item.qty - 1 } : item
+          )
+          .filter((item) => item.qty > 0)
+      );
+      return;
+    }
+
+    const existingItem = cart.find((item) => getCartKey(item) === key);
+
+    if (existingItem) {
+      setCart(
+        cart.map((item) =>
+          getCartKey(item) === key ? { ...item, qty: item.qty + 1 } : item
+        )
+      );
+    } else {
+      setCart([
+        ...cart,
+        {
+          ...product,
+          cartKey: key,
+          qty: 1,
+        },
+      ]);
+    }
+
+    showToast("Added to cart");
+  };
+
+  const increaseQty = (cartKey) => {
+    setCart(
+      cart.map((item) =>
+        item.cartKey === cartKey ? { ...item, qty: item.qty + 1 } : item
+      )
+    );
+  };
+
+  const decreaseQty = (cartKey) => {
     setCart(
       cart
         .map((item) =>
-          getCartKey(item) === key ? { ...item, qty: item.qty - 1 } : item
+          item.cartKey === cartKey ? { ...item, qty: item.qty - 1 } : item
         )
         .filter((item) => item.qty > 0)
     );
-    return;
-  }
+  };
 
-  const existingItem = cart.find((item) => getCartKey(item) === key);
-
-  if (existingItem) {
-    setCart(
-      cart.map((item) =>
-        getCartKey(item) === key ? { ...item, qty: item.qty + 1 } : item
-      )
-    );
-  } else {
-    setCart([
-      ...cart,
-      {
-        ...product,
-        cartKey: key,
-        qty: 1,
-      },
-    ]);
-  }
-
-  showToast("Added to cart");
-};
-
-const increaseQty = (cartKey) => {
-  setCart(
-    cart.map((item) =>
-      item.cartKey === cartKey ? { ...item, qty: item.qty + 1 } : item
-    )
-  );
-};
-
-const decreaseQty = (cartKey) => {
-  setCart(
-    cart
-      .map((item) =>
-        item.cartKey === cartKey ? { ...item, qty: item.qty - 1 } : item
-      )
-      .filter((item) => item.qty > 0)
-  );
-};
-
-const removeFromCart = (cartKey) => {
-  setCart(cart.filter((item) => item.cartKey !== cartKey));
-};
+  const removeFromCart = (cartKey) => {
+    setCart(cart.filter((item) => item.cartKey !== cartKey));
+  };
 
   const toggleWishlist = (product) => {
     if (!requireLogin()) return;
@@ -182,17 +209,12 @@ const removeFromCart = (cartKey) => {
   };
 
   return (
-  <>
-    {toast && <div className="toast">{toast}</div>}
+    <>
+      {toast && <div className="toast">{toast}</div>}
 
-    <Navbar
-      user={user}
-      cart={cart}
-      wishlist={wishlist}
-      logout={logout}
-    />
+      <Navbar user={user} cart={cart} wishlist={wishlist} logout={logout} />
 
-    <Routes>
+      <Routes>
         <Route
           path="/"
           element={
@@ -235,37 +257,28 @@ const removeFromCart = (cartKey) => {
         <Route
           path="/wishlist"
           element={
-            <Wishlist
-              wishlist={wishlist}
-              toggleWishlist={toggleWishlist}
-            />
+            <Wishlist wishlist={wishlist} toggleWishlist={toggleWishlist} />
           }
         />
 
         <Route
           path="/payment"
-          element={
-            <Payment
-              cart={cart}
-              placeOrder={placeOrder}
-            />
-          }
+          element={<Payment cart={cart} placeOrder={placeOrder} />}
         />
 
-        <Route
-          path="/orders"
-          element={<Orders orders={orders} />}
-        />
+        <Route path="/orders" element={<Orders orders={orders} />} />
 
-        <Route
-          path="/login"
-          element={<Login setUser={setUser} />}
-        />
+        <Route path="/login" element={<Login setUser={setUser} />} />
 
         <Route
           path="/admin"
-          element={<Admin refreshProducts={fetchProducts} />}
+          element={
+            <AdminProtectedRoute user={user}>
+              <Admin refreshProducts={fetchProducts} />
+            </AdminProtectedRoute>
+          }
         />
+
         <Route path="/profile" element={<Profile user={user} />} />
       </Routes>
     </>

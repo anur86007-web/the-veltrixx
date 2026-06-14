@@ -7,7 +7,25 @@ const DELETE_ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/a
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/all";
 const DELETE_REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/delete";
 
-function Admin({ refreshProducts }) {
+function Admin({ user, refreshProducts }) {
+  if (!user) {
+    return (
+      <div className="pageContainer">
+        <h1>Admin Login Required</h1>
+        <p>Please login with an admin account.</p>
+      </div>
+    );
+  }
+
+  if (user.role !== "admin") {
+    return (
+      <div className="pageContainer">
+        <h1>Access Denied</h1>
+        <p>You are not allowed to access admin dashboard.</p>
+      </div>
+    );
+  }
+
   const [activeTab, setActiveTab] = useState("products");
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -34,7 +52,7 @@ function Admin({ refreshProducts }) {
   const fetchProducts = async () => {
     const res = await fetch(PRODUCT_API);
     const data = await res.json();
-    if (data.success) setProducts(data.products);
+    if (data.success) setProducts(data.products || []);
   };
 
   const fetchOrders = async () => {
@@ -42,7 +60,7 @@ function Admin({ refreshProducts }) {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
-    if (data.success) setOrders(data.orders);
+    if (data.success) setOrders(data.orders || []);
   };
 
   const fetchReviews = async () => {
@@ -50,12 +68,17 @@ function Admin({ refreshProducts }) {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
-    if (data.success) setReviews(data.reviews);
+    if (data.success) setReviews(data.reviews || []);
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === "orders") fetchOrders();
+    if (activeTab === "reviews") fetchReviews();
+  }, [activeTab]);
 
   const addColor = () => {
     if (!form.colorName || !form.colorHex || !form.colorImage) {
@@ -66,14 +89,14 @@ function Admin({ refreshProducts }) {
     const newColor = `${form.colorName}|${form.colorHex}|${form.colorImage}`;
 
     setForm({
-  ...form,
-  colorOptions: form.colorOptions
-    ? `${form.colorOptions}, ${newColor}`
-    : newColor,
-  colorName: "",
-  colorHex: "#000000",
-  colorImage: "",
-});
+      ...form,
+      colorOptions: form.colorOptions
+        ? `${form.colorOptions}, ${newColor}`
+        : newColor,
+      colorName: "",
+      colorHex: "#000000",
+      colorImage: "",
+    });
   };
 
   const handleAdd = async () => {
@@ -96,12 +119,10 @@ function Admin({ refreshProducts }) {
         image: form.image,
         stock: Number(form.stock) || 10,
         description: form.description || "Premium phone case by THE VELTRIXX.",
-
         availableModels: form.availableModels
           .split(",")
           .map((item) => item.trim())
           .filter(Boolean),
-
         colorOptions: form.colorOptions
           .split(",")
           .map((item) => {
@@ -121,7 +142,6 @@ function Admin({ refreshProducts }) {
 
     alert("Product added");
     setForm(emptyForm);
-
     fetchProducts();
     if (refreshProducts) refreshProducts();
   };
@@ -241,30 +261,11 @@ function Admin({ refreshProducts }) {
         <h1>Dashboard</h1>
 
         <div className="statsGrid">
-          <div>
-            <h3>Total Products</h3>
-            <p>{products.length}</p>
-          </div>
-
-          <div>
-            <h3>Total Orders</h3>
-            <p>{orders.length}</p>
-          </div>
-
-          <div>
-            <h3>Pending Orders</h3>
-            <p>{pendingOrders}</p>
-          </div>
-
-          <div>
-            <h3>Total Reviews</h3>
-            <p>{reviews.length}</p>
-          </div>
-
-          <div>
-            <h3>Revenue</h3>
-            <p>₹{totalRevenue}</p>
-          </div>
+          <div><h3>Total Products</h3><p>{products.length}</p></div>
+          <div><h3>Total Orders</h3><p>{orders.length}</p></div>
+          <div><h3>Pending Orders</h3><p>{pendingOrders}</p></div>
+          <div><h3>Total Reviews</h3><p>{reviews.length}</p></div>
+          <div><h3>Revenue</h3><p>₹{totalRevenue}</p></div>
         </div>
 
         {activeTab === "products" && (
@@ -272,88 +273,21 @@ function Admin({ refreshProducts }) {
             <div className="adminBox">
               <h2>Add Product</h2>
 
-              <input
-                placeholder="Product name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
+              <input placeholder="Product name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <input placeholder="Brand" value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} />
+              <input placeholder="Main Model" value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} />
+              <input placeholder="Price" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
+              <input placeholder="Main Image URL" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} />
+              <input placeholder="Stock" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} />
+              <input placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+              <input placeholder="Available Models: iPhone 13, iPhone 14, Samsung S24" value={form.availableModels} onChange={(e) => setForm({ ...form, availableModels: e.target.value })} />
 
-              <input
-                placeholder="Brand"
-                value={form.brand}
-                onChange={(e) => setForm({ ...form, brand: e.target.value })}
-              />
+              <input placeholder="Color Name" value={form.colorName} onChange={(e) => setForm({ ...form, colorName: e.target.value })} />
+              <input type="color" value={form.colorHex} onChange={(e) => setForm({ ...form, colorHex: e.target.value })} />
+              <input placeholder="Color Image URL" value={form.colorImage} onChange={(e) => setForm({ ...form, colorImage: e.target.value })} />
 
-              <input
-                placeholder="Main Model"
-                value={form.model}
-                onChange={(e) => setForm({ ...form, model: e.target.value })}
-              />
-
-              <input
-                placeholder="Price"
-                value={form.price}
-                onChange={(e) => setForm({ ...form, price: e.target.value })}
-              />
-
-              <input
-                placeholder="Main Image URL"
-                value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
-              />
-
-              <input
-                placeholder="Stock"
-                value={form.stock}
-                onChange={(e) => setForm({ ...form, stock: e.target.value })}
-              />
-
-              <input
-                placeholder="Description"
-                value={form.description}
-                onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
-                }
-              />
-
-              <input
-                placeholder="Available Models: iPhone 13, iPhone 14, Samsung S24"
-                value={form.availableModels}
-                onChange={(e) =>
-                  setForm({ ...form, availableModels: e.target.value })
-                }
-              />
-
-              <input
-                placeholder="Color Name"
-                value={form.colorName}
-                onChange={(e) =>
-                  setForm({ ...form, colorName: e.target.value })
-                }
-              />
-
-              <input
-                type="color"
-                value={form.colorHex}
-                onChange={(e) =>
-                  setForm({ ...form, colorHex: e.target.value })
-                }
-              />
-
-              <input
-                placeholder="Color Image URL"
-                value={form.colorImage}
-                onChange={(e) =>
-                  setForm({ ...form, colorImage: e.target.value })
-                }
-              />
-
-              <button type="button" onClick={addColor}>
-                Add Color
-              </button>
-
+              <button type="button" onClick={addColor}>Add Color</button>
               <p>Added Colors: {form.colorOptions || "No colors added"}</p>
-
               <button onClick={handleAdd}>Add Product</button>
             </div>
 
@@ -365,9 +299,7 @@ function Admin({ refreshProducts }) {
                   <div className="adminProduct" key={item._id}>
                     <div>
                       <h3>{item.name}</h3>
-                      <p>
-                        {item.brand} • {item.model}
-                      </p>
+                      <p>{item.brand} • {item.model}</p>
                       <strong>₹{item.price}</strong>
 
                       <p>
@@ -379,25 +311,21 @@ function Admin({ refreshProducts }) {
 
                       <div className="adminColorList">
                         <b>Colors:</b>{" "}
-                        {item.colorOptions?.length ? (
-                          item.colorOptions.map((color) => (
-                            <span key={color.name} className="adminColorChip">
-                              <span
-                                className="adminColorDot"
-                                style={{ backgroundColor: color.hex }}
-                              ></span>
-                              {color.name}
-                            </span>
-                          ))
-                        ) : (
-                          "Not added"
-                        )}
+                        {item.colorOptions?.length
+                          ? item.colorOptions.map((color) => (
+                              <span key={color.name} className="adminColorChip">
+                                <span
+                                  className="adminColorDot"
+                                  style={{ backgroundColor: color.hex }}
+                                ></span>
+                                {color.name}
+                              </span>
+                            ))
+                          : "Not added"}
                       </div>
                     </div>
 
-                    <button onClick={() => deleteProduct(item._id)}>
-                      Delete
-                    </button>
+                    <button onClick={() => deleteProduct(item._id)}>Delete</button>
                   </div>
                 ))
               )}
@@ -418,58 +346,20 @@ function Admin({ refreshProducts }) {
                     <div>
                       <h3>Order #{order._id.slice(-6)}</h3>
                       <p>{new Date(order.createdAt).toLocaleString()}</p>
-                      <p>
-                        Customer: {order.user?.name || order.customer?.name}
-                      </p>
+                      <p>Customer: {order.user?.name || order.customer?.name}</p>
                       <p>Email: {order.user?.email || "Not available"}</p>
                     </div>
 
                     <strong>{order.orderStatus}</strong>
                   </div>
 
-                  <div className="adminAddressBox">
-                    <h3>Delivery Address</h3>
-                    <p>{order.customer?.name}</p>
-                    <p>{order.customer?.phone}</p>
-                    <p>
-                      {order.customer?.address}
-                      {order.customer?.landmark
-                        ? `, ${order.customer.landmark}`
-                        : ""}
-                    </p>
-                    <p>
-                      {order.customer?.city}, {order.customer?.state} -{" "}
-                      {order.customer?.pincode}
-                    </p>
-                  </div>
-
-                  <div className="statusHistoryBox">
-                    <h3>Status History</h3>
-
-                    {order.statusHistory?.length > 0 ? (
-                      order.statusHistory.map((history, index) => (
-                        <p key={index}>
-                          <strong>{history.status}</strong> -{" "}
-                          {new Date(history.date).toLocaleString()}
-                        </p>
-                      ))
-                    ) : (
-                      <p>No status history yet.</p>
-                    )}
-                  </div>
-
                   {order.items.map((item, index) => (
                     <div className="cartItem" key={index}>
                       <img src={item.image} alt={item.name} />
-
                       <div>
                         <h3>{item.name}</h3>
-                        <p>
-                          {item.brand} • {item.model}
-                        </p>
-                        <h4>
-                          ₹{item.price} × {item.qty}
-                        </h4>
+                        <p>{item.brand} • {item.model}</p>
+                        <h4>₹{item.price} × {item.qty}</h4>
                       </div>
                     </div>
                   ))}
@@ -485,19 +375,14 @@ function Admin({ refreshProducts }) {
                       {orderStatuses.map((status) => (
                         <button
                           key={status}
-                          className={
-                            order.orderStatus === status ? "activeStatusBtn" : ""
-                          }
+                          className={order.orderStatus === status ? "activeStatusBtn" : ""}
                           onClick={() => updateOrderStatus(order._id, status)}
                         >
                           {status}
                         </button>
                       ))}
 
-                      <button
-                        className="dangerBtn"
-                        onClick={() => deleteOrder(order._id)}
-                      >
+                      <button className="dangerBtn" onClick={() => deleteOrder(order._id)}>
                         Delete
                       </button>
                     </div>
@@ -518,27 +403,13 @@ function Admin({ refreshProducts }) {
               reviews.map((review) => (
                 <div className="adminReviewCard" key={review._id}>
                   <h3>{review.product?.name}</h3>
-
-                  <p>
-                    Product: {review.product?.brand} • {review.product?.model}
-                  </p>
-
-                  <p>
-                    User: {review.user?.name} ({review.user?.email})
-                  </p>
-
+                  <p>Product: {review.product?.brand} • {review.product?.model}</p>
+                  <p>User: {review.user?.name} ({review.user?.email})</p>
                   <p>{"⭐".repeat(review.rating)}</p>
-
                   <p>{review.comment}</p>
-
                   <small>{new Date(review.createdAt).toLocaleString()}</small>
-
                   <br />
-
-                  <button
-                    className="dangerBtn"
-                    onClick={() => deleteReview(review._id)}
-                  >
+                  <button className="dangerBtn" onClick={() => deleteReview(review._id)}>
                     Delete Review
                   </button>
                 </div>

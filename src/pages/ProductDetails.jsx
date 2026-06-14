@@ -249,7 +249,12 @@ function ProductDetails({ products, addToCart }) {
                         ? "colorCircle activeColorCircle"
                         : "colorCircle"
                     }
-                    style={{ backgroundColor: color.hex || "#000000" }}
+                    style={{
+  backgroundColor:
+    color.hex ||
+    color.name ||
+    "#000000"
+}}
                     onClick={() => {
                       setSelectedColor(color);
                       setSelectedImage(color.image || product.image);

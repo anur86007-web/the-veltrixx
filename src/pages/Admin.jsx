@@ -14,6 +14,7 @@ function Admin({ refreshProducts }) {
   const [orders, setOrders] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [coupons, setCoupons] = useState([]);
+  const [editingProductId, setEditingProductId] = useState(null);
 
   const emptyForm = {
     name: "",
@@ -102,53 +103,93 @@ function Admin({ refreshProducts }) {
     });
   };
 
-  const handleAdd = async () => {
+  const getProductPayload = () => ({
+    name: form.name,
+    brand: form.brand,
+    model: form.model,
+    price: Number(form.price),
+    image: form.image,
+    stock: Number(form.stock) || 10,
+    description: form.description || "Premium phone case by THE VELTRIXX.",
+
+    availableModels: form.availableModels
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean),
+
+    colorOptions: form.colorOptions
+      .split(",")
+      .map((item) => {
+        const [name, hex, image] = item.split("|").map((v) => v.trim());
+        return { name, hex, image };
+      })
+      .filter((item) => item.name && item.hex && item.image),
+  });
+
+  const handleSubmitProduct = async () => {
     if (!form.name || !form.brand || !form.model || !form.price || !form.image) {
       alert("Please fill required fields");
       return;
     }
 
-    const res = await fetch(PRODUCT_API, {
-      method: "POST",
+    const url = editingProductId
+      ? `${PRODUCT_API}/${editingProductId}`
+      : PRODUCT_API;
+
+    const method = editingProductId ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+      method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        name: form.name,
-        brand: form.brand,
-        model: form.model,
-        price: Number(form.price),
-        image: form.image,
-        stock: Number(form.stock) || 10,
-        description: form.description || "Premium phone case by THE VELTRIXX.",
-
-        availableModels: form.availableModels
-          .split(",")
-          .map((item) => item.trim())
-          .filter(Boolean),
-
-        colorOptions: form.colorOptions
-          .split(",")
-          .map((item) => {
-            const [name, hex, image] = item.split("|").map((v) => v.trim());
-            return { name, hex, image };
-          })
-          .filter((item) => item.name && item.hex && item.image),
-      }),
+      body: JSON.stringify(getProductPayload()),
     });
 
     const data = await res.json();
 
     if (!data.success) {
-      alert(data.message || "Product add failed");
+      alert(data.message || "Product save failed");
       return;
     }
 
-    alert("Product added");
+    alert(editingProductId ? "Product updated" : "Product added");
+
     setForm(emptyForm);
+    setEditingProductId(null);
+
     fetchProducts();
     if (refreshProducts) refreshProducts();
+  };
+
+  const startEditProduct = (item) => {
+    setEditingProductId(item._id);
+
+    setForm({
+      name: item.name || "",
+      brand: item.brand || "",
+      model: item.model || "",
+      price: item.price || "",
+      image: item.image || "",
+      stock: item.stock || "",
+      description: item.description || "",
+      availableModels: item.availableModels?.join(", ") || "",
+      colorOptions:
+        item.colorOptions
+          ?.map((c) => `${c.name}|${c.hex}|${c.image}`)
+          .join(", ") || "",
+      colorName: "",
+      colorHex: "#000000",
+      colorImage: "",
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const cancelEdit = () => {
+    setEditingProductId(null);
+    setForm(emptyForm);
   };
 
   const deleteProduct = async (id) => {
@@ -370,7 +411,7 @@ function Admin({ refreshProducts }) {
         {activeTab === "products" && (
           <>
             <div className="adminBox">
-              <h2>Add Product</h2>
+              <h2>{editingProductId ? "Edit Product" : "Add Product"}</h2>
 
               <input
                 placeholder="Product name"
@@ -454,7 +495,15 @@ function Admin({ refreshProducts }) {
 
               <p>Added Colors: {form.colorOptions || "No colors added"}</p>
 
-              <button onClick={handleAdd}>Add Product</button>
+              <button onClick={handleSubmitProduct}>
+                {editingProductId ? "Update Product" : "Add Product"}
+              </button>
+
+              {editingProductId && (
+                <button type="button" className="dangerBtn" onClick={cancelEdit}>
+                  Cancel Edit
+                </button>
+              )}
             </div>
 
             <div className="adminProductList">
@@ -495,9 +544,18 @@ function Admin({ refreshProducts }) {
                       </div>
                     </div>
 
-                    <button onClick={() => deleteProduct(item._id)}>
-                      Delete
-                    </button>
+                    <div>
+                      <button onClick={() => startEditProduct(item)}>
+                        Edit
+                      </button>
+
+                      <button
+                        className="dangerBtn"
+                        onClick={() => deleteProduct(item._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))
               )}

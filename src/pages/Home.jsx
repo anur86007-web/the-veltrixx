@@ -103,12 +103,21 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
       </nav>
 
       <section className="heroBanner">
+
+  <div className="heroSlider">
+    <div className="slide slide1"></div>
+    <div className="slide slide2"></div>
+    <div className="slide slide3"></div>
+  </div>
+
   <div className="heroOverlay"></div>
 
   <div className="heroContent">
     <h1>Premium Custom Phone Cases</h1>
 
-    <p>Protect Your Phone In Style with Premium Quality Cases</p>
+    <p>
+      Protect Your Phone In Style with Premium Quality Cases
+    </p>
 
     <div className="heroFeatures">
       <span>✔ High Quality Prints</span>
@@ -120,6 +129,7 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
       Shop Now
     </a>
   </div>
+
 </section>
 
       <section className="hero">

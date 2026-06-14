@@ -7,6 +7,9 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
   const firstColor = product.colorOptions?.[0] || null;
 
   const [selectedColor, setSelectedColor] = useState(firstColor);
+  const [selectedModel, setSelectedModel] = useState(
+  product.availableModels?.[0] || product.model
+);
   const [quickView, setQuickView] = useState(false);
 
   const currentImage = selectedColor?.image || product.image;
@@ -15,7 +18,7 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
     ...product,
     selectedColor: selectedColor?.name || "Default",
     selectedImage: currentImage,
-    selectedModel: product.availableModels?.[0] || product.model,
+    selectedModel: selectedModel,
     image: currentImage,
   };
 
@@ -90,6 +93,24 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
               </div>
 
               <p className="selectedColorText">
+  Selected: {selectedColor?.name || "Default"}
+</p>
+
+{product.availableModels?.length > 0 && (
+  <select
+    className="modelSelect"
+    value={selectedModel}
+    onChange={(e) => setSelectedModel(e.target.value)}
+  >
+    {product.availableModels.map((model) => (
+      <option key={model} value={model}>
+        {model}
+      </option>
+    ))}
+  </select>
+)}
+
+              <p className="selectedColorText">
                 Selected: {selectedColor?.name || "Default"}
               </p>
             </>
@@ -111,41 +132,19 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
           </div>
 
           <div className="priceRow">
-            <h4>₹{product.price}</h4>
+  <h4>₹{product.price}</h4>
 
-            {cartItem ? (
-              <div className="qtyBox">
-                <button
-                  type="button"
-                  onClick={() =>
-                    addToCart({
-                      ...selectedProductForCart,
-                      qtyAction: "minus",
-                    })
-                  }
-                >
-                  <Minus size={14} />
-                </button>
-
-                <span>{cartItem.qty}</span>
-
-                <button
-                  type="button"
-                  onClick={() => addToCart(selectedProductForCart)}
-                >
-                  <Plus size={14} />
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => addToCart(selectedProductForCart)}
-              >
-                <ShoppingBag size={17} />
-                Add
-              </button>
-            )}
-          </div>
+  {cartItem ? (
+    <Link to="/cart" className="goCartBtn">
+      Go to Cart
+    </Link>
+  ) : (
+    <button type="button" onClick={() => addToCart(selectedProductForCart)}>
+      <ShoppingBag size={17} />
+      Add
+    </button>
+  )}
+</div>
         </div>
       </div>
 

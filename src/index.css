@@ -2270,3 +2270,14 @@ button, a {
     position: static !important;
   }
 }
+.goCartBtn {
+  background: #111;
+  color: white;
+  padding: 11px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

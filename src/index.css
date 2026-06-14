@@ -2298,3 +2298,134 @@ button, a {
 .floatingCartBtn:hover {
   transform: translateY(-2px);
 }
+.paymentPage {
+  background: #f6f6f6;
+  min-height: 100vh;
+}
+
+.paymentContainer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 42px 24px;
+}
+
+.paymentContainer h1 {
+  font-size: 44px;
+  margin: 24px 0 30px;
+}
+
+.paymentLayout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.paymentLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.checkoutSection,
+.paymentSummary {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 24px;
+  padding: 26px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+.sectionTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkoutSection h2,
+.paymentSummary h2 {
+  margin: 0 0 18px;
+  font-size: 24px;
+}
+
+.checkoutSection input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+}
+
+.addressSummary {
+  background: #f7f7f7;
+  padding: 18px;
+  border-radius: 18px;
+}
+
+.paymentOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.selectedPayment {
+  border-color: #111;
+  background: #f5f5f5;
+  font-weight: 700;
+}
+
+.paymentSummary {
+  position: sticky;
+  top: 100px;
+}
+
+.paymentSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin: 14px 0;
+}
+
+.paymentGrandTotal {
+  border-top: 1px solid #ddd;
+  padding-top: 18px;
+  font-size: 22px;
+}
+
+.paymentSummary button,
+.editAddressBtn,
+.checkoutSection button {
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.paymentSummary button {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.paymentCouponText {
+  background: #eaf7ef;
+  padding: 12px;
+  border-radius: 14px;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .paymentLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .paymentSummary {
+    position: static;
+  }
+}

@@ -1715,3 +1715,99 @@ button, a {
 .outofstock {
   background: #d93025;
 }
+.quickViewBtn{
+  width:100%;
+  margin-top:12px;
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.quickModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.quickModalContent{
+  background:white;
+  width:500px;
+  max-width:90%;
+  padding:24px;
+  border-radius:20px;
+  position:relative;
+}
+
+.quickModalContent img{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  border-radius:15px;
+}
+
+.closeModal{
+  position:absolute;
+  top:15px;
+  right:15px;
+  border:none;
+  background:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.modalCartBtn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:black;
+  color:white;
+  cursor:pointer;
+  margin-top:15px;
+}
+.modelSelect{
+  width:100%;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  margin:8px 0 12px;
+  background:#fff;
+  cursor:pointer;
+}
+.detailStockBadge {
+  display: inline-block;
+  margin: 10px 0 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.detailStockBadge.instock {
+  background: #0f9d58;
+}
+
+.detailStockBadge.lowstock {
+  background: #fbbc04;
+  color: #111;
+}
+
+.detailStockBadge.outofstock {
+  background: #d93025;
+}
+
+.detailsImageBox img {
+  transition: transform 0.35s ease;
+}
+
+.detailsImageBox img:hover {
+  transform: scale(1.04);
+}

@@ -10,6 +10,7 @@ function ProductDetails({ products, addToCart }) {
   const [product, setProduct] = useState(null);
   const [productLoading, setProductLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
+
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedModel, setSelectedModel] = useState("");
@@ -41,7 +42,7 @@ function ProductDetails({ products, addToCart }) {
         setProduct(null);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Product load error:", error);
       setProduct(null);
     } finally {
       setProductLoading(false);
@@ -54,10 +55,10 @@ function ProductDetails({ products, addToCart }) {
       const data = await res.json();
 
       if (data.success) {
-        setReviews(data.reviews);
+        setReviews(data.reviews || []);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Review fetch error:", error);
     }
   };
 
@@ -68,16 +69,16 @@ function ProductDetails({ products, addToCart }) {
 
   useEffect(() => {
     if (product) {
-      const firstColor = product.colorOptions?.[0];
+      const firstColor = product.colorOptions?.[0] || null;
 
-      setSelectedColor(firstColor || null);
-      setSelectedImage(firstColor?.image || product.image);
+      setSelectedColor(firstColor);
+      setSelectedImage(firstColor?.image || product.image || "");
       setSelectedModel(product.availableModels?.[0] || product.model || "");
     }
   }, [product]);
 
   const submitReview = async () => {
-    if (!reviewForm.comment) {
+    if (!reviewForm.comment.trim()) {
       alert("Please write a review");
       return;
     }
@@ -89,37 +90,49 @@ function ProductDetails({ products, addToCart }) {
       return;
     }
 
-    const res = await fetch(REVIEW_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product: id,
-        rating: Number(reviewForm.rating),
-        comment: reviewForm.comment,
-      }),
-    });
+    try {
+      const res = await fetch(REVIEW_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product: id,
+          rating: Number(reviewForm.rating),
+          comment: reviewForm.comment,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!data.success) {
-      alert(data.message);
-      return;
+      if (!data.success) {
+        alert(data.message || "Review add failed");
+        return;
+      }
+
+      alert("Review added successfully");
+
+      setReviewForm({
+        rating: 5,
+        comment: "",
+      });
+
+      fetchReviews();
+    } catch (error) {
+      console.log("Review submit error:", error);
+      alert("Something went wrong");
     }
-
-    alert("Review added successfully");
-
-    setReviewForm({
-      rating: 5,
-      comment: "",
-    });
-
-    fetchReviews();
   };
 
   const handleAddToCart = () => {
+    if (!product) return;
+
+    if (Number(product.stock) <= 0) {
+      alert("This product is out of stock");
+      return;
+    }
+
     addToCart({
       ...product,
       model: selectedModel || product.model,
@@ -149,6 +162,13 @@ function ProductDetails({ products, addToCart }) {
 
   const mainImage = selectedImage || product.image;
 
+  const stockStatus =
+    Number(product.stock) <= 0
+      ? "Out of Stock"
+      : Number(product.stock) <= 5
+      ? "Low Stock"
+      : "In Stock";
+
   const averageRating =
     reviews.length > 0
       ? (
@@ -164,9 +184,11 @@ function ProductDetails({ products, addToCart }) {
       </Link>
 
       <div className="productDetailsBox">
-        <img src={mainImage} alt={product.name} />
+        <div className="detailsImageBox">
+          <img src={mainImage} alt={product.name} />
+        </div>
 
-        <div>
+        <div className="detailsInfoBox">
           <h1>{product.name}</h1>
 
           <p>
@@ -174,6 +196,14 @@ function ProductDetails({ products, addToCart }) {
           </p>
 
           <h2>₹{product.price}</h2>
+
+          <span
+            className={`detailStockBadge ${stockStatus
+              .replaceAll(" ", "")
+              .toLowerCase()}`}
+          >
+            {stockStatus}
+          </span>
 
           <p className="productRating">
             ⭐ {averageRating} ({reviews.length} reviews)
@@ -219,7 +249,7 @@ function ProductDetails({ products, addToCart }) {
                         ? "colorCircle activeColorCircle"
                         : "colorCircle"
                     }
-                    style={{ "--circle-color": color.hex || color.name }}
+                    style={{ backgroundColor: color.hex || "#000000" }}
                     onClick={() => {
                       setSelectedColor(color);
                       setSelectedImage(color.image || product.image);
@@ -234,7 +264,12 @@ function ProductDetails({ products, addToCart }) {
             </div>
           )}
 
-          <button onClick={handleAddToCart}>Add to Cart</button>
+          <button
+            onClick={handleAddToCart}
+            disabled={Number(product.stock) <= 0}
+          >
+            {Number(product.stock) <= 0 ? "Out of Stock" : "Add to Cart"}
+          </button>
         </div>
       </div>
 
@@ -273,8 +308,8 @@ function ProductDetails({ products, addToCart }) {
         ) : (
           reviews.map((review) => (
             <div className="reviewCard" key={review._id}>
-              <h3>{review.name}</h3>
-              <p>{"⭐".repeat(review.rating)}</p>
+              <h3>{review.user?.name || review.name || "Customer"}</h3>
+              <p>{"⭐".repeat(Number(review.rating))}</p>
               <p>{review.comment}</p>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
             </div>

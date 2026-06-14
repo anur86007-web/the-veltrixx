@@ -2569,45 +2569,84 @@ button, a {
   outline-offset: 4px !important;
   border-color: #fff !important;
 }
-.heroBanner{
-  height: 450px;
-  background: linear-gradient(
-      rgba(0,0,0,0.5),
-      rgba(0,0,0,0.5)
-    ),
-    url("https://images.unsplash.com/photo-1601593346740-925612772716?w=1600");
+.heroBanner {
+  height: 460px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
   background-size: cover;
   background-position: center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:white;
+  animation: heroSlider 18s infinite ease-in-out;
 }
 
-.heroContent h1{
-  font-size:60px;
-  margin-bottom:15px;
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1;
 }
 
-.heroContent p{
-  font-size:22px;
-  margin-bottom:20px;
+.heroContent {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
 }
 
-.heroFeatures{
-  display:flex;
-  gap:20px;
-  justify-content:center;
-  margin-bottom:25px;
-  flex-wrap:wrap;
+.heroContent h1 {
+  font-size: 60px;
+  margin-bottom: 15px;
 }
 
-.shopNowBtn{
-  background:#d4af37;
-  color:black;
-  padding:14px 30px;
-  border-radius:999px;
-  text-decoration:none;
-  font-weight:700;
+.heroContent p {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.heroFeatures {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.shopNowBtn {
+  background: #d4af37;
+  color: #111;
+  padding: 14px 30px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@keyframes heroSlider {
+  0%, 30% {
+    background-image: url("https://images.unsplash.com/photo-1601593346740-925612772716?w=1600");
+  }
+
+  35%, 65% {
+    background-image: url("https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1600");
+  }
+
+  70%, 100% {
+    background-image: url("https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=1600");
+  }
+}
+
+@media (max-width: 768px) {
+  .heroBanner {
+    height: 380px;
+  }
+
+  .heroContent h1 {
+    font-size: 38px;
+  }
+
+  .heroContent p {
+    font-size: 17px;
+  }
 }

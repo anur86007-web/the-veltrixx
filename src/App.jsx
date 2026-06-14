@@ -11,6 +11,8 @@ import Orders from "./pages/Orders";
 import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 const API = "https://the-veltrixx-backend.onrender.com/api";
 
@@ -258,6 +260,8 @@ function App() {
             />
           }
         />
+        <Route path="/about" element={<About />} />
+<Route path="/contact" element={<Contact />} />
 
         <Route
           path="/wishlist"

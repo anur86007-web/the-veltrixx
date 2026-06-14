@@ -9,7 +9,8 @@ function Navbar({ user, cart = [], wishlist = [], logout }) {
 
       <div className="navLinks">
         <Link to="/">Home</Link>
-
+        <Link to="/about">About Us</Link>
+        <Link to="/contact">Contact Us</Link>
         <Link to="/orders">Orders</Link>
 
         <Link to="/wishlist">
@@ -24,14 +25,9 @@ function Navbar({ user, cart = [], wishlist = [], logout }) {
 
         {user ? (
           <>
-            <span className="userName">
-              Hi, {user.name}
-            </span>
+            <span className="userName">Hi, {user.name}</span>
 
-            <button
-              className="logoutBtn"
-              onClick={logout}
-            >
+            <button className="logoutBtn" onClick={logout}>
               Logout
             </button>
           </>

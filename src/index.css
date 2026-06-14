@@ -1690,3 +1690,28 @@ button, a {
   margin-top: 12px;
   font-weight: 700;
 }
+.stockBadge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #111;
+  color: #fff;
+  z-index: 2;
+}
+
+.instock {
+  background: #0f9d58;
+}
+
+.lowstock {
+  background: #fbbc04;
+  color: #111;
+}
+
+.outofstock {
+  background: #d93025;
+}

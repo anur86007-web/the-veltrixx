@@ -7,6 +7,7 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
   const firstColor = product.colorOptions?.[0] || null;
 
   const [selectedColor, setSelectedColor] = useState(firstColor);
+  const [quickView, setQuickView] = useState(false);
 
   const currentImage = selectedColor?.image || product.image;
 
@@ -28,101 +29,154 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
       item.selectedColor === selectedProductForCart.selectedColor
   );
 
+  const stockStatus =
+    Number(product.stock) <= 0
+      ? "Out of Stock"
+      : Number(product.stock) <= 5
+      ? "Low Stock"
+      : "In Stock";
+
   return (
-    <div className="productCard">
-      <Link to={`/product/${productId}`} className="productImage">
-        <img src={currentImage} alt={product.name} />
-      </Link>
+    <>
+      <div className="productCard">
+        <Link to={`/product/${productId}`} className="productImage">
+          <img src={currentImage} alt={product.name} />
+        </Link>
 
-      <button
-        type="button"
-        className={isWishlisted ? "wishBtn activeWish" : "wishBtn"}
-        onClick={() => toggleWishlist(selectedProductForCart)}
-      >
-        <Heart size={18} fill={isWishlisted ? "red" : "none"} />
-      </button>
+        <span
+          className={`stockBadge ${stockStatus
+            .replaceAll(" ", "")
+            .toLowerCase()}`}
+        >
+          {stockStatus}
+        </span>
 
-      <div className="productInfo">
-        <p className="brand">
-          {product.brand} • {product.model}
-        </p>
+        <button
+          type="button"
+          className={isWishlisted ? "wishBtn activeWish" : "wishBtn"}
+          onClick={() => toggleWishlist(selectedProductForCart)}
+        >
+          <Heart size={18} fill={isWishlisted ? "red" : "none"} />
+        </button>
 
-        <h3>{product.name}</h3>
+        <div className="productInfo">
+          <p className="brand">
+            {product.brand} • {product.model}
+          </p>
 
-        {product.colorOptions?.length > 0 && (
-          <>
-            <div className="cardColorPreview">
-              {product.colorOptions.slice(0, 6).map((color) => (
+          <h3>{product.name}</h3>
+
+          {product.colorOptions?.length > 0 && (
+            <>
+              <div className="cardColorPreview">
+                {product.colorOptions.slice(0, 6).map((color) => (
+                  <button
+                    type="button"
+                    key={color.name}
+                    title={color.name}
+                    className={
+                      selectedColor?.name === color.name
+                        ? "cardColorDot activeColorDot"
+                        : "cardColorDot"
+                    }
+                    style={{ backgroundColor: color.hex || "#000000" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setSelectedColor(color);
+                    }}
+                  ></button>
+                ))}
+              </div>
+
+              <p className="selectedColorText">
+                Selected: {selectedColor?.name || "Default"}
+              </p>
+            </>
+          )}
+
+          <button
+            type="button"
+            className="quickViewBtn"
+            onClick={() => setQuickView(true)}
+          >
+            Quick View
+          </button>
+
+          <div className="rating">
+            <Star size={15} fill="black" />
+            <span>
+              {product.rating || 4.8} ({product.reviews?.length || 0} reviews)
+            </span>
+          </div>
+
+          <div className="priceRow">
+            <h4>₹{product.price}</h4>
+
+            {cartItem ? (
+              <div className="qtyBox">
                 <button
                   type="button"
-                  key={color.name}
-                  title={color.name}
-                  className={
-                    selectedColor?.name === color.name
-                      ? "cardColorDot activeColorDot"
-                      : "cardColorDot"
+                  onClick={() =>
+                    addToCart({
+                      ...selectedProductForCart,
+                      qtyAction: "minus",
+                    })
                   }
-                  style={{ backgroundColor: color.hex || "#000000" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setSelectedColor(color);
-                  }}
-                ></button>
-              ))}
-            </div>
+                >
+                  <Minus size={14} />
+                </button>
 
-            <p className="selectedColorText">
-              Selected: {selectedColor?.name || "Default"}
-            </p>
-          </>
-        )}
+                <span>{cartItem.qty}</span>
 
-        <div className="rating">
-          <Star size={15} fill="black" />
-          <span>
-            {product.rating || 4.8} ({product.reviews?.length || 0} reviews)
-          </span>
-        </div>
-
-        <div className="priceRow">
-          <h4>₹{product.price}</h4>
-
-          {cartItem ? (
-            <div className="qtyBox">
-              <button
-                type="button"
-                onClick={() =>
-                  addToCart({
-                    ...selectedProductForCart,
-                    qtyAction: "minus",
-                  })
-                }
-              >
-                <Minus size={14} />
-              </button>
-
-              <span>{cartItem.qty}</span>
-
+                <button
+                  type="button"
+                  onClick={() => addToCart(selectedProductForCart)}
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
+            ) : (
               <button
                 type="button"
                 onClick={() => addToCart(selectedProductForCart)}
               >
-                <Plus size={14} />
+                <ShoppingBag size={17} />
+                Add
               </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => addToCart(selectedProductForCart)}
-            >
-              <ShoppingBag size={17} />
-              Add
-            </button>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {quickView && (
+        <div className="quickModal">
+          <div className="quickModalContent">
+            <button
+              type="button"
+              className="closeModal"
+              onClick={() => setQuickView(false)}
+            >
+              ✕
+            </button>
+
+            <img src={currentImage} alt={product.name} />
+
+            <h2>{product.name}</h2>
+            <p>{product.description}</p>
+            <h3>₹{product.price}</h3>
+
+            <button
+              type="button"
+              className="modalCartBtn"
+              onClick={() => addToCart(selectedProductForCart)}
+            >
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

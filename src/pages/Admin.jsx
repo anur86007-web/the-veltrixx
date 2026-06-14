@@ -7,24 +7,7 @@ const DELETE_ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/a
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/all";
 const DELETE_REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/delete";
 
-function Admin({ user, refreshProducts }) {
-  if (!user) {
-    return (
-      <div className="pageContainer">
-        <h1>Admin Login Required</h1>
-        <p>Please login with an admin account.</p>
-      </div>
-    );
-  }
-
-  if (user.role !== "admin") {
-    return (
-      <div className="pageContainer">
-        <h1>Access Denied</h1>
-        <p>You are not allowed to access admin dashboard.</p>
-      </div>
-    );
-  }
+function Admin({ refreshProducts }) {
 
   const [activeTab, setActiveTab] = useState("products");
   const [products, setProducts] = useState([]);

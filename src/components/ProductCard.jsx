@@ -134,16 +134,13 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
           <div className="priceRow">
   <h4>₹{product.price}</h4>
 
-  {cartItem ? (
-    <Link to="/cart" className="goCartBtn">
-      Go to Cart
-    </Link>
-  ) : (
-    <button type="button" onClick={() => addToCart(selectedProductForCart)}>
-      <ShoppingBag size={17} />
-      Add
-    </button>
-  )}
+  <button
+  type="button"
+  onClick={() => addToCart(selectedProductForCart)}
+>
+  <ShoppingBag size={17} />
+  Add
+</button>
 </div>
         </div>
       </div>

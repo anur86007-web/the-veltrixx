@@ -1958,3 +1958,105 @@ button, a {
     position: static;
   }
 }
+.pageContainer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.cartLayout {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 360px !important;
+  gap: 32px !important;
+  align-items: flex-start !important;
+}
+
+.listBox {
+  width: 100% !important;
+}
+
+.cartItem {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 120px 1fr 130px 48px !important;
+  gap: 20px !important;
+  align-items: center !important;
+  padding: 22px !important;
+  border: 1px solid #eee !important;
+  border-radius: 24px !important;
+  background: #fff !important;
+}
+
+.checkoutBox {
+  width: 100% !important;
+  min-width: 320px !important;
+  padding: 26px !important;
+  border: 1px solid #eee !important;
+  border-radius: 24px !important;
+  background: #fff !important;
+  position: sticky !important;
+  top: 100px !important;
+}
+
+.checkoutBox h2 {
+  margin: 0 0 20px !important;
+  line-height: 1.1 !important;
+}
+
+.couponBox {
+  display: flex !important;
+  gap: 10px !important;
+  margin-bottom: 16px !important;
+}
+
+.couponBox input {
+  width: 100% !important;
+  padding: 12px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 14px !important;
+}
+
+.summaryRow {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin: 14px 0 !important;
+  font-size: 16px !important;
+}
+
+.grandTotal {
+  border-top: 1px solid #ddd !important;
+  padding-top: 16px !important;
+  font-size: 20px !important;
+}
+
+.shippingNote {
+  background: #f5f5f5 !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  margin: 16px 0 !important;
+}
+
+.paymentBtn {
+  width: 100% !important;
+  margin-top: 14px !important;
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 14px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+}
+
+@media (max-width: 900px) {
+  .cartLayout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .checkoutBox {
+    position: static !important;
+  }
+}

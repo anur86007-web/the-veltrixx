@@ -23,7 +23,7 @@ function Contact() {
 
         <div className="contactCard">
           <h3>📧 Email</h3>
-          <p>theveltrixx2@gmail.com</p>
+          <p>theveltrixx@gmail.com</p>
         </div>
 
         <div className="contactCard">

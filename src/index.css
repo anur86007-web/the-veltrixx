@@ -1811,3 +1811,45 @@ button, a {
 .detailsImageBox img:hover {
   transform: scale(1.04);
 }
+.cartLayout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 28px;
+  align-items: start;
+}
+
+.checkoutBox {
+  position: sticky;
+  top: 90px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin: 14px 0;
+  font-size: 15px;
+}
+
+.grandTotal {
+  border-top: 1px solid #ddd;
+  padding-top: 14px;
+  font-size: 18px;
+}
+
+.shippingNote {
+  background: #f6f6f6;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+@media (max-width: 900px) {
+  .cartLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkoutBox {
+    position: static;
+  }
+}

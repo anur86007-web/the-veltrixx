@@ -13,23 +13,22 @@ function Admin({ refreshProducts }) {
   const [orders, setOrders] = useState([]);
   const [reviews, setReviews] = useState([]);
 
-  const [form, setForm] = useState({
-  name: "",
-  brand: "",
-  model: "",
-  price: "",
-  image: "",
-  stock: "",
-  description: "",
-  availableModels: "",
+  const emptyForm = {
+    name: "",
+    brand: "",
+    model: "",
+    price: "",
+    image: "",
+    stock: "",
+    description: "",
+    availableModels: "",
+    colorOptions: "",
+    colorName: "",
+    colorHex: "#000000",
+    colorImage: "",
+  };
 
-  colorOptions: "",
-
-  colorName: "",
-  colorHex: "#000000",
-  colorImage: "",
-});
-
+  const [form, setForm] = useState(emptyForm);
   const token = localStorage.getItem("veltrixx_token");
 
   const fetchProducts = async () => {
@@ -55,8 +54,27 @@ function Admin({ refreshProducts }) {
   };
 
   useEffect(() => {
-  fetchProducts();
-}, []);
+    fetchProducts();
+  }, []);
+
+  const addColor = () => {
+    if (!form.colorName || !form.colorHex || !form.colorImage) {
+      alert("Please fill color name, color and image URL");
+      return;
+    }
+
+    const newColor = `${form.colorName}|${form.colorHex}|${form.colorImage}`;
+
+    setForm({
+      ...form,
+      colorOptions: form.colorOptions
+        ? `${form.colorOptions}, ${newColor}`
+        : newColor,
+      colorName: "",
+      colorHex: "#000000",
+      colorImage: "",
+    });
+  };
 
   const handleAdd = async () => {
     if (!form.name || !form.brand || !form.model || !form.price || !form.image) {
@@ -82,7 +100,7 @@ function Admin({ refreshProducts }) {
         availableModels: form.availableModels
           .split(",")
           .map((item) => item.trim())
-          .filter((item) => item),
+          .filter(Boolean),
 
         colorOptions: form.colorOptions
           .split(",")
@@ -102,18 +120,7 @@ function Admin({ refreshProducts }) {
     }
 
     alert("Product added");
-
-    setForm({
-      name: "",
-      brand: "",
-      model: "",
-      price: "",
-      image: "",
-      stock: "",
-      description: "",
-      availableModels: "",
-      colorOptions: "",
-    });
+    setForm(emptyForm);
 
     fetchProducts();
     if (refreshProducts) refreshProducts();
@@ -318,100 +325,34 @@ function Admin({ refreshProducts }) {
               />
 
               <input
-  placeholder="Color Name"
-  value={form.colorName}
-  onChange={(e) =>
-    setForm({ ...form, colorName: e.target.value })
-  }
-/>
+                placeholder="Color Name"
+                value={form.colorName}
+                onChange={(e) =>
+                  setForm({ ...form, colorName: e.target.value })
+                }
+              />
 
-<input
-  type="color"
-  value={form.colorHex}
-  onChange={(e) =>
-    setForm({ ...form, colorHex: e.target.value })
-  }
-/>
+              <input
+                type="color"
+                value={form.colorHex}
+                onChange={(e) =>
+                  setForm({ ...form, colorHex: e.target.value })
+                }
+              />
 
-<input
-  placeholder="Color Image URL"
-  value={form.colorImage}
-  onChange={(e) =>
-    setForm({ ...form, colorImage: e.target.value })
-  }
-/>
+              <input
+                placeholder="Color Image URL"
+                value={form.colorImage}
+                onChange={(e) =>
+                  setForm({ ...form, colorImage: e.target.value })
+                }
+              />
 
-<input
-  placeholder="Color Name"
-  value={form.colorName}
-  onChange={(e) => setForm({ ...form, colorName: e.target.value })}
-/>
+              <button type="button" onClick={addColor}>
+                Add Color
+              </button>
 
-<input
-  type="color"
-  value={form.colorHex}
-  onChange={(e) => setForm({ ...form, colorHex: e.target.value })}
-/>
-
-<input
-  placeholder="Color Image URL"
-  value={form.colorImage}
-  onChange={(e) => setForm({ ...form, colorImage: e.target.value })}
-/>
-
-<button
-  type="button"
-  onClick={() => {
-    if (!form.colorName || !form.colorHex || !form.colorImage) {
-      alert("Please fill color name, color and image URL");
-      return;
-    }
-
-    const newColor = `${form.colorName}|${form.colorHex}|${form.colorImage}`;
-
-    setForm({
-      ...form,
-      colorOptions: form.colorOptions
-        ? `${form.colorOptions}, ${newColor}`
-        : newColor,
-      colorName: "",
-      colorHex: "#000000",
-      colorImage: "",
-    });
-  }}
->
-  Add Color
-</button>
-
-<p>Added Colors: {form.colorOptions || "No colors added"}</p>
-
-<button
-  type="button"
-  onClick={() => {
-    if (!form.colorName || !form.colorHex || !form.colorImage) {
-      alert("Please fill color name, color and image URL");
-      return;
-    }
-
-    const newColor = `${form.colorName}|${form.colorHex}|${form.colorImage}`;
-
-    setForm({
-      ...form,
-      colorOptions: form.colorOptions
-        ? `${form.colorOptions}, ${newColor}`
-        : newColor,
-      colorName: "",
-      colorHex: "#000000",
-      colorImage: "",
-    });
-  }}
->
-  Add Color
-</button>
-
-<p>
-  Added Colors: {form.colorOptions || "No colors added"}
-</p>
+              <p>Added Colors: {form.colorOptions || "No colors added"}</p>
 
               <button onClick={handleAdd}>Add Product</button>
             </div>

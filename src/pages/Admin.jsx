@@ -66,14 +66,14 @@ function Admin({ refreshProducts }) {
     const newColor = `${form.colorName}|${form.colorHex}|${form.colorImage}`;
 
     setForm({
-      ...form,
-      colorOptions: form.colorOptions
-        ? `${form.colorOptions}, ${newColor}`
-        : newColor,
-      colorName: "",
-      colorHex: "#000000",
-      colorImage: "",
-    });
+  ...form,
+  colorOptions: form.colorOptions
+    ? `${form.colorOptions}, ${newColor}`
+    : newColor,
+  colorName: "",
+  colorHex: "#000000",
+  colorImage: "",
+});
   };
 
   const handleAdd = async () => {

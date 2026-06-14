@@ -102,6 +102,26 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
         </div>
       </nav>
 
+      <section className="heroBanner">
+  <div className="heroContent">
+    <h1>Premium Custom Phone Cases</h1>
+
+    <p>
+      Protect Your Phone In Style with Premium Quality Cases
+    </p>
+
+    <div className="heroFeatures">
+      <span>✔ High Quality Prints</span>
+      <span>✔ Fast Delivery</span>
+      <span>✔ Premium Protection</span>
+    </div>
+
+    <a href="#products" className="shopNowBtn">
+      Shop Now
+    </a>
+  </div>
+</section>
+
       <section className="hero">
         <p>Premium Phone Cases</p>
         <h1>Minimal protection for modern phones.</h1>

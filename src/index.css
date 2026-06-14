@@ -2569,3 +2569,45 @@ button, a {
   outline-offset: 4px !important;
   border-color: #fff !important;
 }
+.heroBanner{
+  height: 450px;
+  background: linear-gradient(
+      rgba(0,0,0,0.5),
+      rgba(0,0,0,0.5)
+    ),
+    url("https://images.unsplash.com/photo-1601593346740-925612772716?w=1600");
+  background-size: cover;
+  background-position: center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+}
+
+.heroContent h1{
+  font-size:60px;
+  margin-bottom:15px;
+}
+
+.heroContent p{
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+.heroFeatures{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  margin-bottom:25px;
+  flex-wrap:wrap;
+}
+
+.shopNowBtn{
+  background:#d4af37;
+  color:black;
+  padding:14px 30px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:700;
+}

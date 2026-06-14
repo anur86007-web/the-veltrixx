@@ -2429,3 +2429,41 @@ button, a {
     position: static;
   }
 }
+.paymentOption {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+  padding: 18px 20px !important;
+  border: 1px solid #e6e6e6 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  margin-bottom: 14px !important;
+  cursor: pointer !important;
+}
+
+.paymentOption input {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.paymentOption span {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: #111 !important;
+  line-height: 1.3 !important;
+}
+
+.selectedPayment {
+  border: 2px solid #111 !important;
+  background: #f7f7f7 !important;
+}
+
+.paymentNote {
+  margin-top: 10px !important;
+  color: #666 !important;
+  font-size: 14px !important;
+}

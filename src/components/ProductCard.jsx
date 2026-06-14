@@ -50,26 +50,32 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
         <h3>{product.name}</h3>
 
         {product.colorOptions?.length > 0 && (
-          <div className="cardColorPreview">
-            {product.colorOptions.slice(0, 6).map((color) => (
-              <button
-                type="button"
-                key={color.name}
-                title={color.name}
-                className={
-                  selectedColor?.name === color.name
-                    ? "cardColorDot activeColorDot"
-                    : "cardColorDot"
-                }
-                style={{ backgroundColor: color.hex || "#000000" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setSelectedColor(color);
-                }}
-              ></button>
-            ))}
-          </div>
+          <>
+            <div className="cardColorPreview">
+              {product.colorOptions.slice(0, 6).map((color) => (
+                <button
+                  type="button"
+                  key={color.name}
+                  title={color.name}
+                  className={
+                    selectedColor?.name === color.name
+                      ? "cardColorDot activeColorDot"
+                      : "cardColorDot"
+                  }
+                  style={{ backgroundColor: color.hex || "#000000" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedColor(color);
+                  }}
+                ></button>
+              ))}
+            </div>
+
+            <p className="selectedColorText">
+              Selected: {selectedColor?.name || "Default"}
+            </p>
+          </>
         )}
 
         <div className="rating">
@@ -106,7 +112,10 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
               </button>
             </div>
           ) : (
-            <button type="button" onClick={() => addToCart(selectedProductForCart)}>
+            <button
+              type="button"
+              onClick={() => addToCart(selectedProductForCart)}
+            >
               <ShoppingBag size={17} />
               Add
             </button>

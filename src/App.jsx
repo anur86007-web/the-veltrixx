@@ -48,6 +48,8 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isAdminPage = location.pathname === "/admin";
+
   const [user, setUser] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_user")) || null
   );
@@ -225,7 +227,9 @@ function App() {
     <>
       {toast && <div className="toast">{toast}</div>}
 
-      <Navbar user={user} cart={cart} wishlist={wishlist} logout={logout} />
+      {!isAdminPage && (
+        <Navbar user={user} cart={cart} wishlist={wishlist} logout={logout} />
+      )}
 
       <Routes>
         <Route

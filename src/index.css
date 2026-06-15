@@ -2744,3 +2744,112 @@ button, a {
     flex-wrap: wrap;
   }
 }
+/* ===== Minimal Premium Theme - THE VELTRIXX ===== */
+
+.premiumHero {
+  background: linear-gradient(135deg, #f8f7f4, #ece9e2) !important;
+  color: #111 !important;
+}
+
+.heroTag {
+  color: #7c7266 !important;
+}
+
+.premiumHeroText h1 {
+  color: #111 !important;
+}
+
+.premiumHeroText p {
+  color: #555 !important;
+}
+
+.primaryHeroBtn {
+  background: #111 !important;
+  color: #fff !important;
+}
+
+.secondaryHeroBtn {
+  background: #fff !important;
+  color: #111 !important;
+  border: 1px solid #111 !important;
+}
+
+.heroStats b {
+  color: #111 !important;
+}
+
+.heroStats span {
+  color: #666 !important;
+}
+
+.phoneShowcase {
+  background: #f4f4f4 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12) !important;
+}
+
+.trustStrip {
+  background: #fafafa !important;
+  color: #111 !important;
+  border: 1px solid #e5e5e5 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04) !important;
+}
+
+.productCard {
+  background: #fff !important;
+  border: 1px solid #ececec !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04) !important;
+}
+
+.productCard:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08) !important;
+}
+
+.brands button {
+  background: #f4f4f4 !important;
+  color: #222 !important;
+  border: 1px solid #e5e5e5 !important;
+}
+
+.brands button.activeBrand,
+.activeBrand {
+  background: #111 !important;
+  color: #fff !important;
+}
+
+.navbar {
+  background: #fff !important;
+  border-bottom: 1px solid #ececec !important;
+}
+
+.logo,
+.navLogo a {
+  color: #111 !important;
+}
+
+.navLinks a,
+.navIcons a {
+  color: #333 !important;
+}
+
+.searchBox {
+  background: #f7f7f7 !important;
+  border: 1px solid #e5e5e5 !important;
+}
+
+.shopSection {
+  background: #fff !important;
+}
+
+.sectionHead p {
+  color: #7c7266 !important;
+}
+
+.sectionHead h2 {
+  color: #111 !important;
+}
+
+.footer {
+  background: #111 !important;
+}

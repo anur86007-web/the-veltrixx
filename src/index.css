@@ -5405,3 +5405,105 @@ button, a {
   background: #111 !important;
   color: #fff !important;
 }
+/* ===== Professional Admin User Management ===== */
+
+.adminBox:has(.userManagementTop) {
+  max-width: 900px !important;
+  padding: 30px !important;
+  border-radius: 26px !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06) !important;
+}
+
+.userManagementTop {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.userManagementTop input {
+  flex: 1;
+  height: 52px;
+  margin: 0 !important;
+}
+
+.userManagementTop button {
+  height: 52px;
+  padding: 0 28px !important;
+  justify-content: center;
+}
+
+.adminTableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #eee;
+  border-radius: 18px;
+}
+
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.adminTable thead {
+  background: #111;
+  color: #fff;
+}
+
+.adminTable th,
+.adminTable td {
+  padding: 16px 18px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+}
+
+.adminTable th {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.adminTable td {
+  font-size: 15px;
+}
+
+.adminTable tbody tr:hover {
+  background: #fafafa;
+}
+
+.adminTable select {
+  padding: 9px 12px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #f8f8f8;
+  outline: none;
+  font-weight: 600;
+}
+
+.adminTable .dangerBtn {
+  padding: 10px 18px !important;
+  border-radius: 999px !important;
+  background: #d32f2f !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.adminTable .dangerBtn:hover {
+  background: #b91c1c !important;
+}
+
+@media (max-width: 700px) {
+  .userManagementTop {
+    flex-direction: column;
+  }
+
+  .userManagementTop button {
+    width: 100%;
+  }
+
+  .adminTable th,
+  .adminTable td {
+    padding: 13px;
+    font-size: 14px;
+  }
+}

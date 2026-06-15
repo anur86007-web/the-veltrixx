@@ -167,12 +167,10 @@ button, a {
   letter-spacing: -1px;
 }
 
-.productGrid {
-  max-width: 1180px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 26px;
+.productGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:24px;
 }
 
 .productCard {
@@ -4850,4 +4848,44 @@ button, a {
   .sectionHead h2 {
     font-size: 36px !important;
   }
+}
+.productCard{
+  max-width:320px;
+  margin:auto;
+  border-radius:24px;
+  overflow:hidden;
+}
+
+.productImage img{
+  height:280px;
+  object-fit:cover;
+}
+.productInfo{
+  padding:16px;
+}
+
+.productInfo h3{
+  font-size:28px;
+  margin:6px 0;
+}
+
+.brand{
+  font-size:13px;
+}
+
+.priceRow h4{
+  font-size:22px;
+}
+.cardColorDot{
+  width:20px;
+  height:20px;
+}
+.quickViewBtn{
+  height:42px;
+  font-size:14px;
+}
+.priceRow button{
+  height:42px;
+  min-width:90px;
+  border-radius:30px;
 }

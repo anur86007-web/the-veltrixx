@@ -10,7 +10,7 @@ const COUPON_API = "https://the-veltrixx-backend.onrender.com/api/coupons";
 const USER_API = "https://the-veltrixx-backend.onrender.com/api/users";
 
 function Admin({ refreshProducts }) {
-  const [activeTab, setActiveTab] = useState("products");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -93,6 +93,9 @@ function Admin({ refreshProducts }) {
   useEffect(() => {
     fetchProducts();
     fetchCoupons();
+    fetchOrders();
+    fetchReviews();
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -129,12 +132,10 @@ function Admin({ refreshProducts }) {
     image: form.image,
     stock: Number(form.stock) || 10,
     description: form.description || "Premium phone case by THE VELTRIXX.",
-
     availableModels: form.availableModels
       .split(",")
       .map((item) => item.trim())
       .filter(Boolean),
-
     colorOptions: form.colorOptions
       .split(",")
       .map((item) => {
@@ -173,10 +174,8 @@ function Admin({ refreshProducts }) {
     }
 
     alert(editingProductId ? "Product updated" : "Product added");
-
     setForm(emptyForm);
     setEditingProductId(null);
-
     fetchProducts();
     if (refreshProducts) refreshProducts();
   };
@@ -408,6 +407,12 @@ function Admin({ refreshProducts }) {
       order.orderStatus !== "Delivered" && order.orderStatus !== "Cancelled"
   ).length;
 
+  const activeCoupons = coupons.filter((coupon) => coupon.isActive).length;
+
+  const lowStockProducts = products.filter(
+    (product) => Number(product.stock || 0) <= 5
+  ).length;
+
   const orderStatuses = [
     "Order Placed",
     "Processing",
@@ -424,6 +429,7 @@ function Admin({ refreshProducts }) {
         <h2>THE VELTRIXX</h2>
         <p>Admin Dashboard</p>
 
+        <button onClick={() => setActiveTab("dashboard")}>Dashboard</button>
         <button onClick={() => setActiveTab("products")}>Products</button>
         <button onClick={() => setActiveTab("orders")}>Manage Orders</button>
         <button onClick={() => setActiveTab("reviews")}>Reviews</button>
@@ -432,7 +438,13 @@ function Admin({ refreshProducts }) {
       </aside>
 
       <main>
-        <h1>Dashboard</h1>
+        <div className="adminHeader">
+          <div>
+            <p>Admin Control Panel</p>
+            <h1>Dashboard</h1>
+          </div>
+          <button onClick={() => setActiveTab("products")}>+ Add Product</button>
+        </div>
 
         <div className="statsGrid">
           <div>
@@ -451,18 +463,13 @@ function Admin({ refreshProducts }) {
           </div>
 
           <div>
-            <h3>Total Reviews</h3>
-            <p>{reviews.length}</p>
-          </div>
-
-          <div>
-            <h3>Total Coupons</h3>
-            <p>{coupons.length}</p>
-          </div>
-
-          <div>
             <h3>Total Users</h3>
             <p>{users.length}</p>
+          </div>
+
+          <div>
+            <h3>Active Coupons</h3>
+            <p>{activeCoupons}</p>
           </div>
 
           <div>
@@ -470,6 +477,128 @@ function Admin({ refreshProducts }) {
             <p>₹{totalRevenue}</p>
           </div>
         </div>
+
+        {activeTab === "dashboard" && (
+          <div className="dashboardOverview">
+            <div className="welcomeAdminBox">
+              <div>
+                <p>Welcome back 👋</p>
+                <h2>THE VELTRIXX Admin Overview</h2>
+                <span>
+                  Manage products, orders, users, coupons and reviews from one place.
+                </span>
+              </div>
+
+              <button onClick={() => setActiveTab("products")}>
+                Add New Product
+              </button>
+            </div>
+
+            <div className="overviewGrid">
+              <div className="overviewCard">
+                <h3>Active Products</h3>
+                <p>{products.length}</p>
+                <span>Total listed products</span>
+              </div>
+
+              <div className="overviewCard">
+                <h3>Orders</h3>
+                <p>{orders.length}</p>
+                <span>{pendingOrders} pending orders</span>
+              </div>
+
+              <div className="overviewCard">
+                <h3>Customers</h3>
+                <p>{users.length}</p>
+                <span>Registered users</span>
+              </div>
+
+              <div className="overviewCard revenueCard">
+                <h3>Total Revenue</h3>
+                <p>₹{totalRevenue}</p>
+                <span>From all orders</span>
+              </div>
+            </div>
+
+            <div className="adminPreviewGrid">
+              <div className="previewBox">
+                <h2>Recent Orders</h2>
+
+                {orders.length === 0 ? (
+                  <p>No orders yet.</p>
+                ) : (
+                  orders.slice(0, 5).map((order) => (
+                    <div className="previewItem" key={order._id}>
+                      <div>
+                        <h4>Order #{order._id.slice(-6)}</h4>
+                        <p>
+                          {order.customer?.name ||
+                            order.user?.name ||
+                            "Customer"}
+                        </p>
+                      </div>
+                      <strong>₹{order.total}</strong>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="previewBox">
+                <h2>Recent Users</h2>
+
+                {users.length === 0 ? (
+                  <p>No users yet.</p>
+                ) : (
+                  users.slice(0, 5).map((user) => (
+                    <div className="previewItem" key={user._id}>
+                      <div>
+                        <h4>{user.name}</h4>
+                        <p>{user.email}</p>
+                      </div>
+
+                      <span
+                        className={
+                          user.role === "admin" ? "adminBadge" : "userBadge"
+                        }
+                      >
+                        {user.role}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="adminPreviewGrid">
+              <div className="previewBox">
+                <h2>Inventory Alerts</h2>
+                <div className="previewItem">
+                  <div>
+                    <h4>Low Stock Products</h4>
+                    <p>Products with stock 5 or less</p>
+                  </div>
+                  <strong>{lowStockProducts}</strong>
+                </div>
+              </div>
+
+              <div className="previewBox">
+                <h2>Quick Actions</h2>
+
+                <div className="quickActionRow">
+                  <button onClick={() => setActiveTab("products")}>
+                    Manage Products
+                  </button>
+                  <button onClick={() => setActiveTab("orders")}>
+                    View Orders
+                  </button>
+                  <button onClick={() => setActiveTab("users")}>
+                    Manage Users
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeTab === "products" && (
           <>
@@ -608,7 +737,9 @@ function Admin({ refreshProducts }) {
                     </div>
 
                     <div>
-                      <button onClick={() => startEditProduct(item)}>Edit</button>
+                      <button onClick={() => startEditProduct(item)}>
+                        Edit
+                      </button>
 
                       <button
                         className="dangerBtn"

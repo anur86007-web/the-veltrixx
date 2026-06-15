@@ -5507,3 +5507,178 @@ button, a {
     font-size: 14px;
   }
 }
+.adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.adminHeader p {
+  color: #777;
+  font-weight: 700;
+}
+
+.adminHeader button {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 13px 22px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.dashboardOverview {
+  display: grid;
+  gap: 26px;
+}
+
+.welcomeAdminBox {
+  background: linear-gradient(135deg, #111, #2a2a2a);
+  color: white;
+  padding: 32px;
+  border-radius: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcomeAdminBox p {
+  color: #d4af37;
+  font-weight: 700;
+}
+
+.welcomeAdminBox h2 {
+  font-size: 34px;
+  margin: 8px 0;
+}
+
+.welcomeAdminBox span {
+  color: #ccc;
+}
+
+.welcomeAdminBox button {
+  background: #d4af37;
+  color: #111;
+  border: none;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.overviewGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.overviewCard {
+  background: white;
+  padding: 26px;
+  border-radius: 24px;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.05);
+}
+
+.overviewCard h3 {
+  color: #666;
+  font-size: 15px;
+}
+
+.overviewCard p {
+  font-size: 36px;
+  font-weight: 900;
+  margin: 10px 0;
+}
+
+.overviewCard span {
+  color: #777;
+}
+
+.revenueCard {
+  background: #111;
+  color: white;
+}
+
+.revenueCard h3,
+.revenueCard span {
+  color: #d6d6d6;
+}
+
+.adminPreviewGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.previewBox {
+  background: white;
+  padding: 26px;
+  border-radius: 24px;
+  border: 1px solid #eee;
+}
+
+.previewBox h2 {
+  margin-bottom: 18px;
+}
+
+.previewItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.previewItem p {
+  color: #666;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.adminBadge,
+.userBadge {
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.adminBadge {
+  background: #111;
+  color: white;
+}
+
+.userBadge {
+  background: #f1f1f1;
+  color: #111;
+}
+
+.quickActionRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.quickActionRow button {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .adminHeader,
+  .welcomeAdminBox {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .overviewGrid,
+  .adminPreviewGrid {
+    grid-template-columns: 1fr;
+  }
+}

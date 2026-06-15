@@ -6,7 +6,6 @@ import {
   MapPin,
   Clock,
   Send,
-  Headphones,
 } from "lucide-react";
 
 function Contact() {
@@ -80,7 +79,7 @@ function Contact() {
 
         <div className="contactFormPanel">
           <div className="contactFormHeader">
-            <Headphones size={28} />
+            <MessageCircle size={28} />
             <div>
               <h2>Send a Message</h2>
               <p>We usually reply within a few hours.</p>

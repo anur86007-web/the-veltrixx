@@ -4206,3 +4206,319 @@ button, a {
     grid-template-columns: 1fr !important;
   }
 }
+.premiumAboutPage {
+  background: #f8f7f4 !important;
+  min-height: 100vh !important;
+  padding: 42px 20px 80px !important;
+}
+
+.aboutHero,
+.aboutStats,
+.aboutStory,
+.aboutPremiumGrid,
+.aboutValues,
+.aboutCTA {
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.aboutHero {
+  display: grid !important;
+  grid-template-columns: 1fr 460px !important;
+  gap: 42px !important;
+  align-items: center !important;
+  background: linear-gradient(135deg, #111, #2b2925) !important;
+  border-radius: 34px !important;
+  padding: 70px 54px !important;
+  color: #fff !important;
+  overflow: hidden !important;
+}
+
+.aboutHeroText span,
+.aboutStory span,
+.aboutValueLeft span {
+  color: #c9b89c !important;
+  font-weight: 900 !important;
+  letter-spacing: 3px !important;
+  font-size: 13px !important;
+}
+
+.aboutHeroText h1 {
+  font-size: 62px !important;
+  line-height: 1.05 !important;
+  margin: 18px 0 !important;
+}
+
+.aboutHeroText p {
+  color: #ddd !important;
+  font-size: 18px !important;
+  line-height: 1.8 !important;
+  max-width: 620px !important;
+}
+
+.aboutHeroBtns {
+  display: flex !important;
+  gap: 14px !important;
+  margin-top: 30px !important;
+  flex-wrap: wrap !important;
+}
+
+.aboutPrimaryBtn,
+.aboutSecondaryBtn {
+  border-radius: 999px !important;
+  padding: 14px 26px !important;
+  text-decoration: none !important;
+  font-weight: 900 !important;
+  display: inline-flex !important;
+}
+
+.aboutPrimaryBtn {
+  background: #fff !important;
+  color: #111 !important;
+}
+
+.aboutSecondaryBtn {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+
+.aboutHeroCard {
+  height: 430px !important;
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.aboutPhoneMockup {
+  width: 230px !important;
+  height: 380px !important;
+  border-radius: 38px !important;
+  background: linear-gradient(160deg, #f8f7f4, #d8d2c6) !important;
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.45) !important;
+  padding: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  color: #111 !important;
+  transform: rotate(-8deg) !important;
+  animation: floatPhone 3s ease-in-out infinite !important;
+}
+
+.aboutPhoneCamera {
+  position: absolute !important;
+  top: 24px !important;
+  left: 24px !important;
+  width: 62px !important;
+  height: 62px !important;
+  border-radius: 22px !important;
+  background: #111 !important;
+}
+
+.aboutPhoneMockup h3 {
+  letter-spacing: 2px !important;
+  margin: 0 !important;
+}
+
+.aboutPhoneMockup p {
+  color: #555 !important;
+  margin-top: 6px !important;
+}
+
+.aboutFloatingCard {
+  position: absolute !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #111 !important;
+  padding: 16px 18px !important;
+  border-radius: 20px !important;
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center !important;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.25) !important;
+}
+
+.cardOne {
+  top: 44px !important;
+  left: 0 !important;
+}
+
+.cardTwo {
+  right: 0 !important;
+  bottom: 48px !important;
+}
+
+@keyframes floatPhone {
+  0%, 100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(-8deg);
+  }
+}
+
+.aboutStats {
+  margin-top: 28px !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 18px !important;
+}
+
+.aboutStats div {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 24px !important;
+  padding: 26px !important;
+  text-align: center !important;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.04) !important;
+}
+
+.aboutStats h2 {
+  margin: 0 0 6px !important;
+  font-size: 32px !important;
+}
+
+.aboutStats p {
+  color: #666 !important;
+  margin: 0 !important;
+  font-weight: 700 !important;
+}
+
+.aboutStory {
+  margin-top: 36px !important;
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 30px !important;
+  padding: 42px !important;
+  display: grid !important;
+  grid-template-columns: 0.8fr 1fr !important;
+  gap: 40px !important;
+}
+
+.aboutStory h2,
+.aboutValueLeft h2,
+.aboutCTA h2 {
+  font-size: 42px !important;
+  line-height: 1.1 !important;
+  margin: 12px 0 !important;
+}
+
+.aboutStory p,
+.aboutValueLeft p,
+.aboutCTA p {
+  color: #555 !important;
+  line-height: 1.8 !important;
+  font-size: 17px !important;
+}
+
+.aboutPremiumGrid {
+  margin-top: 28px !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 20px !important;
+}
+
+.aboutPremiumCard {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 26px !important;
+  padding: 28px !important;
+  transition: 0.3s ease !important;
+}
+
+.aboutPremiumCard:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.08) !important;
+}
+
+.aboutPremiumCard h3 {
+  margin: 18px 0 10px !important;
+  font-size: 21px !important;
+}
+
+.aboutPremiumCard p {
+  color: #666 !important;
+  line-height: 1.7 !important;
+}
+
+.aboutValues {
+  margin-top: 28px !important;
+  background: #111 !important;
+  color: #fff !important;
+  border-radius: 30px !important;
+  padding: 46px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 0.8fr !important;
+  gap: 36px !important;
+}
+
+.aboutValueLeft p {
+  color: #ddd !important;
+}
+
+.aboutValueList {
+  display: grid !important;
+  gap: 16px !important;
+}
+
+.aboutValueList div {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 20px !important;
+  padding: 20px !important;
+  display: flex !important;
+  gap: 14px !important;
+  align-items: center !important;
+}
+
+.aboutValueList p {
+  margin: 0 !important;
+  font-weight: 800 !important;
+}
+
+.aboutCTA {
+  margin-top: 28px !important;
+  text-align: center !important;
+  background: linear-gradient(135deg, #ece9e2, #fff) !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 30px !important;
+  padding: 50px 24px !important;
+}
+
+.aboutCTA .aboutPrimaryBtn {
+  margin-top: 18px !important;
+  background: #111 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 950px) {
+  .aboutHero,
+  .aboutStory,
+  .aboutValues {
+    grid-template-columns: 1fr !important;
+  }
+
+  .aboutStats,
+  .aboutPremiumGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .aboutHeroText h1 {
+    font-size: 42px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .aboutHero {
+    padding: 42px 24px !important;
+  }
+
+  .aboutStats,
+  .aboutPremiumGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .aboutHeroCard {
+    height: 360px !important;
+  }
+}

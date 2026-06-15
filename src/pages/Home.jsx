@@ -1,17 +1,9 @@
 import { useEffect, useState } from "react";
-import { Search, ShoppingBag, Heart, User, LogOut } from "lucide-react";
+import { Search, ShoppingBag, Heart, User, LogOut, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
-function Home({
-  user,
-  logout,
-  products,
-  cart,
-  wishlist,
-  addToCart,
-  toggleWishlist,
-}) {
+function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlist }) {
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [search, setSearch] = useState("");
   const [history, setHistory] = useState([]);
@@ -19,13 +11,8 @@ function Home({
   useEffect(() => {
     const decreaseHandler = (e) => {
       const cartData = JSON.parse(localStorage.getItem("veltrixx_cart")) || [];
-
       const updated = cartData
-        .map((item) =>
-          (item._id || item.id) === e.detail
-            ? { ...item, qty: item.qty - 1 }
-            : item
-        )
+        .map((item) => (item._id || item.id) === e.detail ? { ...item, qty: item.qty - 1 } : item)
         .filter((item) => item.qty > 0);
 
       localStorage.setItem("veltrixx_cart", JSON.stringify(updated));
@@ -36,20 +23,10 @@ function Home({
     return () => window.removeEventListener("decrease-cart", decreaseHandler);
   }, []);
 
-  const brands = [
-    "All",
-    "iPhone",
-    "Samsung",
-    "OnePlus",
-    "Vivo",
-    "Oppo",
-    "Realme",
-    "Redmi",
-  ];
+  const brands = ["All", "iPhone", "Samsung", "OnePlus", "Vivo", "Oppo", "Realme", "Redmi"];
 
   const handleSearch = (value) => {
     setSearch(value);
-
     const cleanValue = value.trim();
 
     if (cleanValue.length > 1 && !history.includes(cleanValue)) {
@@ -86,11 +63,8 @@ function Home({
           </Link>
 
           <div className="homeSearchArea">
-            <span className="topTag">Premium • Custom • Protection</span>
-
             <div className="homeSearchBox">
               <Search size={18} />
-
               <input
                 placeholder="Search iPhone, Samsung, Carbon..."
                 value={search}
@@ -133,136 +107,87 @@ function Home({
         </div>
       </nav>
 
-      <section className="luxuryHero">
-  <div className="luxuryHeroContent">
+      <section className="veltrixxHero">
+        <div className="heroLeft">
+          <span className="heroMiniText">NEW PREMIUM COLLECTION</span>
 
-    <div className="luxuryLeft">
-
-      <span className="heroBadge">
-        PREMIUM CUSTOM PHONE CASES
-      </span>
-
-      <h1>
-        Protect Your Phone <br />
-        With Style.
-      </h1>
-
-      <p>
-        Premium quality custom phone cases designed for
-        protection, durability and modern aesthetics.
-      </p>
-
-      <div className="heroButtons">
-        <a href="#products" className="heroPrimaryBtn">
-          Shop Collection
-        </a>
-
-        <Link to="/contact" className="heroSecondaryBtn">
-          Custom Order
-        </Link>
-      </div>
-
-      <div className="heroStats">
-
-        <div>
-          <h3>500+</h3>
-          <p>Happy Customers</p>
-        </div>
-
-        <div>
-          <h3>4.8★</h3>
-          <p>Average Rating</p>
-        </div>
-
-        <div>
-          <h3>India</h3>
-          <p>Wide Delivery</p>
-        </div>
-
-      </div>
-
-    </div>
-
-    <div className="luxuryRight">
-
-      <img
-        src="https://images.unsplash.com/photo-1601593346740-925612772716?w=1000"
-        alt="Phone Case"
-      />
-
-    </div>
-
-  </div>
-</section>
-
-      <section className="premiumHero">
-        <div className="premiumHeroText">
-          <span className="heroTag">THE VELTRIXX COLLECTION</span>
-
-          <h1>Premium Phone Cases For Every Style</h1>
+          <h1>
+            Custom Phone Cases <br />
+            Made For Your Style.
+          </h1>
 
           <p>
-            Protect. Personalize. Stand Out. Discover stylish and durable phone
-            cases crafted for your everyday lifestyle.
+            Premium, stylish and protective phone cases crafted for modern
+            smartphone lovers.
           </p>
 
-          <div className="heroButtons">
-            <a href="#products" className="primaryHeroBtn">
-              Shop Collection
+          <div className="heroActionRow">
+            <a href="#products" className="blackHeroBtn">
+              Shop Now <ArrowRight size={18} />
             </a>
 
-            <Link to="/contact" className="secondaryHeroBtn">
-              Custom Order
+            <Link to="/contact" className="lightHeroBtn">
+              Customize Case
             </Link>
           </div>
 
-          <div className="heroStats">
+          <div className="heroFeatureRow">
             <div>
               <b>500+</b>
               <span>Happy Customers</span>
             </div>
-
+            <div>
+              <b>4.8★</b>
+              <span>Customer Rating</span>
+            </div>
             <div>
               <b>Pan India</b>
               <span>Delivery</span>
             </div>
-
-            <div>
-              <b>Premium</b>
-              <span>Protection</span>
-            </div>
           </div>
         </div>
 
-        <div className="premiumHeroVisual">
-          <div className="phoneShowcase">
-            <div className="phoneSlide phoneSlide1"></div>
-            <div className="phoneSlide phoneSlide2"></div>
-            <div className="phoneSlide phoneSlide3"></div>
-            <div className="phoneSlide phoneSlide4"></div>
+        <div className="heroRight">
+          <div className="heroProductFrame">
+            <div className="heroPhoneCard cardA"></div>
+            <div className="heroPhoneCard cardB"></div>
+            <div className="heroPhoneCard cardC"></div>
           </div>
         </div>
       </section>
 
-      <section className="brands">
-        {brands.map((brand) => (
-          <button
-            key={brand}
-            className={selectedBrand === brand ? "activeBrand" : ""}
-            onClick={() => setSelectedBrand(brand)}
-          >
-            {brand}
-          </button>
-        ))}
+      <section className="premiumHighlights">
+        <div>🚚 Fast Delivery</div>
+        <div>🎨 Custom Designs</div>
+        <div>🛡 Premium Protection</div>
+        <div>💬 WhatsApp Support</div>
+      </section>
+
+      <section className="brandFilterSection">
+        <div className="brandFilterHeader">
+          <span>SHOP BY BRAND</span>
+          <h2>Find your perfect case</h2>
+        </div>
+
+        <div className="brands">
+          {brands.map((brand) => (
+            <button
+              key={brand}
+              className={selectedBrand === brand ? "activeBrand" : ""}
+              onClick={() => setSelectedBrand(brand)}
+            >
+              {brand}
+            </button>
+          ))}
+        </div>
       </section>
 
       <section className="shopSection" id="products">
         <div className="sectionHead">
           <p>THE COLLECTION</p>
-
           <h2>
             {selectedBrand === "All"
-              ? "All Phone Cases"
+              ? "Premium Phone Cases"
               : `${selectedBrand} Cases`}
           </h2>
         </div>

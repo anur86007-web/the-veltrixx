@@ -1,14 +1,70 @@
 const express = require("express");
 const Order = require("../models/Order");
+const Coupon = require("../models/Coupon");
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 router.post("/", protect, async (req, res) => {
   try {
+    const { couponCode, subtotal } = req.body;
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({
+        code: couponCode.toUpperCase(),
+      });
+
+      if (!coupon) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid coupon code",
+        });
+      }
+
+      if (!coupon.isActive) {
+        return res.status(400).json({
+          success: false,
+          message: "Coupon is inactive",
+        });
+      }
+
+      if (new Date(coupon.expiryDate) < new Date()) {
+        return res.status(400).json({
+          success: false,
+          message: "Coupon expired",
+        });
+      }
+
+      if (coupon.usageLimit > 0 && coupon.usedCount >= coupon.usageLimit) {
+        return res.status(400).json({
+          success: false,
+          message: "Coupon usage limit reached",
+        });
+      }
+
+      const alreadyUsed = coupon.usedBy.some(
+        (userId) => userId.toString() === req.user._id.toString()
+      );
+
+      if (alreadyUsed) {
+        return res.status(400).json({
+          success: false,
+          message: "You have already used this coupon",
+        });
+      }
+
+      if (Number(subtotal) < Number(coupon.minOrderAmount)) {
+        return res.status(400).json({
+          success: false,
+          message: `Minimum order amount should be ₹${coupon.minOrderAmount}`,
+        });
+      }
+    }
+
     const order = await Order.create({
       user: req.user._id,
       ...req.body,
+      couponCode: couponCode || "",
       orderStatus: req.body.orderStatus || "Order Placed",
       statusHistory: [
         {
@@ -17,6 +73,19 @@ router.post("/", protect, async (req, res) => {
         },
       ],
     });
+
+    if (couponCode) {
+      await Coupon.findOneAndUpdate(
+        {
+          code: couponCode.toUpperCase(),
+          usedBy: { $ne: req.user._id },
+        },
+        {
+          $inc: { usedCount: 1 },
+          $addToSet: { usedBy: req.user._id },
+        }
+      );
+    }
 
     res.status(201).json({
       success: true,
@@ -119,6 +188,7 @@ router.delete("/admin/delete/:id", protect, async (req, res) => {
     });
   }
 });
+
 router.put("/cancel/:id", protect, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -130,11 +200,7 @@ router.put("/cancel/:id", protect, async (req, res) => {
       });
     }
 
-    const allowedStatuses = [
-      "Order Placed",
-      "Processing",
-      "Packed",
-    ];
+    const allowedStatuses = ["Order Placed", "Processing", "Packed"];
 
     if (!allowedStatuses.includes(order.orderStatus)) {
       return res.status(400).json({

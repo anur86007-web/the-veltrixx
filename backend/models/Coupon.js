@@ -34,6 +34,24 @@ const couponSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
+    // 0 ka matlab unlimited users
+    usageLimit: {
+      type: Number,
+      default: 0,
+    },
+
+    usedCount: {
+      type: Number,
+      default: 0,
+    },
+
+    usedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

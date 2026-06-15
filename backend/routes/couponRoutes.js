@@ -1,5 +1,6 @@
 const express = require("express");
 const Coupon = require("../models/Coupon");
+const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.post("/create", async (req, res) => {
       maxDiscountAmount,
       expiryDate,
       isActive,
+      usageLimit,
     } = req.body;
 
     if (!code || !discountValue || !expiryDate) {
@@ -41,6 +43,9 @@ router.post("/create", async (req, res) => {
       maxDiscountAmount: Number(maxDiscountAmount) || 0,
       expiryDate,
       isActive: isActive !== undefined ? isActive : true,
+      usageLimit: Number(usageLimit) || 0,
+      usedCount: 0,
+      usedBy: [],
     });
 
     res.status(201).json({
@@ -74,7 +79,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/apply", async (req, res) => {
+router.post("/apply", protect, async (req, res) => {
   try {
     const { code, subtotal } = req.body;
 
@@ -107,6 +112,24 @@ router.post("/apply", async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Coupon expired",
+      });
+    }
+
+    if (coupon.usageLimit > 0 && coupon.usedCount >= coupon.usageLimit) {
+      return res.status(400).json({
+        success: false,
+        message: "Coupon usage limit reached",
+      });
+    }
+
+    const alreadyUsed = coupon.usedBy.some(
+      (userId) => userId.toString() === req.user._id.toString()
+    );
+
+    if (alreadyUsed) {
+      return res.status(400).json({
+        success: false,
+        message: "You have already used this coupon",
       });
     }
 

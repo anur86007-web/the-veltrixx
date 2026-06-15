@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders";
 const PAYMENT_API = "https://the-veltrixx-backend.onrender.com/api/payment";
+const COUPON_API = "https://the-veltrixx-backend.onrender.com/api/coupons";
 
 function Payment({ cart, placeOrder }) {
   const navigate = useNavigate();
@@ -116,8 +117,42 @@ function Payment({ cart, placeOrder }) {
     return true;
   };
 
+  const recheckCouponBeforeOrder = async () => {
+    if (!couponData?.code) return true;
+
+    const token = localStorage.getItem("veltrixx_token");
+
+    const res = await fetch(`${COUPON_API}/apply`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        code: couponData.code,
+        subtotal,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert(data.message || "Coupon is not valid anymore");
+      localStorage.removeItem("veltrixx_coupon");
+      return false;
+    }
+
+    return true;
+  };
+
   const saveOrder = async (paymentStatus, method, razorpayData = {}) => {
     const token = localStorage.getItem("veltrixx_token");
+
+    const isCouponValid = await recheckCouponBeforeOrder();
+
+    if (!isCouponValid) {
+      return null;
+    }
 
     const orderData = {
       items: cart.map((item) => ({

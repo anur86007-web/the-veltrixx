@@ -3110,3 +3110,925 @@ button, a {
 .cartProductNameLink:hover {
   text-decoration: underline;
 }
+.cartPage {
+  background: #f8f7f4 !important;
+  min-height: 100vh !important;
+  padding: 42px 20px 80px !important;
+}
+
+.cartPageInner {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+}
+
+.cartHeader {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: end !important;
+  margin: 34px 0 !important;
+}
+
+.cartHeader p {
+  color: #7c7266 !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  margin: 0 0 8px !important;
+  font-size: 13px !important;
+}
+
+.cartHeader h1 {
+  font-size: 52px !important;
+  margin: 0 !important;
+  color: #111 !important;
+}
+
+.cartHeader span {
+  background: #fff !important;
+  border: 1px solid #e5e2da !important;
+  padding: 11px 18px !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+}
+
+.cartMainLayout {
+  display: grid !important;
+  grid-template-columns: 1fr 390px !important;
+  gap: 30px !important;
+  align-items: flex-start !important;
+}
+
+.cartItemsArea {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 18px !important;
+}
+
+.cartProductCard {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 28px !important;
+  padding: 20px !important;
+  display: grid !important;
+  grid-template-columns: 140px 1fr auto auto !important;
+  gap: 22px !important;
+  align-items: center !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.045) !important;
+}
+
+.cartProductImageLink {
+  width: 140px !important;
+  height: 140px !important;
+  display: block !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  background: #f2f2f2 !important;
+}
+
+.cartProductImageLink img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.cartProductNameLink {
+  text-decoration: none !important;
+  color: #111 !important;
+}
+
+.cartProductNameLink h3 {
+  margin: 0 0 8px !important;
+  font-size: 23px !important;
+}
+
+.cartProductNameLink:hover h3 {
+  text-decoration: underline !important;
+}
+
+.cartProductInfo p {
+  margin: 5px 0 !important;
+  color: #555 !important;
+}
+
+.cartPriceInfo {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  margin-top: 8px !important;
+}
+
+.cartPriceInfo strong {
+  font-size: 19px !important;
+  color: #111 !important;
+}
+
+.cartPriceInfo small {
+  color: #666 !important;
+}
+
+.cartQtyControl {
+  background: #111 !important;
+  border-radius: 999px !important;
+  padding: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  color: #fff !important;
+}
+
+.cartQtyControl button {
+  width: 32px !important;
+  height: 32px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  color: #111 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+.cartQtyControl span {
+  min-width: 18px !important;
+  text-align: center !important;
+  font-weight: 900 !important;
+}
+
+.cartDeleteBtn {
+  width: 44px !important;
+  height: 44px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #f5f5f5 !important;
+  color: #111 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+.cartDeleteBtn:hover {
+  background: #111 !important;
+  color: #fff !important;
+}
+
+.cartSummaryCard {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 28px !important;
+  padding: 28px !important;
+  position: sticky !important;
+  top: 100px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.055) !important;
+}
+
+.cartSummaryCard h2 {
+  margin: 0 0 22px !important;
+  font-size: 30px !important;
+}
+
+.cartCouponRow {
+  display: flex !important;
+  gap: 10px !important;
+  margin-bottom: 14px !important;
+}
+
+.cartCouponRow input {
+  flex: 1 !important;
+  height: 48px !important;
+  border: 1px solid #ddd8ce !important;
+  border-radius: 16px !important;
+  padding: 0 14px !important;
+  outline: none !important;
+}
+
+.cartCouponRow button {
+  border: none !important;
+  background: #111 !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 0 20px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+}
+
+.cartAppliedCoupon {
+  background: #eef8f0 !important;
+  border-radius: 16px !important;
+  padding: 12px 14px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  align-items: center !important;
+  margin-bottom: 12px !important;
+}
+
+.cartAppliedCoupon button {
+  border: none !important;
+  background: transparent !important;
+  color: #d33 !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+}
+
+.cartSummaryDivider {
+  height: 1px !important;
+  background: #e5e2da !important;
+  margin: 18px 0 !important;
+}
+
+.cartSummaryRow {
+  display: flex !important;
+  justify-content: space-between !important;
+  margin: 14px 0 !important;
+  font-size: 17px !important;
+}
+
+.cartGrandTotal {
+  font-size: 24px !important;
+}
+
+.cartShippingNote {
+  background: #f8f7f4 !important;
+  border-radius: 16px !important;
+  padding: 12px !important;
+  color: #666 !important;
+  font-size: 14px !important;
+}
+
+.cartPaymentBtn {
+  width: 100% !important;
+  border: none !important;
+  background: #111 !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 16px !important;
+  font-weight: 900 !important;
+  margin-top: 14px !important;
+  cursor: pointer !important;
+}
+
+@media (max-width: 950px) {
+  .cartMainLayout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cartSummaryCard {
+    position: static !important;
+  }
+
+  .cartProductCard {
+    grid-template-columns: 110px 1fr !important;
+  }
+
+  .cartProductImageLink {
+    width: 110px !important;
+    height: 110px !important;
+  }
+
+  .cartQtyControl,
+  .cartDeleteBtn {
+    grid-column: 2 !important;
+    justify-self: start !important;
+  }
+}
+.wishlistPage {
+  min-height: 100vh !important;
+  background: #f8f7f4 !important;
+  padding: 42px 20px 80px !important;
+}
+
+.wishlistInner {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+}
+
+.wishlistHeader {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: end !important;
+  margin: 34px 0 !important;
+}
+
+.wishlistHeader p {
+  color: #7c7266 !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  margin: 0 0 8px !important;
+  font-size: 13px !important;
+}
+
+.wishlistHeader h1 {
+  font-size: 52px !important;
+  margin: 0 !important;
+  color: #111 !important;
+}
+
+.wishlistHeader span {
+  background: #fff !important;
+  border: 1px solid #e5e2da !important;
+  padding: 11px 18px !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+}
+
+.wishlistGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 24px !important;
+}
+
+.wishlistCard {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 28px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.045) !important;
+  transition: 0.25s ease !important;
+}
+
+.wishlistCard:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08) !important;
+}
+
+.wishlistImageLink {
+  display: block !important;
+  width: 100% !important;
+  height: 260px !important;
+  background: #f2f2f2 !important;
+  overflow: hidden !important;
+}
+
+.wishlistImageLink img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: 0.3s ease !important;
+}
+
+.wishlistCard:hover .wishlistImageLink img {
+  transform: scale(1.05) !important;
+}
+
+.wishlistHeartBtn {
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 50% !important;
+  border: 1px solid #e9e6df !important;
+  background: #fff !important;
+  color: #e53935 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+.wishlistInfo {
+  padding: 20px !important;
+}
+
+.wishlistBrand {
+  color: #777 !important;
+  font-size: 14px !important;
+  margin: 0 0 8px !important;
+}
+
+.wishlistNameLink {
+  text-decoration: none !important;
+  color: #111 !important;
+}
+
+.wishlistNameLink h3 {
+  font-size: 22px !important;
+  margin: 0 0 16px !important;
+}
+
+.wishlistNameLink:hover h3 {
+  text-decoration: underline !important;
+}
+
+.wishlistBottom {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  align-items: center !important;
+}
+
+.wishlistBottom strong {
+  font-size: 22px !important;
+}
+
+.wishlistViewBtn {
+  background: #111 !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  border-radius: 999px !important;
+  padding: 11px 15px !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.emptyWishlistBox {
+  max-width: 520px !important;
+  margin: 90px auto !important;
+  text-align: center !important;
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 30px !important;
+  padding: 50px 28px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.045) !important;
+}
+
+.emptyWishlistBox h1 {
+  margin: 18px 0 10px !important;
+  font-size: 34px !important;
+}
+
+.emptyWishlistBox p {
+  color: #666 !important;
+}
+
+.emptyWishlistBox button {
+  margin-top: 20px !important;
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 14px 24px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+}
+.premiumProductCard {
+  overflow: hidden !important;
+  transition: 0.28s ease !important;
+}
+
+.productImageWrap {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 24px 24px 0 0 !important;
+}
+
+.productImage {
+  display: block !important;
+  height: 270px !important;
+  background: #f4f4f4 !important;
+  overflow: hidden !important;
+}
+
+.productImage img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: 0.35s ease !important;
+}
+
+.premiumProductCard:hover .productImage img {
+  transform: scale(1.06) !important;
+}
+
+.productTitleLink {
+  color: #111 !important;
+  text-decoration: none !important;
+}
+
+.productTitleLink:hover h3 {
+  text-decoration: underline !important;
+}
+
+.selectedMeta {
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin: 10px 0 !important;
+}
+
+.selectedMeta span {
+  background: #f8f7f4 !important;
+  color: #555 !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.modelSelect {
+  border: 1px solid #ddd8ce !important;
+  border-radius: 999px !important;
+  padding: 8px 12px !important;
+  background: #fff !important;
+  max-width: 150px !important;
+  outline: none !important;
+}
+
+.cardColorPreview {
+  display: flex !important;
+  gap: 9px !important;
+  margin: 12px 0 !important;
+}
+
+.cardColorDot {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  border: 2px solid #e5e2da !important;
+  background: var(--dot-color) !important;
+  cursor: pointer !important;
+}
+
+.activeColorDot {
+  outline: 2px solid #111 !important;
+  outline-offset: 3px !important;
+}
+
+.quickViewBtn {
+  width: 100% !important;
+  margin-top: 14px !important;
+  border: 1px solid #e5e2da !important;
+  background: #fff !important;
+  color: #111 !important;
+  border-radius: 999px !important;
+  padding: 12px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.quickViewBtn:hover {
+  background: #111 !important;
+  color: #fff !important;
+}
+
+.priceRow small {
+  display: block !important;
+  color: #777 !important;
+  margin-top: 3px !important;
+  font-size: 12px !important;
+}
+
+.disabledCartBtn {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+}
+
+.quickModal {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 20px !important;
+}
+
+.premiumQuickModal {
+  max-width: 520px !important;
+  width: 100% !important;
+  background: #fff !important;
+  border-radius: 28px !important;
+  padding: 24px !important;
+  position: relative !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25) !important;
+}
+
+.premiumQuickModal img {
+  width: 100% !important;
+  height: 300px !important;
+  object-fit: cover !important;
+  border-radius: 22px !important;
+  background: #f4f4f4 !important;
+}
+
+.closeModal {
+  position: absolute !important;
+  top: 18px !important;
+  right: 18px !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: #111 !important;
+  color: #fff !important;
+  cursor: pointer !important;
+}
+
+.quickModalActions {
+  display: flex !important;
+  gap: 12px !important;
+  margin-top: 18px !important;
+}
+
+.viewDetailsBtn,
+.modalCartBtn {
+  flex: 1 !important;
+  border-radius: 999px !important;
+  padding: 13px !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+
+.viewDetailsBtn {
+  background: #f8f7f4 !important;
+  color: #111 !important;
+  border: 1px solid #e5e2da !important;
+}
+
+.modalCartBtn {
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+}
+.ordersPage {
+  min-height: 100vh !important;
+  background: #f8f7f4 !important;
+  padding: 42px 20px 80px !important;
+}
+
+.ordersInner {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+}
+
+.ordersHeader {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: end !important;
+  margin: 34px 0 !important;
+}
+
+.ordersHeader p {
+  color: #7c7266 !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  margin: 0 0 8px !important;
+  font-size: 13px !important;
+}
+
+.ordersHeader h1 {
+  font-size: 52px !important;
+  margin: 0 !important;
+  color: #111 !important;
+}
+
+.ordersHeader span {
+  background: #fff !important;
+  border: 1px solid #e5e2da !important;
+  padding: 11px 18px !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+}
+
+.ordersList {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 28px !important;
+}
+
+.premiumOrderCard {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 30px !important;
+  padding: 28px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.045) !important;
+}
+
+.premiumOrderTop {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: start !important;
+  gap: 20px !important;
+  margin-bottom: 24px !important;
+}
+
+.premiumOrderTop p {
+  color: #7c7266 !important;
+  font-weight: 800 !important;
+  margin: 0 0 6px !important;
+}
+
+.premiumOrderTop h3 {
+  margin: 0 !important;
+  font-size: 22px !important;
+}
+
+.orderStatusPill,
+.cancelStatusPill {
+  border-radius: 999px !important;
+  padding: 11px 16px !important;
+  font-weight: 900 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.orderStatusPill {
+  background: #eef8f0 !important;
+  color: #1b7f3a !important;
+}
+
+.cancelStatusPill {
+  background: #fdecec !important;
+  color: #d93025 !important;
+}
+
+.premiumTimelineBox {
+  background: #f8f7f4 !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 24px !important;
+  padding: 22px !important;
+  margin-bottom: 24px !important;
+}
+
+.timelineTitle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-bottom: 18px !important;
+}
+
+.timelineTitle h3 {
+  margin: 0 !important;
+}
+
+.premiumTimeline {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  gap: 10px !important;
+}
+
+.premiumTimelineStep {
+  text-align: center !important;
+  position: relative !important;
+}
+
+.premiumTimelineCircle {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  margin: 0 auto 8px !important;
+  background: #fff !important;
+  border: 2px solid #ddd8ce !important;
+  color: #777 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 900 !important;
+}
+
+.premiumTimelineStep.completedStep .premiumTimelineCircle {
+  background: #111 !important;
+  border-color: #111 !important;
+  color: #fff !important;
+}
+
+.premiumTimelineStep p {
+  margin: 0 !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #666 !important;
+}
+
+.orderItemsGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+}
+
+.orderItemCard {
+  display: grid !important;
+  grid-template-columns: 90px 1fr !important;
+  gap: 14px !important;
+  align-items: center !important;
+  background: #fafafa !important;
+  border: 1px solid #eee !important;
+  border-radius: 20px !important;
+  padding: 14px !important;
+  color: #111 !important;
+  text-decoration: none !important;
+}
+
+.orderItemCard img {
+  width: 90px !important;
+  height: 90px !important;
+  object-fit: cover !important;
+  border-radius: 16px !important;
+}
+
+.orderItemCard h3 {
+  margin: 0 0 5px !important;
+}
+
+.orderItemCard p {
+  margin: 4px 0 !important;
+  color: #666 !important;
+}
+
+.orderInfoGrid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 18px !important;
+}
+
+.orderAddressBox,
+.orderPaymentBox,
+.premiumStatusHistory {
+  background: #fafafa !important;
+  border: 1px solid #eee !important;
+  border-radius: 22px !important;
+  padding: 20px !important;
+}
+
+.orderAddressBox h3,
+.orderPaymentBox h3,
+.premiumStatusHistory h3 {
+  margin-top: 0 !important;
+}
+
+.orderPaymentBox h2 {
+  margin-bottom: 0 !important;
+}
+
+.cancelTimeline {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  background: #fdecec !important;
+  color: #d93025 !important;
+  border-radius: 22px !important;
+  padding: 20px !important;
+  margin-bottom: 24px !important;
+}
+
+.cancelTimeline h3,
+.cancelTimeline p {
+  margin: 0 !important;
+}
+
+.cancelOrderBtn {
+  margin-top: 22px !important;
+  border: none !important;
+  background: #d93025 !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 13px 22px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+}
+
+.emptyOrdersBox {
+  max-width: 520px !important;
+  margin: 90px auto !important;
+  text-align: center !important;
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 30px !important;
+  padding: 50px 28px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.045) !important;
+}
+
+.emptyOrdersBox button {
+  margin-top: 20px !important;
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 14px 24px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+}
+
+@media (max-width: 900px) {
+  .premiumTimeline {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .orderInfoGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .premiumOrderTop {
+    flex-direction: column !important;
+  }
+}

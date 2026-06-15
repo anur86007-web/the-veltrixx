@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
+import { Routes, Route, useNavigate, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Home from "./pages/Home";
@@ -46,6 +46,7 @@ function AdminProtectedRoute({ user, children }) {
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [user, setUser] = useState(
     () => JSON.parse(localStorage.getItem("veltrixx_user")) || null
@@ -205,6 +206,7 @@ function App() {
   const placeOrder = (order) => {
     setOrders([...orders, order]);
     setCart([]);
+    localStorage.removeItem("veltrixx_coupon");
   };
 
   const logout = () => {
@@ -214,6 +216,10 @@ function App() {
     showToast("Logged out");
     navigate("/");
   };
+
+  const hideFloatingCartRoutes = ["/cart", "/payment"];
+  const showFloatingCart =
+    cart.length > 0 && !hideFloatingCartRoutes.includes(location.pathname);
 
   return (
     <>
@@ -236,6 +242,10 @@ function App() {
             />
           }
         />
+
+        <Route path="/about" element={<About />} />
+
+        <Route path="/contact" element={<Contact />} />
 
         <Route
           path="/product/:id"
@@ -260,8 +270,6 @@ function App() {
             />
           }
         />
-        <Route path="/about" element={<About />} />
-<Route path="/contact" element={<Contact />} />
 
         <Route
           path="/wishlist"
@@ -291,7 +299,7 @@ function App() {
         <Route path="/profile" element={<Profile user={user} />} />
       </Routes>
 
-      {cart.length > 0 && (
+      {showFloatingCart && (
         <Link to="/cart" className="floatingCartBtn">
           Go To Cart ({cart.length})
         </Link>

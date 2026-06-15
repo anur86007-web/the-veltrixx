@@ -177,13 +177,6 @@ function Home({
         </div>
       </section>
 
-      <section className="trustStrip">
-        <span>🚚 Fast Delivery</span>
-        <span>💬 WhatsApp Support</span>
-        <span>🛡 Premium Protection</span>
-        <span>🎨 Custom Designs</span>
-      </section>
-
       <section className="brands">
         {brands.map((brand) => (
           <button

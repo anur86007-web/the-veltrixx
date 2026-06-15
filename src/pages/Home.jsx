@@ -1,18 +1,32 @@
 import { useEffect, useState } from "react";
-import { Search, ShoppingBag, Heart, User, LogOut, ArrowRight } from "lucide-react";
+import {
+  Search,
+  ShoppingBag,
+  Heart,
+  User,
+  LogOut,
+  ArrowRight,
+  Truck,
+  ShieldCheck,
+  Palette,
+  MessageCircle,
+  Star,
+  Users,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
 function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlist }) {
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [search, setSearch] = useState("");
-  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     const decreaseHandler = (e) => {
       const cartData = JSON.parse(localStorage.getItem("veltrixx_cart")) || [];
       const updated = cartData
-        .map((item) => (item._id || item.id) === e.detail ? { ...item, qty: item.qty - 1 } : item)
+        .map((item) =>
+          (item._id || item.id) === e.detail ? { ...item, qty: item.qty - 1 } : item
+        )
         .filter((item) => item.qty > 0);
 
       localStorage.setItem("veltrixx_cart", JSON.stringify(updated));
@@ -24,15 +38,6 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
   }, []);
 
   const brands = ["All", "iPhone", "Samsung", "OnePlus", "Vivo", "Oppo", "Realme", "Redmi"];
-
-  const handleSearch = (value) => {
-    setSearch(value);
-    const cleanValue = value.trim();
-
-    if (cleanValue.length > 1 && !history.includes(cleanValue)) {
-      setHistory([cleanValue, ...history].slice(0, 5));
-    }
-  };
 
   const filteredProducts = products.filter((item) => {
     const searchText = search.toLowerCase().trim();
@@ -48,7 +53,7 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
       item.model?.toLowerCase().includes(searchText) ||
       item.availableModels?.join(" ").toLowerCase().includes(searchText);
 
-    return brandMatch && searchMatch;
+    return brandMatch && searchMatch && item.status !== "draft";
   });
 
   const cartCount = cart.reduce((sum, item) => sum + Number(item.qty || 1), 0);
@@ -68,19 +73,9 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
               <input
                 placeholder="Search iPhone, Samsung, Carbon..."
                 value={search}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-
-            {history.length > 0 && search.length > 0 && (
-              <div className="searchHistory">
-                {history.map((item, index) => (
-                  <button key={index} onClick={() => setSearch(item)}>
-                    {item}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
           <div className="homeNavActions">
@@ -113,7 +108,7 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
 
           <h1>
             Custom Phone Cases <br />
-            Made For Your Style.
+            <span>Made For Your Style.</span>
           </h1>
 
           <p>
@@ -122,25 +117,30 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
           </p>
 
           <div className="heroActionRow">
-            <a href="#products" className="blackHeroBtn">
+            <a href="#products" className="goldHeroBtn">
               Shop Now <ArrowRight size={18} />
             </a>
 
-            <Link to="/contact" className="lightHeroBtn">
+            <Link to="/contact" className="outlineHeroBtn">
               Customize Case
             </Link>
           </div>
 
           <div className="heroFeatureRow">
             <div>
+              <Users size={28} />
               <b>500+</b>
               <span>Happy Customers</span>
             </div>
+
             <div>
+              <Star size={28} />
               <b>4.8★</b>
               <span>Customer Rating</span>
             </div>
+
             <div>
+              <Truck size={30} />
               <b>Pan India</b>
               <span>Delivery</span>
             </div>
@@ -157,10 +157,29 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
       </section>
 
       <section className="premiumHighlights">
-        <div>🚚 Fast Delivery</div>
-        <div>🎨 Custom Designs</div>
-        <div>🛡 Premium Protection</div>
-        <div>💬 WhatsApp Support</div>
+        <div>
+          <Truck size={28} />
+          <b>Fast Delivery</b>
+          <span>Quick & Reliable</span>
+        </div>
+
+        <div>
+          <Palette size={28} />
+          <b>Custom Designs</b>
+          <span>Unique & Trendy</span>
+        </div>
+
+        <div>
+          <ShieldCheck size={28} />
+          <b>Premium Protection</b>
+          <span>Durable & Secure</span>
+        </div>
+
+        <div>
+          <MessageCircle size={28} />
+          <b>WhatsApp Support</b>
+          <span>We're Here to Help</span>
+        </div>
       </section>
 
       <section className="brandFilterSection">

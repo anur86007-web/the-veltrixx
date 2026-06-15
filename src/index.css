@@ -6620,3 +6620,394 @@ body {
     flex-direction: column;
   }
 }
+/* ===== PREMIUM HOME HERO ===== */
+
+.homePremiumNav {
+  background: #fff;
+  padding: 18px 40px;
+  border-bottom: 1px solid #eee;
+}
+
+.homeNavTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.brandArea {
+  text-decoration: none;
+  color: #111;
+}
+
+.brandArea h1 {
+  font-size: 28px;
+  letter-spacing: 3px;
+  margin: 0;
+}
+
+.brandArea p {
+  margin: 3px 0 0;
+  color: #b88a2c;
+  font-weight: 600;
+}
+
+.homeSearchBox {
+  width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.homeSearchBox input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+}
+
+.homeNavActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.homeIconBtn,
+.homeLogoutBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #111;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.homeIconBtn span {
+  position: absolute;
+  top: -7px;
+  right: -4px;
+  background: #d5ad48;
+  color: #111;
+  font-size: 12px;
+  font-weight: 800;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hero */
+
+.veltrixxHero {
+  max-width: 1450px;
+  margin: 24px auto;
+  min-height: 610px;
+  background:
+    radial-gradient(circle at 70% 30%, rgba(212,175,55,0.14), transparent 35%),
+    linear-gradient(135deg, #080808, #191713);
+  border-radius: 28px;
+  padding: 70px 70px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.heroMiniText {
+  color: #d4af37;
+  font-weight: 800;
+  letter-spacing: 4px;
+  font-size: 16px;
+}
+
+.heroLeft h1 {
+  color: #fff;
+  font-size: 66px;
+  line-height: 1.08;
+  margin: 28px 0 20px;
+  font-family: Georgia, serif;
+}
+
+.heroLeft h1 span {
+  color: #d4af37;
+}
+
+.heroLeft p {
+  color: #eee;
+  font-size: 22px;
+  line-height: 1.7;
+  max-width: 570px;
+}
+
+.heroActionRow {
+  display: flex;
+  gap: 18px;
+  margin-top: 35px;
+}
+
+.goldHeroBtn,
+.outlineHeroBtn {
+  text-decoration: none;
+  padding: 17px 34px;
+  border-radius: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.goldHeroBtn {
+  background: linear-gradient(135deg, #c9972e, #efd17a);
+  color: #111;
+}
+
+.outlineHeroBtn {
+  border: 1px solid #d4af37;
+  color: #fff;
+}
+
+.heroFeatureRow {
+  display: flex;
+  gap: 34px;
+  margin-top: 55px;
+}
+
+.heroFeatureRow div {
+  color: #fff;
+  display: grid;
+  gap: 5px;
+}
+
+.heroFeatureRow svg {
+  color: #d4af37;
+}
+
+.heroFeatureRow b {
+  font-size: 22px;
+}
+
+.heroFeatureRow span {
+  color: #ddd;
+  font-size: 14px;
+}
+
+/* Hero images */
+
+.heroRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroProductFrame {
+  position: relative;
+  width: 620px;
+  height: 520px;
+}
+
+.heroPhoneCard {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  border-radius: 34px;
+  box-shadow: 0 35px 70px rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.cardA {
+  width: 280px;
+  height: 430px;
+  left: 40px;
+  top: 55px;
+  transform: rotate(-10deg);
+  background-image: url("/images/hero-case-1.jpg");
+  z-index: 1;
+}
+
+.cardB {
+  width: 310px;
+  height: 470px;
+  left: 190px;
+  top: 15px;
+  transform: rotate(3deg);
+  background-image: url("/images/hero-case-2.jpg");
+  z-index: 3;
+}
+
+.cardC {
+  width: 270px;
+  height: 420px;
+  right: 0;
+  top: 75px;
+  transform: rotate(12deg);
+  background-image: url("/images/hero-case-3.jpg");
+  z-index: 2;
+}
+
+/* Highlights */
+
+.premiumHighlights {
+  max-width: 1450px;
+  margin: 25px auto;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 22px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.06);
+}
+
+.premiumHighlights div {
+  display: grid;
+  gap: 5px;
+  justify-items: center;
+  text-align: center;
+  border-right: 1px solid #eee;
+}
+
+.premiumHighlights div:last-child {
+  border-right: none;
+}
+
+.premiumHighlights svg {
+  color: #111;
+}
+
+.premiumHighlights b {
+  font-size: 18px;
+}
+
+.premiumHighlights span {
+  color: #777;
+}
+
+/* Brand section */
+
+.brandFilterSection {
+  max-width: 1450px;
+  margin: 25px auto;
+  background: linear-gradient(135deg, #fff, #f7f1e7);
+  border-radius: 24px;
+  padding: 45px;
+}
+
+.brandFilterHeader span {
+  color: #c9972e;
+  font-weight: 800;
+}
+
+.brandFilterHeader h2 {
+  font-size: 34px;
+  margin: 8px 0 25px;
+  font-family: Georgia, serif;
+}
+
+.brands {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brands button {
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 14px 30px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.brands .activeBrand {
+  background: #111;
+  color: #fff;
+}
+
+/* Mobile */
+
+@media (max-width: 900px) {
+  .homeNavTop {
+    flex-direction: column;
+  }
+
+  .homeSearchBox {
+    width: 100%;
+  }
+
+  .veltrixxHero {
+    grid-template-columns: 1fr;
+    padding: 38px 24px;
+    border-radius: 22px;
+    margin: 15px;
+  }
+
+  .heroLeft h1 {
+    font-size: 42px;
+  }
+
+  .heroLeft p {
+    font-size: 17px;
+  }
+
+  .heroActionRow {
+    flex-direction: column;
+  }
+
+  .heroFeatureRow {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .heroProductFrame {
+    width: 100%;
+    height: 420px;
+  }
+
+  .cardA {
+    width: 190px;
+    height: 300px;
+    left: 0;
+    top: 70px;
+  }
+
+  .cardB {
+    width: 220px;
+    height: 330px;
+    left: 80px;
+    top: 25px;
+  }
+
+  .cardC {
+    width: 185px;
+    height: 290px;
+    right: 0;
+    top: 90px;
+  }
+
+  .premiumHighlights {
+    grid-template-columns: 1fr 1fr;
+    margin: 15px;
+  }
+
+  .premiumHighlights div {
+    border-right: none;
+  }
+
+  .brandFilterSection {
+    margin: 15px;
+    padding: 25px;
+  }
+}

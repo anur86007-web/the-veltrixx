@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ShoppingBag, Star, ShieldCheck, Truck, RotateCcw } from "lucide-react";
 
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
@@ -70,7 +71,6 @@ function ProductDetails({ products, addToCart }) {
   useEffect(() => {
     if (product) {
       const firstColor = product.colorOptions?.[0] || null;
-
       setSelectedColor(firstColor);
       setSelectedImage(firstColor?.image || product.image || "");
       setSelectedModel(product.availableModels?.[0] || product.model || "");
@@ -112,12 +112,7 @@ function ProductDetails({ products, addToCart }) {
       }
 
       alert("Review added successfully");
-
-      setReviewForm({
-        rating: 5,
-        comment: "",
-      });
-
+      setReviewForm({ rating: 5, comment: "" });
       fetchReviews();
     } catch (error) {
       console.log("Review submit error:", error);
@@ -145,17 +140,21 @@ function ProductDetails({ products, addToCart }) {
 
   if (productLoading) {
     return (
-      <div className="pageContainer">
-        <h1>Loading product...</h1>
+      <div className="productDetailsPage">
+        <div className="detailsLoadingBox">
+          <h1>Loading product...</h1>
+        </div>
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="pageContainer">
-        <h1>Product not found</h1>
-        <Link to="/">Back to home</Link>
+      <div className="productDetailsPage">
+        <div className="detailsLoadingBox">
+          <h1>Product not found</h1>
+          <Link to="/">Back to home</Link>
+        </div>
       </div>
     );
   }
@@ -177,145 +176,200 @@ function ProductDetails({ products, addToCart }) {
         ).toFixed(1)
       : "No ratings";
 
+  const galleryImages = [
+    product.image,
+    ...(product.colorOptions?.map((color) => color.image).filter(Boolean) ||
+      []),
+  ].filter(Boolean);
+
   return (
-    <div className="pageContainer">
-      <Link to="/" className="backLink">
-        ← Back to shop
-      </Link>
+    <div className="productDetailsPage">
+      <div className="productDetailsInner">
+        <Link to="/" className="backLink">
+          ← Back to shop
+        </Link>
 
-      <div className="productDetailsBox">
-        <div className="detailsImageBox">
-          <img src={mainImage} alt={product.name} />
-        </div>
+        <div className="premiumDetailsGrid">
+          <div className="detailsGallery">
+            <div className="mainDetailsImage">
+              <img src={mainImage} alt={product.name} />
+            </div>
 
-        <div className="detailsInfoBox">
-          <h1>{product.name}</h1>
-
-          <p>
-            {product.brand} • {selectedModel || product.model}
-          </p>
-
-          <h2>₹{product.price}</h2>
-
-          <span
-            className={`detailStockBadge ${stockStatus
-              .replaceAll(" ", "")
-              .toLowerCase()}`}
-          >
-            {stockStatus}
-          </span>
-
-          <p className="productRating">
-            ⭐ {averageRating} ({reviews.length} reviews)
-          </p>
-
-          <p>{product.description || "Premium phone case by THE VELTRIXX."}</p>
-
-          {product.availableModels?.length > 0 && (
-            <div className="productOptionsBox">
-              <h3>Select Model</h3>
-
-              <div className="modelChips">
-                {product.availableModels.map((model) => (
+            {galleryImages.length > 1 && (
+              <div className="detailsThumbs">
+                {galleryImages.map((img, index) => (
                   <button
-                    key={model}
+                    key={index}
                     type="button"
-                    className={
-                      selectedModel === model
-                        ? "modelChip activeModelChip"
-                        : "modelChip"
-                    }
-                    onClick={() => setSelectedModel(model)}
+                    className={selectedImage === img ? "activeThumb" : ""}
+                    onClick={() => setSelectedImage(img)}
                   >
-                    {model}
+                    <img src={img} alt={`${product.name} ${index + 1}`} />
                   </button>
                 ))}
               </div>
+            )}
+          </div>
+
+          <div className="premiumDetailsInfo">
+            <span className="detailsBrandTag">
+              {product.brand} • {selectedModel || product.model}
+            </span>
+
+            <h1>{product.name}</h1>
+
+            <div className="detailsRatingRow">
+              <span>
+                <Star size={16} fill="black" /> {averageRating}
+              </span>
+              <p>({reviews.length} reviews)</p>
             </div>
-          )}
 
-          {product.colorOptions?.length > 0 && (
-            <div className="colorSelectorBox">
-              <h3>Choose Color</h3>
+            <h2>₹{product.price}</h2>
 
-              <div className="colorCircles">
-                {product.colorOptions.map((color) => (
-                  <button
-                    key={color.name}
-                    type="button"
-                    title={color.name}
-                    className={
-                      selectedColor?.name === color.name
-                        ? "colorCircle activeColorCircle"
-                        : "colorCircle"
-                    }
-                    style={{"--circle-color": color.hex || color.name || "#000000",
-}}
-                    onClick={() => {
-                      setSelectedColor(color);
-                      setSelectedImage(color.image || product.image);
-                    }}
-                  />
-                ))}
+            <span
+              className={`detailStockBadge ${stockStatus
+                .replaceAll(" ", "")
+                .toLowerCase()}`}
+            >
+              {stockStatus}
+            </span>
+
+            <p className="detailsDesc">
+              {product.description || "Premium phone case by THE VELTRIXX."}
+            </p>
+
+            {product.availableModels?.length > 0 && (
+              <div className="productOptionsBox">
+                <h3>Select Model</h3>
+
+                <div className="modelChips">
+                  {product.availableModels.map((model) => (
+                    <button
+                      key={model}
+                      type="button"
+                      className={
+                        selectedModel === model
+                          ? "modelChip activeModelChip"
+                          : "modelChip"
+                      }
+                      onClick={() => setSelectedModel(model)}
+                    >
+                      {model}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {product.colorOptions?.length > 0 && (
+              <div className="colorSelectorBox">
+                <h3>Choose Color</h3>
+
+                <div className="colorCircles">
+                  {product.colorOptions.map((color) => (
+                    <button
+                      key={color.name}
+                      type="button"
+                      title={color.name}
+                      className={
+                        selectedColor?.name === color.name
+                          ? "colorCircle activeColorCircle"
+                          : "colorCircle"
+                      }
+                      style={{
+                        "--circle-color":
+                          color.hex || color.name || "#000000",
+                      }}
+                      onClick={() => {
+                        setSelectedColor(color);
+                        setSelectedImage(color.image || product.image);
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <p className="selectedColorText">
+                  Selected Color: {selectedColor?.name || "Default"}
+                </p>
+              </div>
+            )}
+
+            <button
+              className="detailsAddCartBtn"
+              onClick={handleAddToCart}
+              disabled={Number(product.stock) <= 0}
+            >
+              <ShoppingBag size={19} />
+              {Number(product.stock) <= 0 ? "Out of Stock" : "Add to Cart"}
+            </button>
+
+            <div className="detailsTrustBox">
+              <div>
+                <ShieldCheck size={22} />
+                <span>Premium Protection</span>
               </div>
 
-              <p className="selectedColorText">
-                Selected Color: {selectedColor?.name || "Default"}
-              </p>
-            </div>
-          )}
+              <div>
+                <Truck size={22} />
+                <span>Fast Delivery</span>
+              </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={Number(product.stock) <= 0}
-          >
-            {Number(product.stock) <= 0 ? "Out of Stock" : "Add to Cart"}
-          </button>
+              <div>
+                <RotateCcw size={22} />
+                <span>Easy Support</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="reviewSection">
-        <h2>Write a Review</h2>
+        <div className="premiumReviewGrid">
+          <div className="reviewSection">
+            <h2>Write a Review</h2>
 
-        <select
-          value={reviewForm.rating}
-          onChange={(e) =>
-            setReviewForm({ ...reviewForm, rating: e.target.value })
-          }
-        >
-          <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
-          <option value="4">⭐⭐⭐⭐ 4 Stars</option>
-          <option value="3">⭐⭐⭐ 3 Stars</option>
-          <option value="2">⭐⭐ 2 Stars</option>
-          <option value="1">⭐ 1 Star</option>
-        </select>
+            <select
+              value={reviewForm.rating}
+              onChange={(e) =>
+                setReviewForm({ ...reviewForm, rating: e.target.value })
+              }
+            >
+              <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+              <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+              <option value="3">⭐⭐⭐ 3 Stars</option>
+              <option value="2">⭐⭐ 2 Stars</option>
+              <option value="1">⭐ 1 Star</option>
+            </select>
 
-        <textarea
-          placeholder="Write your review..."
-          value={reviewForm.comment}
-          onChange={(e) =>
-            setReviewForm({ ...reviewForm, comment: e.target.value })
-          }
-        />
+            <textarea
+              placeholder="Write your review..."
+              value={reviewForm.comment}
+              onChange={(e) =>
+                setReviewForm({ ...reviewForm, comment: e.target.value })
+              }
+            />
 
-        <button onClick={submitReview}>Submit Review</button>
-      </div>
+            <button onClick={submitReview}>Submit Review</button>
+          </div>
 
-      <div className="reviewSection">
-        <h2>Customer Reviews</h2>
+          <div className="reviewSection">
+            <h2>Customer Reviews</h2>
 
-        {reviews.length === 0 ? (
-          <p>No reviews yet.</p>
-        ) : (
-          reviews.map((review) => (
-            <div className="reviewCard" key={review._id}>
-              <h3>{review.user?.name || review.name || "Customer"}</h3>
-              <p>{"⭐".repeat(Number(review.rating))}</p>
-              <p>{review.comment}</p>
-              <small>{new Date(review.createdAt).toLocaleDateString()}</small>
-            </div>
-          ))
-        )}
+            {reviews.length === 0 ? (
+              <p>No reviews yet.</p>
+            ) : (
+              reviews.map((review) => (
+                <div className="reviewCard" key={review._id}>
+                  <h3>{review.user?.name || review.name || "Customer"}</h3>
+                  <p>{"⭐".repeat(Number(review.rating))}</p>
+                  <p>{review.comment}</p>
+                  <small>
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </small>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

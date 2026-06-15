@@ -3051,3 +3051,50 @@ button, a {
     font-size: 24px !important;
   }
 }
+.brandArea h1{
+  font-size:48px;
+  font-weight:900;
+  letter-spacing:4px;
+  color:#111;
+  margin:0;
+  line-height:1;
+}
+
+.brandArea p{
+  margin-top:10px;
+  color:#777;
+  font-size:15px;
+  font-weight:500;
+  letter-spacing:1px;
+}
+.brandArea {
+  text-decoration: none !important;
+  display: block !important;
+}
+
+.brandArea h1 {
+  font-size: 36px !important;
+  font-weight: 900 !important;
+  letter-spacing: 4px !important;
+  color: #111 !important;
+  margin: 0 !important;
+  line-height: 1.05 !important;
+  white-space: nowrap !important;
+}
+
+.brandArea p {
+  margin-top: 8px !important;
+  color: #777 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+}
+
+.topTag {
+  display: block !important;
+  color: #999 !important;
+  font-size: 12px !important;
+  letter-spacing: 3px !important;
+  margin-bottom: 2px !important;
+  text-transform: uppercase !important;
+}

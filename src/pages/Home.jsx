@@ -80,12 +80,14 @@ function Home({
     <>
       <nav className="homePremiumNav">
         <div className="homeNavTop">
-          <div className="brandArea">
-  <h1>THE VELTRIXX</h1>
-  <p>Premium Custom Phone Cases</p>
-</div>
+          <Link to="/" className="brandArea">
+            <h1>THE VELTRIXX</h1>
+            <p>Premium Custom Phone Cases</p>
+          </Link>
 
           <div className="homeSearchArea">
+            <span className="topTag">Premium • Custom • Protection</span>
+
             <div className="homeSearchBox">
               <Search size={18} />
 
@@ -105,6 +107,7 @@ function Home({
                 ))}
               </div>
             )}
+          </div>
 
           <div className="homeNavActions">
             <Link to="/wishlist" className="homeIconBtn">

@@ -68,7 +68,7 @@ function Contact() {
               rel="noreferrer"
               className="contactInfoItem"
             >
-              <Instagram size={24} />
+              <span className="contactEmojiIcon">📸</span>
               <div>
                 <h3>Instagram</h3>
                 <p>@the.veltrixx</p>

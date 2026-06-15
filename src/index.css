@@ -2957,31 +2957,6 @@ button, a {
   color: #111 !important;
 }
 
-.homeQuickTags {
-  display: flex !important;
-  gap: 10px !important;
-  justify-content: center !important;
-  flex-wrap: wrap !important;
-}
-
-.homeQuickTags button {
-  border: 1px solid #ddd8ce !important;
-  background: #fff !important;
-  color: #333 !important;
-  border-radius: 999px !important;
-  padding: 8px 14px !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  cursor: pointer !important;
-  transition: 0.25s ease !important;
-}
-
-.homeQuickTags button:hover {
-  background: #111 !important;
-  color: #fff !important;
-  transform: translateY(-2px) !important;
-}
-
 .homeNavActions {
   display: flex !important;
   justify-content: flex-end !important;

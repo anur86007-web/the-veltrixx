@@ -80,9 +80,10 @@ function Home({
     <>
       <nav className="homePremiumNav">
         <div className="homeNavTop">
-          <Link to="/" className="homeLogo">
-            THE VELTRIXX
-          </Link>
+          <div className="brandArea">
+  <h1>THE VELTRIXX</h1>
+  <p>Premium Custom Phone Cases</p>
+</div>
 
           <div className="homeSearchArea">
             <div className="homeSearchBox">
@@ -104,29 +105,6 @@ function Home({
                 ))}
               </div>
             )}
-
-            <div className="homeQuickTags">
-              <button onClick={() => setSelectedBrand("All")}>
-                🔥 Trending
-              </button>
-
-              <button onClick={() => setSelectedBrand("iPhone")}>
-                iPhone
-              </button>
-
-              <button onClick={() => setSelectedBrand("Samsung")}>
-                Samsung
-              </button>
-
-              <button onClick={() => setSearch("custom")}>
-                Custom Print
-              </button>
-
-              <button onClick={() => setSearch("premium")}>
-                Premium
-              </button>
-            </div>
-          </div>
 
           <div className="homeNavActions">
             <Link to="/wishlist" className="homeIconBtn">

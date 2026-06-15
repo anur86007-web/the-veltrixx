@@ -169,41 +169,45 @@ button, a {
 
 .productGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:24px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:32px;
+  padding:50px;
+  max-width:1400px;
+  margin:auto;
 }
 
-.productCard {
-  position: relative;
-  background: #fff;
-  border: 1px solid #ececec;
-  border-radius: 26px;
-  overflow: hidden;
-  transition: 0.25s ease;
-  cursor: pointer;
+.productCard{
+  background:#fff;
+  border-radius:28px;
+  overflow:hidden;
+  transition:.35s;
+  border:1px solid #ececec;
 }
 
-.productCard:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+.productCard:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 50px rgba(0,0,0,.08);
 }
+
 
 .productCard:hover .productImage img {
   transform: scale(1.08);
 }
 
-.productImage {
-  display: block;
-  height: 310px;
-  background: #f3f3f3;
-  overflow: hidden;
-  transition: transform 0.4s ease;
+.productImage{
+  height:340px;
+  overflow:hidden;
 }
 
-.productImage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.productImage img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.5s;
+}
+
+.productCard:hover img{
+  transform:scale(1.05);
 }
 
 .wishBtn {
@@ -251,21 +255,23 @@ button, a {
   align-items: center;
 }
 
-.priceRow h4 {
-  font-size: 22px;
+.priceRow h4{
+  font-size:30px;
+  font-weight:700;
 }
 
-.priceRow button {
-  border: none;
-  background: #111;
-  color: #fff;
-  padding: 11px 17px;
-  border-radius: 50px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
+.priceRow button{
+  background:#111;
+  color:white;
+  border:none;
+  padding:12px 22px;
+  border-radius:50px;
+  cursor:pointer;
 }
 
+.priceRow button:hover{
+  background:#000;
+}
 /* Details / Cart / Wishlist */
 
 .detailsPage,
@@ -4888,4 +4894,110 @@ button, a {
   height:42px;
   min-width:90px;
   border-radius:30px;
+}
+/* HERO SECTION */
+
+.luxuryHero{
+  padding:70px 6%;
+  background:#f7f5f2;
+}
+
+.luxuryHeroContent{
+  max-width:1400px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+.luxuryLeft h1{
+  font-size:68px;
+  line-height:1.05;
+  color:#111;
+  margin:20px 0;
+  font-weight:800;
+}
+
+.luxuryLeft p{
+  color:#666;
+  font-size:18px;
+  max-width:500px;
+  line-height:1.7;
+}
+
+.heroBadge{
+  display:inline-block;
+  background:#fff;
+  padding:10px 18px;
+  border-radius:50px;
+  border:1px solid #ddd;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+.heroButtons{
+  display:flex;
+  gap:15px;
+  margin-top:35px;
+}
+
+.heroPrimaryBtn{
+  background:#111;
+  color:#fff;
+  text-decoration:none;
+  padding:15px 28px;
+  border-radius:50px;
+  font-weight:600;
+}
+
+.heroSecondaryBtn{
+  background:#fff;
+  color:#111;
+  text-decoration:none;
+  padding:15px 28px;
+  border-radius:50px;
+  border:1px solid #ddd;
+  font-weight:600;
+}
+
+.heroStats{
+  display:flex;
+  gap:50px;
+  margin-top:50px;
+}
+
+.heroStats h3{
+  font-size:28px;
+  margin-bottom:5px;
+}
+
+.heroStats p{
+  font-size:14px;
+  color:#888;
+}
+
+.luxuryRight img{
+  width:100%;
+  height:600px;
+  object-fit:cover;
+  border-radius:35px;
+  box-shadow:0 25px 60px rgba(0,0,0,.12);
+}
+
+@media(max-width:900px){
+
+  .luxuryHeroContent{
+    grid-template-columns:1fr;
+  }
+
+  .luxuryLeft h1{
+    font-size:42px;
+  }
+
+  .luxuryRight img{
+    height:420px;
+  }
+
 }

@@ -133,6 +133,68 @@ function Home({
         </div>
       </nav>
 
+      <section className="luxuryHero">
+  <div className="luxuryHeroContent">
+
+    <div className="luxuryLeft">
+
+      <span className="heroBadge">
+        PREMIUM CUSTOM PHONE CASES
+      </span>
+
+      <h1>
+        Protect Your Phone <br />
+        With Style.
+      </h1>
+
+      <p>
+        Premium quality custom phone cases designed for
+        protection, durability and modern aesthetics.
+      </p>
+
+      <div className="heroButtons">
+        <a href="#products" className="heroPrimaryBtn">
+          Shop Collection
+        </a>
+
+        <Link to="/contact" className="heroSecondaryBtn">
+          Custom Order
+        </Link>
+      </div>
+
+      <div className="heroStats">
+
+        <div>
+          <h3>500+</h3>
+          <p>Happy Customers</p>
+        </div>
+
+        <div>
+          <h3>4.8★</h3>
+          <p>Average Rating</p>
+        </div>
+
+        <div>
+          <h3>India</h3>
+          <p>Wide Delivery</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div className="luxuryRight">
+
+      <img
+        src="https://images.unsplash.com/photo-1601593346740-925612772716?w=1000"
+        alt="Phone Case"
+      />
+
+    </div>
+
+  </div>
+</section>
+
       <section className="premiumHero">
         <div className="premiumHeroText">
           <span className="heroTag">THE VELTRIXX COLLECTION</span>

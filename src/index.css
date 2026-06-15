@@ -174,14 +174,21 @@ button, a {
   gap: 24px;
 }
 
-.productCard{
-  background:#fff;
-  border-radius:28px;
-  overflow:hidden;
-  transition:.35s;
-  border:1px solid #ececec;
+.productCard,
+.product-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #ececec;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  transition: all .3s ease;
 }
 
+.productCard:hover,
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
 .productCard:hover{
   transform:translateY(-8px);
   box-shadow:0 20px 50px rgba(0,0,0,.08);
@@ -5834,5 +5841,260 @@ button, a {
   .productFormLayout,
   .colorInputGrid {
     grid-template-columns: 1fr;
+  }
+}
+.productCard img,
+.product-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+.productInfo,
+.productCardContent {
+  padding: 16px;
+}
+
+.productInfo h3,
+.productCard h3 {
+  margin: 6px 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+.addBtn {
+  background: #000;
+  color: white;
+  border-radius: 50px;
+  padding: 10px 22px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addBtn:hover {
+  background: #222;
+}
+/* ===== FINAL RESPONSIVE FIX: MOBILE + TABLET + LAPTOP ===== */
+
+img {
+  max-width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Laptop/Desktop */
+@media (min-width: 1025px) {
+  .productGrid,
+  .productsGrid {
+    grid-template-columns: repeat(3, minmax(320px, 1fr)) !important;
+    gap: 28px !important;
+  }
+
+  .productImage {
+    height: 280px !important;
+  }
+
+  .shopSection {
+    padding: 55px 7% 90px !important;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .navbar,
+  .homePremiumNav {
+    padding: 16px 22px !important;
+  }
+
+  .homeNavTop {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    text-align: center !important;
+  }
+
+  .navLinks {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 14px !important;
+  }
+
+  .productGrid,
+  .productsGrid {
+    grid-template-columns: repeat(2, minmax(260px, 1fr)) !important;
+    gap: 22px !important;
+  }
+
+  .productImage {
+    height: 250px !important;
+  }
+
+  .premiumHero,
+  .detailsGrid,
+  .productDetailsBox,
+  .paymentLayout,
+  .cartMainLayout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .adminPage {
+    grid-template-columns: 1fr !important;
+  }
+
+  .adminPage aside {
+    display: flex !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+  }
+
+  .adminPage aside button {
+    min-width: 150px !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding: 14px 16px !important;
+  }
+
+  .navLinks {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    font-size: 14px !important;
+  }
+
+  .homeLogo,
+  .logo,
+  .navLogo a {
+    font-size: 22px !important;
+    letter-spacing: 2px !important;
+    text-align: center !important;
+  }
+
+  .searchBox,
+  .homeSearchBox {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 48px !important;
+  }
+
+  .premiumHero {
+    margin: 18px 12px 0 !important;
+    padding: 34px 18px !important;
+    border-radius: 22px !important;
+  }
+
+  .premiumHeroText h1,
+  .hero h1 {
+    font-size: 34px !important;
+    line-height: 1.1 !important;
+  }
+
+  .premiumHeroText p {
+    font-size: 15px !important;
+  }
+
+  .heroButtons,
+  .heroStats {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .shopSection {
+    padding: 35px 14px 60px !important;
+  }
+
+  .sectionHead h2 {
+    font-size: 30px !important;
+  }
+
+  .productGrid,
+  .productsGrid {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+
+  .productCard {
+    border-radius: 20px !important;
+  }
+
+  .productImage {
+    height: 220px !important;
+  }
+
+  .productInfo {
+    padding: 16px !important;
+  }
+
+  .productInfo h3 {
+    font-size: 20px !important;
+  }
+
+  .priceRow h4 {
+    font-size: 24px !important;
+  }
+
+  .priceRow button {
+    padding: 10px 16px !important;
+  }
+
+  .cartProductCard {
+    grid-template-columns: 90px 1fr !important;
+    gap: 14px !important;
+    padding: 16px !important;
+  }
+
+  .cartProductImg {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  .cartQtyControl,
+  .cartDeleteBtn {
+    grid-column: 2 !important;
+    justify-self: start !important;
+  }
+
+  .paymentContainer,
+  .cartPage,
+  .pageContainer,
+  .detailsPage {
+    padding: 28px 14px !important;
+  }
+
+  .paymentSummary,
+  .cartSummaryCard {
+    position: static !important;
+  }
+
+  .adminPage main {
+    padding: 20px 14px !important;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .adminBox {
+    max-width: 100% !important;
+  }
+
+  .adminProduct {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+
+  .floatingCartBtn {
+    right: 14px !important;
+    bottom: 14px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
   }
 }

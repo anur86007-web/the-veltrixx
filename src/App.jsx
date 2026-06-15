@@ -11,8 +11,14 @@ import Orders from "./pages/Orders";
 import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
+import RefundPolicy from "./pages/RefundPolicy";
+import ShippingPolicy from "./pages/ShippingPolicy";
 
 const API = "https://the-veltrixx-backend.onrender.com/api";
 
@@ -248,8 +254,12 @@ function App() {
         />
 
         <Route path="/about" element={<About />} />
-
         <Route path="/contact" element={<Contact />} />
+
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
+        <Route path="/shipping-policy" element={<ShippingPolicy />} />
 
         <Route
           path="/product/:id"
@@ -288,7 +298,6 @@ function App() {
         />
 
         <Route path="/orders" element={<Orders orders={orders} />} />
-
         <Route path="/login" element={<Login setUser={setUser} />} />
 
         <Route
@@ -302,6 +311,8 @@ function App() {
 
         <Route path="/profile" element={<Profile user={user} />} />
       </Routes>
+
+      {!isAdminPage && <Footer />}
 
       {showFloatingCart && (
         <Link to="/cart" className="floatingCartBtn">

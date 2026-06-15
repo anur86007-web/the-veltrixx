@@ -1,24 +1,32 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
   return (
     <footer className="footer">
       <div className="footerContainer">
-
         <div className="footerSection">
           <h2>THE VELTRIXX</h2>
           <p>
-            Premium customized phone cases designed for style,
-            protection and personality. Discover unique designs
-            crafted for every phone lover.
+            Premium customized phone cases designed for style, protection and
+            personality. Discover unique designs crafted for every phone lover.
           </p>
         </div>
 
         <div className="footerSection">
           <h3>Quick Links</h3>
-          <a href="/">Home</a>
-          <a href="/cart">Cart</a>
-          <a href="/wishlist">Wishlist</a>
-          <a href="/orders">Orders</a>
-          <a href="/profile">My Account</a>
+          <Link to="/">Home</Link>
+          <Link to="/cart">Cart</Link>
+          <Link to="/wishlist">Wishlist</Link>
+          <Link to="/orders">Orders</Link>
+          <Link to="/profile">My Account</Link>
+        </div>
+
+        <div className="footerSection">
+          <h3>Policies</h3>
+          <Link to="/privacy-policy">Privacy Policy</Link>
+          <Link to="/terms">Terms & Conditions</Link>
+          <Link to="/refund-policy">Refund & Cancellation Policy</Link>
+          <Link to="/shipping-policy">Shipping Policy</Link>
         </div>
 
         <div className="footerSection">
@@ -27,9 +35,7 @@ function Footer() {
           <p>
             📞 Mobile:
             <br />
-            <a href="tel:+919899723391">
-              +91 9899723391
-            </a>
+            <a href="tel:+919899723391">+91 9899723391</a>
           </p>
 
           <p>
@@ -78,7 +84,6 @@ function Footer() {
             Premium Custom Phone Cases
           </p>
         </div>
-
       </div>
 
       <div className="footerBottom">

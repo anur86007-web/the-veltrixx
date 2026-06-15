@@ -6308,3 +6308,55 @@ body {
     text-align: center !important;
   }
 }
+.footer{
+  background:#111;
+  color:#fff;
+  padding:40px 20px;
+  margin-top:60px;
+}
+
+.footerContent{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:20px;
+}
+
+.footerLinks{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.footerLinks a{
+  color:#fff;
+  text-decoration:none;
+}
+
+.footerLinks a:hover{
+  color:#d4af37;
+}
+
+.footerBottom{
+  text-align:center;
+  margin-top:25px;
+  border-top:1px solid #333;
+  padding-top:20px;
+}
+
+.policyPage{
+  max-width:1000px;
+  margin:auto;
+  padding:60px 20px;
+}
+
+.policyPage h1{
+  margin-bottom:20px;
+}
+
+.policyPage p{
+  margin-bottom:15px;
+  line-height:1.7;
+}

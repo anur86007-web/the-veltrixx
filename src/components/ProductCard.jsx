@@ -10,7 +10,6 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
   const [selectedModel, setSelectedModel] = useState(
     product.availableModels?.[0] || product.model || "Default"
   );
-  const [quickView, setQuickView] = useState(false);
 
   const currentImage = selectedColor?.image || product.image;
 
@@ -27,177 +26,101 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
   );
 
   const stock = Number(product.stock || 0);
-
-  const stockStatus =
-    stock <= 0 ? "Out of Stock" : stock <= 5 ? "Low Stock" : "In Stock";
-
   const isOutOfStock = stock <= 0;
 
-  const cartItem = cart.find(
-    (item) =>
-      (item._id || item.id) === productId &&
-      item.selectedColor === selectedProductForCart.selectedColor &&
-      (item.selectedModel || item.model) === selectedProductForCart.selectedModel
-  );
-
   return (
-    <>
-      <div className="productCard premiumProductCard">
-        <div className="productImageWrap">
-          <Link to={`/product/${productId}`} className="productImage">
-            <img src={currentImage} alt={product.name} />
-          </Link>
+    <div className="premiumCaseCard">
+      <div className="caseImageBox">
+        <Link to={`/product/${productId}`}>
+          <img src={currentImage} alt={product.name} />
+        </Link>
 
-          <span
-            className={`stockBadge ${stockStatus
-              .replaceAll(" ", "")
-              .toLowerCase()}`}
-          >
-            {stockStatus}
-          </span>
+        <span className={isOutOfStock ? "caseStock out" : "caseStock"}>
+          {isOutOfStock ? "Out of Stock" : "In Stock"}
+        </span>
 
-          <button
-            type="button"
-            className={isWishlisted ? "wishBtn activeWish" : "wishBtn"}
-            onClick={() => toggleWishlist(selectedProductForCart)}
-            title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <Heart size={18} fill={isWishlisted ? "red" : "none"} />
-          </button>
-        </div>
-
-        <div className="productInfo">
-          <p className="brand">
-            {product.brand} • {product.model}
-          </p>
-
-          <Link to={`/product/${productId}`} className="productTitleLink">
-            <h3>{product.name}</h3>
-          </Link>
-
-          {product.colorOptions?.length > 0 && (
-            <div className="cardColorPreview">
-              {product.colorOptions.slice(0, 6).map((color) => (
-                <button
-                  type="button"
-                  key={color.name}
-                  title={color.name}
-                  className={
-                    selectedColor?.name === color.name
-                      ? "cardColorDot activeColorDot"
-                      : "cardColorDot"
-                  }
-                  style={{
-                    "--dot-color": color.hex || color.name || "#000000",
-                    backgroundColor: color.hex || color.name || "#000000",
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setSelectedColor(color);
-                  }}
-                />
-              ))}
-            </div>
-          )}
-
-          <div className="selectedMeta">
-            <span>{selectedColor?.name || "Default"}</span>
-
-            {product.availableModels?.length > 0 && (
-              <select
-                className="modelSelect"
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-              >
-                {product.availableModels.map((model) => (
-                  <option key={model} value={model}>
-                    {model}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-
-          <div className="rating">
-            <Star size={15} fill="black" />
-            <span>
-              {product.rating || 4.8} ({product.reviews?.length || 0} reviews)
-            </span>
-          </div>
-
-          <div className="priceRow">
-            <div>
-              <h4>₹{product.price}</h4>
-              {cartItem && <small>Already in cart</small>}
-            </div>
-
-            <button
-              type="button"
-              disabled={isOutOfStock}
-              className={isOutOfStock ? "disabledCartBtn" : ""}
-              onClick={() => addToCart(selectedProductForCart)}
-            >
-              <ShoppingBag size={17} />
-              {isOutOfStock ? "Sold Out" : "Add"}
-            </button>
-          </div>
-
-          <button
-            type="button"
-            className="quickViewBtn"
-            onClick={() => setQuickView(true)}
-          >
-            <Eye size={16} />
-            Quick View
-          </button>
-        </div>
+        <button
+          type="button"
+          className={isWishlisted ? "caseWish activeWish" : "caseWish"}
+          onClick={() => toggleWishlist(selectedProductForCart)}
+        >
+          <Heart size={18} fill={isWishlisted ? "red" : "none"} />
+        </button>
       </div>
 
-      {quickView && (
-        <div className="quickModal">
-          <div className="quickModalContent premiumQuickModal">
-            <button
-              type="button"
-              className="closeModal"
-              onClick={() => setQuickView(false)}
-            >
-              ✕
-            </button>
+      <div className="caseInfo">
+        <p className="caseBrand">
+          {product.brand} • {product.model}
+        </p>
 
-            <img src={currentImage} alt={product.name} />
+        <Link to={`/product/${productId}`} className="caseNameLink">
+          <h3>{product.name}</h3>
+        </Link>
 
-            <p className="brand">
-              {product.brand} • {selectedModel}
-            </p>
-
-            <h2>{product.name}</h2>
-
-            <p>{product.description || "Premium phone case by THE VELTRIXX."}</p>
-
-            <h3>₹{product.price}</h3>
-
-            <div className="quickModalActions">
-              <Link to={`/product/${productId}`} className="viewDetailsBtn">
-                View Details
-              </Link>
-
+        {product.colorOptions?.length > 0 && (
+          <div className="caseColors">
+            {product.colorOptions.slice(0, 5).map((color) => (
               <button
+                key={color.name}
                 type="button"
-                className="modalCartBtn"
-                disabled={isOutOfStock}
-                onClick={() => {
-                  addToCart(selectedProductForCart);
-                  setQuickView(false);
+                title={color.name}
+                className={
+                  selectedColor?.name === color.name
+                    ? "caseColor activeCaseColor"
+                    : "caseColor"
+                }
+                style={{
+                  backgroundColor: color.hex || color.name || "#000",
                 }}
-              >
-                {isOutOfStock ? "Sold Out" : "Add To Cart"}
-              </button>
-            </div>
+                onClick={() => setSelectedColor(color)}
+              />
+            ))}
           </div>
+        )}
+
+        <div className="caseMetaRow">
+          <span>{selectedColor?.name || "Default"}</span>
+
+          {product.availableModels?.length > 0 && (
+            <select
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+            >
+              {product.availableModels.map((model) => (
+                <option key={model} value={model}>
+                  {model}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
-      )}
-    </>
+
+        <div className="caseRating">
+          <Star size={15} fill="black" />
+          <span>{product.rating || 4.8} ({product.reviews?.length || 0} reviews)</span>
+        </div>
+
+        <div className="caseBottom">
+          <div>
+            <h4>₹{product.price}</h4>
+          </div>
+
+          <button
+            type="button"
+            disabled={isOutOfStock}
+            onClick={() => addToCart(selectedProductForCart)}
+          >
+            <ShoppingBag size={17} />
+            Add
+          </button>
+        </div>
+
+        <Link to={`/product/${productId}`} className="caseViewBtn">
+          <Eye size={16} />
+          View Details
+        </Link>
+      </div>
+    </div>
   );
 }
 

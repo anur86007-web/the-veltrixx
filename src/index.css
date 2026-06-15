@@ -3098,3 +3098,15 @@ button, a {
   margin-bottom: 2px !important;
   text-transform: uppercase !important;
 }
+.cartProductImageLink {
+  display: block;
+}
+
+.cartProductNameLink {
+  color: #111;
+  text-decoration: none;
+}
+
+.cartProductNameLink:hover {
+  text-decoration: underline;
+}

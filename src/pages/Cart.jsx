@@ -95,14 +95,17 @@ function Cart({ cart, increaseQty, decreaseQty, removeFromCart }) {
 
             return (
               <div className="cartProductCard" key={itemKey}>
-                <img
-                  className="cartProductImg"
-                  src={item.selectedImage || item.image}
-                  alt={item.name}
-                />
+                <Link to={`/product/${item._id || item.id}`} className="cartProductImageLink">
+  <img
+    src={item.selectedImage || item.image}
+    alt={item.name}
+  />
+</Link>
 
                 <div className="cartProductInfo">
-                  <h3>{item.name}</h3>
+                  <Link to={`/product/${item._id || item.id}`} className="cartProductNameLink">
+  <h3>{item.name}</h3>
+</Link>
                   <p>{item.brand} • {item.selectedModel || item.model}</p>
                   <p>Color: {item.selectedColor || "Default"}</p>
                   <strong>₹{item.price}</strong>

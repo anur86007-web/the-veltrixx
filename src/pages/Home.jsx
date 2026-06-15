@@ -78,60 +78,77 @@ function Home({
 
   return (
     <>
-      <nav className="navbar">
-        <Link to="/" className="logo">
-          THE VELTRIXX
-        </Link>
+      <nav className="homePremiumNav">
+        <div className="homeNavTop">
+          <Link to="/" className="homeLogo">
+            THE VELTRIXX
+          </Link>
 
-        <div className="searchArea">
-          <div className="searchBox">
-            <Search size={18} />
+          <div className="homeSearchArea">
+            <div className="homeSearchBox">
+              <Search size={18} />
 
-            <input
-              placeholder="Search iPhone, Samsung, Carbon..."
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
+              <input
+                placeholder="Search iPhone, Samsung, Carbon..."
+                value={search}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+            </div>
+
+            {history.length > 0 && search.length > 0 && (
+              <div className="searchHistory">
+                {history.map((item, index) => (
+                  <button key={index} onClick={() => setSearch(item)}>
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="homeQuickTags">
+              <button onClick={() => setSelectedBrand("All")}>
+                🔥 Trending
+              </button>
+
+              <button onClick={() => setSelectedBrand("iPhone")}>
+                iPhone
+              </button>
+
+              <button onClick={() => setSelectedBrand("Samsung")}>
+                Samsung
+              </button>
+
+              <button onClick={() => setSearch("custom")}>
+                Custom Print
+              </button>
+
+              <button onClick={() => setSearch("premium")}>
+                Premium
+              </button>
+            </div>
           </div>
 
-          {history.length > 0 && search.length > 0 && (
-            <div className="searchHistory">
-              {history.map((item, index) => (
-                <button key={index} onClick={() => setSearch(item)}>
-                  {item}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="quickTags">
-  <span>🔥 Trending</span>
-  <span>📱 iPhone Cases</span>
-  <span>⚡ Samsung</span>
-  <span>🎨 Custom Print</span>
-  <span>🛡 Premium Cases</span>
-</div>
-
-        <div className="navIcons">
-          <Link to="/wishlist" className="iconBox">
-            <Heart />
-            <span>{wishlist.length}</span>
-          </Link>
-
-          <Link to="/cart" className="iconBox">
-            <ShoppingBag />
-            <span>{cartCount}</span>
-          </Link>
-
-          {user ? (
-            <button className="logoutBtn" onClick={logout}>
-              <LogOut size={20} />
-            </button>
-          ) : (
-            <Link to="/login">
-              <User />
+          <div className="homeNavActions">
+            <Link to="/wishlist" className="homeIconBtn">
+              <Heart size={22} />
+              <span>{wishlist.length}</span>
             </Link>
-          )}
+
+            <Link to="/cart" className="homeIconBtn">
+              <ShoppingBag size={22} />
+              <span>{cartCount}</span>
+            </Link>
+
+            {user ? (
+              <button className="homeLogoutBtn" onClick={logout}>
+                <LogOut size={22} />
+              </button>
+            ) : (
+              <Link to="/login" className="homeIconBtn">
+                <User size={22} />
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -201,7 +218,9 @@ function Home({
           <p>THE COLLECTION</p>
 
           <h2>
-            {selectedBrand === "All" ? "All Phone Cases" : `${selectedBrand} Cases`}
+            {selectedBrand === "All"
+              ? "All Phone Cases"
+              : `${selectedBrand} Cases`}
           </h2>
         </div>
 

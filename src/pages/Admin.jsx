@@ -7,6 +7,7 @@ const DELETE_ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/a
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/all";
 const DELETE_REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/delete";
 const COUPON_API = "https://the-veltrixx-backend.onrender.com/api/coupons";
+const USER_API = "https://the-veltrixx-backend.onrender.com/api/users";
 
 function Admin({ refreshProducts }) {
   const [activeTab, setActiveTab] = useState("products");
@@ -14,7 +15,11 @@ function Admin({ refreshProducts }) {
   const [orders, setOrders] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [coupons, setCoupons] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [userSearch, setUserSearch] = useState("");
   const [editingProductId, setEditingProductId] = useState(null);
+
+  const token = localStorage.getItem("veltrixx_token");
 
   const emptyForm = {
     name: "",
@@ -42,8 +47,6 @@ function Admin({ refreshProducts }) {
 
   const [form, setForm] = useState(emptyForm);
   const [couponForm, setCouponForm] = useState(emptyCouponForm);
-
-  const token = localStorage.getItem("veltrixx_token");
 
   const fetchProducts = async () => {
     const res = await fetch(PRODUCT_API);
@@ -73,6 +76,20 @@ function Admin({ refreshProducts }) {
     if (data.success) setCoupons(data.coupons || []);
   };
 
+  const fetchUsers = async () => {
+    const res = await fetch(`${USER_API}?search=${userSearch}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+
+    if (Array.isArray(data)) {
+      setUsers(data);
+    } else {
+      setUsers([]);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchCoupons();
@@ -82,6 +99,7 @@ function Admin({ refreshProducts }) {
     if (activeTab === "orders") fetchOrders();
     if (activeTab === "reviews") fetchReviews();
     if (activeTab === "coupons") fetchCoupons();
+    if (activeTab === "users") fetchUsers();
   }, [activeTab]);
 
   const addColor = () => {
@@ -340,6 +358,46 @@ function Admin({ refreshProducts }) {
     fetchCoupons();
   };
 
+  const updateUserRole = async (id, role) => {
+    const res = await fetch(`${USER_API}/${id}/role`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ role }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert(data.message || "Role update failed");
+      return;
+    }
+
+    alert("User role updated");
+    fetchUsers();
+  };
+
+  const deleteUser = async (id) => {
+    if (!window.confirm("Delete this user?")) return;
+
+    const res = await fetch(`${USER_API}/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert(data.message || "User delete failed");
+      return;
+    }
+
+    alert("User deleted");
+    fetchUsers();
+  };
+
   const totalRevenue = orders.reduce(
     (sum, order) => sum + Number(order.total || 0),
     0
@@ -400,6 +458,11 @@ function Admin({ refreshProducts }) {
           <div>
             <h3>Total Coupons</h3>
             <p>{coupons.length}</p>
+          </div>
+
+          <div>
+            <h3>Total Users</h3>
+            <p>{users.length}</p>
           </div>
 
           <div>
@@ -545,9 +608,7 @@ function Admin({ refreshProducts }) {
                     </div>
 
                     <div>
-                      <button onClick={() => startEditProduct(item)}>
-                        Edit
-                      </button>
+                      <button onClick={() => startEditProduct(item)}>Edit</button>
 
                       <button
                         className="dangerBtn"
@@ -561,6 +622,73 @@ function Admin({ refreshProducts }) {
               )}
             </div>
           </>
+        )}
+
+        {activeTab === "users" && (
+          <div className="adminBox">
+            <h2>User Management</h2>
+
+            <div className="userManagementTop">
+              <input
+                placeholder="Search user by name or email..."
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+              />
+
+              <button onClick={fetchUsers}>Search</button>
+            </div>
+
+            {users.length === 0 ? (
+              <p>No users found.</p>
+            ) : (
+              <div className="adminTableWrapper">
+                <table className="adminTable">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Joined</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user._id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>
+                          <select
+                            value={user.role}
+                            onChange={(e) =>
+                              updateUserRole(user._id, e.target.value)
+                            }
+                          >
+                            <option value="customer">Customer</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                        </td>
+                        <td>
+                          {user.createdAt
+                            ? new Date(user.createdAt).toLocaleDateString()
+                            : "N/A"}
+                        </td>
+                        <td>
+                          <button
+                            className="dangerBtn"
+                            onClick={() => deleteUser(user._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         )}
 
         {activeTab === "coupons" && (
@@ -829,13 +957,6 @@ function Admin({ refreshProducts }) {
                 </div>
               ))
             )}
-          </div>
-        )}
-
-        {activeTab === "users" && (
-          <div className="adminBox">
-            <h2>Users</h2>
-            <p>User management will be added next.</p>
           </div>
         )}
       </main>

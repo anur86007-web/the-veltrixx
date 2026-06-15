@@ -104,6 +104,13 @@ function Home({
             </div>
           )}
         </div>
+        <div className="quickTags">
+  <span>🔥 Trending</span>
+  <span>📱 iPhone Cases</span>
+  <span>⚡ Samsung</span>
+  <span>🎨 Custom Print</span>
+  <span>🛡 Premium Cases</span>
+</div>
 
         <div className="navIcons">
           <Link to="/wishlist" className="iconBox">

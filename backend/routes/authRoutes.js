@@ -11,6 +11,47 @@ const generateToken = (id) => {
   });
 };
 
+const protect = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized, token missing",
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id).select("-password");
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    next();
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: "Not authorized",
+    });
+  }
+};
+
+const adminOnly = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    res.status(403).json({
+      success: false,
+      message: "Admin access only",
+    });
+  }
+};
+
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -83,6 +124,91 @@ router.post("/login", async (req, res) => {
         role: user.role,
       },
       token: generateToken(user._id),
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+/* ADMIN USER MANAGEMENT */
+
+router.get("/users", protect, adminOnly, async (req, res) => {
+  try {
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.put("/users/role/:id", protect, adminOnly, async (req, res) => {
+  try {
+    const { role } = req.body;
+
+    if (!["customer", "admin"].includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid role",
+      });
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "User role updated",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.delete("/users/:id", protect, adminOnly, async (req, res) => {
+  try {
+    if (String(req.user._id) === String(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot delete your own admin account",
+      });
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    await user.deleteOne();
+
+    res.json({
+      success: true,
+      message: "User deleted successfully",
     });
   } catch (error) {
     res.status(500).json({

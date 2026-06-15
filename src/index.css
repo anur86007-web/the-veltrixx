@@ -4721,3 +4721,133 @@ button, a {
   align-items: center !important;
   justify-content: center !important;
 }
+/* ===== HOME PREMIUM LOOK ===== */
+
+.homePremiumNav {
+  background: #f8f7f4 !important;
+  border-bottom: 1px solid #e8e3d8 !important;
+  padding: 28px 34px !important;
+}
+
+.homeNavTop {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 310px 1fr 180px !important;
+  align-items: center !important;
+  gap: 34px !important;
+}
+
+.brandArea h1 {
+  font-size: 34px !important;
+  letter-spacing: 5px !important;
+}
+
+.brandArea p {
+  color: #7c7266 !important;
+  font-weight: 700 !important;
+}
+
+.topTag {
+  color: #8c8172 !important;
+  font-weight: 800 !important;
+  letter-spacing: 3px !important;
+  font-size: 12px !important;
+}
+
+.homeSearchBox {
+  max-width: 610px !important;
+  height: 58px !important;
+  background: #fff !important;
+  border: 1px solid #ded7ca !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.06) !important;
+}
+
+.homeIconBtn,
+.homeLogoutBtn {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07) !important;
+}
+
+.premiumHero {
+  background: linear-gradient(135deg, #111, #2b2925) !important;
+  color: #fff !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.12) !important;
+}
+
+.heroTag {
+  color: #c9b89c !important;
+}
+
+.premiumHeroText h1 {
+  color: #fff !important;
+}
+
+.premiumHeroText p {
+  color: #ddd !important;
+}
+
+.primaryHeroBtn {
+  background: #fff !important;
+  color: #111 !important;
+}
+
+.secondaryHeroBtn {
+  background: transparent !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+}
+
+.heroStats b {
+  color: #fff !important;
+}
+
+.heroStats span {
+  color: #cfcfcf !important;
+}
+
+.phoneShowcase {
+  box-shadow: 0 35px 90px rgba(0,0,0,.38) !important;
+}
+
+.brands {
+  max-width: 1280px !important;
+  margin: 28px auto !important;
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 26px !important;
+  padding: 22px !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,.04) !important;
+}
+
+.shopSection {
+  background: #f8f7f4 !important;
+  border-radius: 34px 34px 0 0 !important;
+  padding-top: 70px !important;
+}
+
+.sectionHead p {
+  color: #8c8172 !important;
+  font-weight: 900 !important;
+}
+
+.sectionHead h2 {
+  font-size: 52px !important;
+}
+
+.productGrid {
+  max-width: 1280px !important;
+}
+
+@media (max-width: 900px) {
+  .homeNavTop {
+    grid-template-columns: 1fr !important;
+  }
+
+  .premiumHero {
+    margin: 22px 14px 0 !important;
+  }
+
+  .sectionHead h2 {
+    font-size: 36px !important;
+  }
+}

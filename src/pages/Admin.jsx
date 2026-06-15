@@ -82,12 +82,8 @@ function Admin({ refreshProducts }) {
     });
 
     const data = await res.json();
-
-    if (Array.isArray(data)) {
-      setUsers(data);
-    } else {
-      setUsers([]);
-    }
+    if (Array.isArray(data)) setUsers(data);
+    else setUsers([]);
   };
 
   useEffect(() => {
@@ -104,6 +100,14 @@ function Admin({ refreshProducts }) {
     if (activeTab === "coupons") fetchCoupons();
     if (activeTab === "users") fetchUsers();
   }, [activeTab]);
+
+  const parsedColors = form.colorOptions
+    .split(",")
+    .map((item) => {
+      const [name, hex, image] = item.split("|").map((v) => v.trim());
+      return { name, hex, image };
+    })
+    .filter((item) => item.name && item.hex && item.image);
 
   const addColor = () => {
     if (!form.colorName || !form.colorHex || !form.colorImage) {
@@ -136,13 +140,7 @@ function Admin({ refreshProducts }) {
       .split(",")
       .map((item) => item.trim())
       .filter(Boolean),
-    colorOptions: form.colorOptions
-      .split(",")
-      .map((item) => {
-        const [name, hex, image] = item.split("|").map((v) => v.trim());
-        return { name, hex, image };
-      })
-      .filter((item) => item.name && item.hex && item.image),
+    colorOptions: parsedColors,
   });
 
   const handleSubmitProduct = async () => {
@@ -485,7 +483,8 @@ function Admin({ refreshProducts }) {
                 <p>Welcome back 👋</p>
                 <h2>THE VELTRIXX Admin Overview</h2>
                 <span>
-                  Manage products, orders, users, coupons and reviews from one place.
+                  Manage products, orders, users, coupons and reviews from one
+                  place.
                 </span>
               </div>
 
@@ -602,100 +601,163 @@ function Admin({ refreshProducts }) {
 
         {activeTab === "products" && (
           <>
-            <div className="adminBox">
+            <div className="adminBox productAdminBox">
               <h2>{editingProductId ? "Edit Product" : "Add Product"}</h2>
 
-              <input
-                placeholder="Product name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
+              <div className="productFormLayout">
+                <div className="productFormFields">
+                  <input
+                    placeholder="Product name"
+                    value={form.name}
+                    onChange={(e) =>
+                      setForm({ ...form, name: e.target.value })
+                    }
+                  />
 
-              <input
-                placeholder="Brand"
-                value={form.brand}
-                onChange={(e) => setForm({ ...form, brand: e.target.value })}
-              />
+                  <input
+                    placeholder="Brand"
+                    value={form.brand}
+                    onChange={(e) =>
+                      setForm({ ...form, brand: e.target.value })
+                    }
+                  />
 
-              <input
-                placeholder="Main Model"
-                value={form.model}
-                onChange={(e) => setForm({ ...form, model: e.target.value })}
-              />
+                  <input
+                    placeholder="Main Model"
+                    value={form.model}
+                    onChange={(e) =>
+                      setForm({ ...form, model: e.target.value })
+                    }
+                  />
 
-              <input
-                placeholder="Price"
-                value={form.price}
-                onChange={(e) => setForm({ ...form, price: e.target.value })}
-              />
+                  <input
+                    placeholder="Price"
+                    value={form.price}
+                    onChange={(e) =>
+                      setForm({ ...form, price: e.target.value })
+                    }
+                  />
 
-              <input
-                placeholder="Main Image URL"
-                value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
-              />
+                  <input
+                    placeholder="Main Image URL"
+                    value={form.image}
+                    onChange={(e) =>
+                      setForm({ ...form, image: e.target.value })
+                    }
+                  />
 
-              <input
-                placeholder="Stock"
-                value={form.stock}
-                onChange={(e) => setForm({ ...form, stock: e.target.value })}
-              />
+                  <input
+                    placeholder="Stock"
+                    value={form.stock}
+                    onChange={(e) =>
+                      setForm({ ...form, stock: e.target.value })
+                    }
+                  />
 
-              <input
-                placeholder="Description"
-                value={form.description}
-                onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
-                }
-              />
+                  <input
+                    placeholder="Description"
+                    value={form.description}
+                    onChange={(e) =>
+                      setForm({ ...form, description: e.target.value })
+                    }
+                  />
 
-              <input
-                placeholder="Available Models: iPhone 13, iPhone 14, Samsung S24"
-                value={form.availableModels}
-                onChange={(e) =>
-                  setForm({ ...form, availableModels: e.target.value })
-                }
-              />
+                  <input
+                    placeholder="Available Models: iPhone 13, iPhone 14, Samsung S24"
+                    value={form.availableModels}
+                    onChange={(e) =>
+                      setForm({ ...form, availableModels: e.target.value })
+                    }
+                  />
+                </div>
 
-              <input
-                placeholder="Color Name"
-                value={form.colorName}
-                onChange={(e) =>
-                  setForm({ ...form, colorName: e.target.value })
-                }
-              />
+                <div className="imagePreviewBox">
+                  <h3>Main Image Preview</h3>
 
-              <input
-                type="color"
-                value={form.colorHex}
-                onChange={(e) =>
-                  setForm({ ...form, colorHex: e.target.value })
-                }
-              />
+                  {form.image ? (
+                    <img src={form.image} alt="Product preview" />
+                  ) : (
+                    <div className="emptyPreview">No image preview</div>
+                  )}
 
-              <input
-                placeholder="Color Image URL"
-                value={form.colorImage}
-                onChange={(e) =>
-                  setForm({ ...form, colorImage: e.target.value })
-                }
-              />
+                  <p>{form.name || "Product name will appear here"}</p>
+                  <strong>{form.price ? `₹${form.price}` : "₹0"}</strong>
+                </div>
+              </div>
 
-              <button type="button" onClick={addColor}>
-                Add Color
-              </button>
+              <div className="colorManagerBox">
+                <h3>Color Options</h3>
 
-              <p>Added Colors: {form.colorOptions || "No colors added"}</p>
+                <div className="colorInputGrid">
+                  <input
+                    placeholder="Color Name"
+                    value={form.colorName}
+                    onChange={(e) =>
+                      setForm({ ...form, colorName: e.target.value })
+                    }
+                  />
 
-              <button onClick={handleSubmitProduct}>
-                {editingProductId ? "Update Product" : "Add Product"}
-              </button>
+                  <input
+                    type="color"
+                    value={form.colorHex}
+                    onChange={(e) =>
+                      setForm({ ...form, colorHex: e.target.value })
+                    }
+                  />
 
-              {editingProductId && (
-                <button type="button" className="dangerBtn" onClick={cancelEdit}>
-                  Cancel Edit
+                  <input
+                    placeholder="Color Image URL"
+                    value={form.colorImage}
+                    onChange={(e) =>
+                      setForm({ ...form, colorImage: e.target.value })
+                    }
+                  />
+
+                  <button type="button" onClick={addColor}>
+                    Add Color
+                  </button>
+                </div>
+
+                {form.colorImage && (
+                  <div className="singleColorPreview">
+                    <span style={{ backgroundColor: form.colorHex }}></span>
+                    <img src={form.colorImage} alt="Color preview" />
+                    <p>{form.colorName || "Color name"}</p>
+                  </div>
+                )}
+
+                <div className="addedColorPreviewGrid">
+                  {parsedColors.length === 0 ? (
+                    <p>No colors added</p>
+                  ) : (
+                    parsedColors.map((color, index) => (
+                      <div className="addedColorCard" key={index}>
+                        <img src={color.image} alt={color.name} />
+                        <div>
+                          <span style={{ backgroundColor: color.hex }}></span>
+                          <p>{color.name}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="adminProductActions">
+                <button onClick={handleSubmitProduct}>
+                  {editingProductId ? "Update Product" : "Add Product"}
                 </button>
-              )}
+
+                {editingProductId && (
+                  <button
+                    type="button"
+                    className="dangerBtn"
+                    onClick={cancelEdit}
+                  >
+                    Cancel Edit
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="adminProductList">
@@ -720,19 +782,17 @@ function Admin({ refreshProducts }) {
 
                       <div className="adminColorList">
                         <b>Colors:</b>{" "}
-                        {item.colorOptions?.length ? (
-                          item.colorOptions.map((color) => (
-                            <span key={color.name} className="adminColorChip">
-                              <span
-                                className="adminColorDot"
-                                style={{ backgroundColor: color.hex }}
-                              ></span>
-                              {color.name}
-                            </span>
-                          ))
-                        ) : (
-                          "Not added"
-                        )}
+                        {item.colorOptions?.length
+                          ? item.colorOptions.map((color) => (
+                              <span key={color.name} className="adminColorChip">
+                                <span
+                                  className="adminColorDot"
+                                  style={{ backgroundColor: color.hex }}
+                                ></span>
+                                {color.name}
+                              </span>
+                            ))
+                          : "Not added"}
                       </div>
                     </div>
 

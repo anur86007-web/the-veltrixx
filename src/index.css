@@ -5115,21 +5115,21 @@ button, a {
   left: 20px !important;
   top: 70px !important;
   transform: rotate(-10deg) !important;
-  background-image: url("https://images.unsplash.com/photo-1601593346740-925612772716?w=900") !important;
+  background-image: url("https://i0.wp.com/zapvi.in/wp-content/uploads/2025/12/APPLEIPHONE15PRO-3.jpg?fit=1080%2C1440&quality=100&ssl=1") !important;
 }
 
 .cardB {
   left: 150px !important;
   top: 25px !important;
   z-index: 2 !important;
-  background-image: url("https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=900") !important;
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbqX3lpdijgfkxL-q-knFqkxuB7blfIoPp3g&s") !important;
 }
 
 .cardC {
   right: 10px !important;
   top: 115px !important;
   transform: rotate(10deg) !important;
-  background-image: url("https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=900") !important;
+  background-image: url("https://m.media-amazon.com/images/I/41GpFXV3+PL._AC_UF1000,1000_QL80_.jpg") !important;
 }
 
 .heroPhoneCard:hover {

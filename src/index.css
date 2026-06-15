@@ -2569,70 +2569,178 @@ button, a {
   outline-offset: 4px !important;
   border-color: #fff !important;
 }
-.heroBanner{
-  position:relative;
-  height:500px;
-  overflow:hidden;
+.premiumHero {
+  max-width: 1280px;
+  margin: 34px auto 0;
+  padding: 70px 32px;
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: 50px;
+  align-items: center;
+  background: linear-gradient(135deg, #0d0d0d, #1b1b1b);
+  border-radius: 34px;
+  color: #fff;
+  overflow: hidden;
 }
 
-.heroSlider{
-  display:flex;
-  width:300%;
-  height:100%;
-  animation:slideHero 15s infinite;
+.heroTag {
+  color: #d4af37;
+  font-weight: 800;
+  letter-spacing: 3px;
+  font-size: 13px;
 }
 
-.slide{
-  width:100%;
-  height:100%;
-  background-size:cover;
-  background-position:center;
-  flex-shrink:0;
+.premiumHeroText h1 {
+  font-size: 58px;
+  line-height: 1.05;
+  margin: 18px 0;
 }
 
-.slide1{
-  background-image:url("https://images.unsplash.com/photo-1601593346740-925612772716?w=1600");
+.premiumHeroText p {
+  font-size: 18px;
+  color: #d6d6d6;
+  max-width: 560px;
+  line-height: 1.7;
 }
 
-.slide2{
-  background-image:url("https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1600");
+.heroButtons {
+  display: flex;
+  gap: 14px;
+  margin: 28px 0;
 }
 
-.slide3{
-  background-image:url("https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=1600");
+.primaryHeroBtn,
+.secondaryHeroBtn {
+  padding: 14px 26px;
+  border-radius: 999px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
-@keyframes slideHero{
-  0%,25%{
-    transform:translateX(0%);
+.primaryHeroBtn {
+  background: #d4af37;
+  color: #111;
+}
+
+.secondaryHeroBtn {
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.heroStats {
+  display: flex;
+  gap: 26px;
+  margin-top: 34px;
+}
+
+.heroStats div {
+  display: flex;
+  flex-direction: column;
+}
+
+.heroStats b {
+  font-size: 22px;
+  color: #d4af37;
+}
+
+.heroStats span {
+  font-size: 13px;
+  color: #bbb;
+}
+
+.premiumHeroVisual {
+  height: 430px;
+  position: relative;
+}
+
+.phoneShowcase {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
+}
+
+.phoneSlide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: translateX(60px) scale(1.04);
+  animation: premiumPhoneSlider 16s infinite;
+}
+
+.phoneSlide1 {
+  background-image: url("https://images.unsplash.com/photo-1601593346740-925612772716?w=1000");
+  animation-delay: 0s;
+}
+
+.phoneSlide2 {
+  background-image: url("https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1000");
+  animation-delay: 4s;
+}
+
+.phoneSlide3 {
+  background-image: url("https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=1000");
+  animation-delay: 8s;
+}
+
+.phoneSlide4 {
+  background-image: url("https://images.unsplash.com/photo-1580910051074-3eb694886505?w=1000");
+  animation-delay: 12s;
+}
+
+@keyframes premiumPhoneSlider {
+  0% {
+    opacity: 0;
+    transform: translateX(80px) scale(1.05);
   }
 
-  33%,58%{
-    transform:translateX(-33.33%);
+  8%, 25% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 
-  66%,91%{
-    transform:translateX(-66.66%);
-  }
-
-  100%{
-    transform:translateX(0%);
+  33%, 100% {
+    opacity: 0;
+    transform: translateX(-80px) scale(1.04);
   }
 }
 
-.heroOverlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.55);
+.trustStrip {
+  max-width: 1280px;
+  margin: 18px auto 40px;
+  padding: 18px 24px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 22px;
+  display: flex;
+  justify-content: space-around;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-weight: 800;
+  box-shadow: 0 12px 30px rgba(0,0,0,.05);
 }
 
-.heroContent{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  z-index:2;
+@media (max-width: 900px) {
+  .premiumHero {
+    grid-template-columns: 1fr;
+    padding: 46px 22px;
+    border-radius: 24px;
+  }
+
+  .premiumHeroText h1 {
+    font-size: 38px;
+  }
+
+  .premiumHeroVisual {
+    height: 330px;
+  }
+
+  .heroStats {
+    flex-wrap: wrap;
+  }
 }

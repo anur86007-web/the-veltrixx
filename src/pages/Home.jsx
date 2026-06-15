@@ -3,7 +3,15 @@ import { Search, ShoppingBag, Heart, User, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
-function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlist }) {
+function Home({
+  user,
+  logout,
+  products,
+  cart,
+  wishlist,
+  addToCart,
+  toggleWishlist,
+}) {
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [search, setSearch] = useState("");
   const [history, setHistory] = useState([]);
@@ -11,8 +19,13 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
   useEffect(() => {
     const decreaseHandler = (e) => {
       const cartData = JSON.parse(localStorage.getItem("veltrixx_cart")) || [];
+
       const updated = cartData
-        .map((item) => (item._id || item.id) === e.detail ? { ...item, qty: item.qty - 1 } : item)
+        .map((item) =>
+          (item._id || item.id) === e.detail
+            ? { ...item, qty: item.qty - 1 }
+            : item
+        )
         .filter((item) => item.qty > 0);
 
       localStorage.setItem("veltrixx_cart", JSON.stringify(updated));
@@ -23,10 +36,20 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
     return () => window.removeEventListener("decrease-cart", decreaseHandler);
   }, []);
 
-  const brands = ["All", "iPhone", "Samsung", "OnePlus", "Vivo", "Oppo", "Realme", "Redmi"];
+  const brands = [
+    "All",
+    "iPhone",
+    "Samsung",
+    "OnePlus",
+    "Vivo",
+    "Oppo",
+    "Realme",
+    "Redmi",
+  ];
 
   const handleSearch = (value) => {
     setSearch(value);
+
     const cleanValue = value.trim();
 
     if (cleanValue.length > 1 && !history.includes(cleanValue)) {
@@ -51,16 +74,19 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
     return brandMatch && searchMatch;
   });
 
-  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+  const cartCount = cart.reduce((sum, item) => sum + Number(item.qty || 1), 0);
 
   return (
     <>
       <nav className="navbar">
-        <Link to="/" className="logo">THE VELTRIXX</Link>
+        <Link to="/" className="logo">
+          THE VELTRIXX
+        </Link>
 
         <div className="searchArea">
           <div className="searchBox">
             <Search size={18} />
+
             <input
               placeholder="Search iPhone, Samsung, Carbon..."
               value={search}
@@ -102,42 +128,60 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
         </div>
       </nav>
 
-      <section className="heroBanner">
+      <section className="premiumHero">
+        <div className="premiumHeroText">
+          <span className="heroTag">THE VELTRIXX COLLECTION</span>
 
-  <div className="heroSlider">
-    <div className="slide slide1"></div>
-    <div className="slide slide2"></div>
-    <div className="slide slide3"></div>
-  </div>
+          <h1>Premium Phone Cases For Every Style</h1>
 
-  <div className="heroOverlay"></div>
+          <p>
+            Protect. Personalize. Stand Out. Discover stylish and durable phone
+            cases crafted for your everyday lifestyle.
+          </p>
 
-  <div className="heroContent">
-    <h1>Premium Custom Phone Cases</h1>
+          <div className="heroButtons">
+            <a href="#products" className="primaryHeroBtn">
+              Shop Collection
+            </a>
 
-    <p>
-      Protect Your Phone In Style with Premium Quality Cases
-    </p>
+            <Link to="/contact" className="secondaryHeroBtn">
+              Custom Order
+            </Link>
+          </div>
 
-    <div className="heroFeatures">
-      <span>✔ High Quality Prints</span>
-      <span>✔ Fast Delivery</span>
-      <span>✔ Premium Protection</span>
-    </div>
+          <div className="heroStats">
+            <div>
+              <b>500+</b>
+              <span>Happy Customers</span>
+            </div>
 
-    <a href="#products" className="shopNowBtn">
-      Shop Now
-    </a>
-  </div>
+            <div>
+              <b>Pan India</b>
+              <span>Delivery</span>
+            </div>
 
-</section>
+            <div>
+              <b>Premium</b>
+              <span>Protection</span>
+            </div>
+          </div>
+        </div>
 
-      <section className="hero">
-        <p>Premium Phone Cases</p>
-        <h1>Minimal protection for modern phones.</h1>
-        <button onClick={() => window.scrollTo({ top: 650, behavior: "smooth" })}>
-          Shop Collection
-        </button>
+        <div className="premiumHeroVisual">
+          <div className="phoneShowcase">
+            <div className="phoneSlide phoneSlide1"></div>
+            <div className="phoneSlide phoneSlide2"></div>
+            <div className="phoneSlide phoneSlide3"></div>
+            <div className="phoneSlide phoneSlide4"></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="trustStrip">
+        <span>🚚 Fast Delivery</span>
+        <span>💬 WhatsApp Support</span>
+        <span>🛡 Premium Protection</span>
+        <span>🎨 Custom Designs</span>
       </section>
 
       <section className="brands">
@@ -152,10 +196,13 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
         ))}
       </section>
 
-      <section className="shopSection">
+      <section className="shopSection" id="products">
         <div className="sectionHead">
           <p>THE COLLECTION</p>
-          <h2>{selectedBrand === "All" ? "All Phone Cases" : `${selectedBrand} Cases`}</h2>
+
+          <h2>
+            {selectedBrand === "All" ? "All Phone Cases" : `${selectedBrand} Cases`}
+          </h2>
         </div>
 
         {filteredProducts.length === 0 ? (

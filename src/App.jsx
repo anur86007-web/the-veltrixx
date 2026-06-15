@@ -217,7 +217,7 @@ function App() {
     navigate("/");
   };
 
-  const hideFloatingCartRoutes = ["/cart", "/payment"];
+  const hideFloatingCartRoutes = ["/cart", "/payment", "/admin"];
   const showFloatingCart =
     cart.length > 0 && !hideFloatingCartRoutes.includes(location.pathname);
 

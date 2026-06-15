@@ -4522,3 +4522,194 @@ button, a {
     height: 360px !important;
   }
 }
+.premiumContactPage {
+  background: #f8f7f4 !important;
+  min-height: 100vh !important;
+  padding: 42px 20px 80px !important;
+}
+
+.contactHero,
+.contactMainGrid,
+.contactSupportStrip {
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.contactHero {
+  text-align: center !important;
+  padding: 70px 24px !important;
+  background: linear-gradient(135deg, #111, #2b2925) !important;
+  color: #fff !important;
+  border-radius: 34px !important;
+}
+
+.contactHero span {
+  color: #c9b89c !important;
+  font-weight: 900 !important;
+  letter-spacing: 3px !important;
+  font-size: 13px !important;
+}
+
+.contactHero h1 {
+  font-size: 60px !important;
+  margin: 16px 0 !important;
+}
+
+.contactHero p {
+  max-width: 720px !important;
+  margin: auto !important;
+  color: #ddd !important;
+  line-height: 1.8 !important;
+  font-size: 18px !important;
+}
+
+.contactMainGrid {
+  margin-top: 30px !important;
+  display: grid !important;
+  grid-template-columns: 0.9fr 1.1fr !important;
+  gap: 28px !important;
+}
+
+.contactInfoPanel,
+.contactFormPanel {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 30px !important;
+  padding: 36px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.045) !important;
+}
+
+.contactInfoPanel h2,
+.contactFormPanel h2 {
+  font-size: 34px !important;
+  margin: 0 0 12px !important;
+}
+
+.contactInfoPanel > p,
+.contactFormHeader p {
+  color: #666 !important;
+  line-height: 1.8 !important;
+}
+
+.contactInfoList {
+  margin-top: 28px !important;
+  display: grid !important;
+  gap: 16px !important;
+}
+
+.contactInfoItem {
+  text-decoration: none !important;
+  color: #111 !important;
+  border: 1px solid #eee !important;
+  background: #fafafa !important;
+  border-radius: 22px !important;
+  padding: 18px !important;
+  display: flex !important;
+  gap: 16px !important;
+  align-items: center !important;
+  transition: 0.25s ease !important;
+}
+
+.contactInfoItem:hover {
+  background: #111 !important;
+  color: #fff !important;
+  transform: translateY(-4px) !important;
+}
+
+.contactInfoItem h3 {
+  margin: 0 0 5px !important;
+}
+
+.contactInfoItem p {
+  margin: 0 !important;
+  color: inherit !important;
+}
+
+.contactFormHeader {
+  display: flex !important;
+  gap: 14px !important;
+  align-items: center !important;
+  margin-bottom: 24px !important;
+}
+
+.contactFormPanel form {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+.contactFormPanel input,
+.contactFormPanel textarea {
+  width: 100% !important;
+  border: 1px solid #ddd8ce !important;
+  border-radius: 18px !important;
+  padding: 16px 18px !important;
+  font-size: 15px !important;
+  outline: none !important;
+  background: #fff !important;
+}
+
+.contactFormPanel textarea {
+  min-height: 150px !important;
+  resize: none !important;
+}
+
+.contactFormPanel input:focus,
+.contactFormPanel textarea:focus {
+  border-color: #111 !important;
+}
+
+.contactFormPanel button {
+  border: none !important;
+  background: #111 !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 16px 24px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+}
+
+.contactSupportStrip {
+  margin-top: 28px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 18px !important;
+}
+
+.contactSupportStrip div {
+  background: #fff !important;
+  border: 1px solid #e9e6df !important;
+  border-radius: 24px !important;
+  padding: 26px !important;
+  text-align: center !important;
+}
+
+.contactSupportStrip h3 {
+  margin: 12px 0 6px !important;
+}
+
+.contactSupportStrip p {
+  color: #666 !important;
+  margin: 0 !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 900px) {
+  .contactMainGrid,
+  .contactSupportStrip {
+    grid-template-columns: 1fr !important;
+  }
+
+  .contactHero h1 {
+    font-size: 40px !important;
+  }
+
+  .contactInfoPanel,
+  .contactFormPanel {
+    padding: 24px !important;
+  }
+}

@@ -6098,3 +6098,117 @@ body {
     font-size: 14px !important;
   }
 }
+/* ===== MOBILE ONLY PREMIUM LOOK ===== */
+@media (max-width: 600px) {
+  .shopSection {
+    padding: 24px 14px 50px !important;
+    background: #f7f7f5 !important;
+  }
+
+  .sectionHead {
+    margin-bottom: 22px !important;
+  }
+
+  .sectionHead h2 {
+    font-size: 28px !important;
+    line-height: 1.15 !important;
+  }
+
+  .productGrid,
+  .productsGrid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .productCard,
+  .product-card {
+    width: 100% !important;
+    border-radius: 18px !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.07) !important;
+    overflow: hidden !important;
+  }
+
+  .productImage {
+    height: 190px !important;
+  }
+
+  .productImage img {
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .productInfo {
+    padding: 14px 15px 16px !important;
+  }
+
+  .productInfo .brand {
+    font-size: 11px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .productInfo h3 {
+    font-size: 19px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .cardColorPreview {
+    margin: 8px 0 !important;
+  }
+
+  .cardColorDot {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .selectedColorText {
+    font-size: 12px !important;
+    margin: 4px 0 8px !important;
+  }
+
+  .modelSelect {
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+    border-radius: 12px !important;
+  }
+
+  .rating {
+    font-size: 13px !important;
+    margin-top: 8px !important;
+  }
+
+  .priceRow {
+    margin-top: 12px !important;
+  }
+
+  .priceRow h4 {
+    font-size: 23px !important;
+  }
+
+  .priceRow button {
+    padding: 10px 16px !important;
+    font-size: 13px !important;
+  }
+
+  .quickViewBtn {
+    margin-top: 10px !important;
+    padding: 10px !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+  }
+
+  .stockBadge {
+    top: 12px !important;
+    left: 12px !important;
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+  }
+
+  .wishBtn {
+    top: 12px !important;
+    right: 12px !important;
+    width: 38px !important;
+    height: 38px !important;
+  }
+}

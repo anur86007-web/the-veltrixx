@@ -16,6 +16,7 @@ function Admin({ refreshProducts }) {
   const [userSearch, setUserSearch] = useState("");
   const [editingProductId, setEditingProductId] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [orderStatusDraft, setOrderStatusDraft] = useState({});
 
   const token = localStorage.getItem("veltrixx_token");
 
@@ -345,7 +346,7 @@ function Admin({ refreshProducts }) {
   const deleteProduct = async (id) => {
     if (!window.confirm("Delete this product?")) return;
 
-  const updateOrderStatus = async (orderId, orderStatus) => {
+  cconst updateOrderStatus = async (orderId, orderStatus) => {
   try {
     const res = await fetch(`${ORDER_API}/${orderId}/status`, {
       method: "PUT",
@@ -363,7 +364,7 @@ function Admin({ refreshProducts }) {
       return;
     }
 
-    alert("Order status updated");
+    alert("Order status updated successfully");
     fetchOrders();
   } catch (error) {
     console.log("Update order error:", error);
@@ -978,10 +979,13 @@ function Admin({ refreshProducts }) {
 
   <div className="orderUpdateRow">
     <select
-      defaultValue={order.orderStatus || "Order Placed"}
-      onChange={(e) => {
-        order.newStatus = e.target.value;
-      }}
+      value={orderStatusDraft[order._id] || order.orderStatus || "Order Placed"}
+      onChange={(e) =>
+        setOrderStatusDraft({
+          ...orderStatusDraft,
+          [order._id]: e.target.value,
+        })
+      }
     >
       <option value="Order Placed">Order Placed</option>
       <option value="Processing">Processing</option>
@@ -997,7 +1001,7 @@ function Admin({ refreshProducts }) {
       onClick={() =>
         updateOrderStatus(
           order._id,
-          order.newStatus || order.orderStatus || "Order Placed"
+          orderStatusDraft[order._id] || order.orderStatus || "Order Placed"
         )
       }
     >

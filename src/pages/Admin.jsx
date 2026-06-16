@@ -66,7 +66,6 @@ function Admin({ refreshProducts }) {
     if (!files || files.length === 0) return [];
 
     const formData = new FormData();
-
     Array.from(files).forEach((file) => {
       formData.append("images", file);
     });
@@ -157,7 +156,10 @@ function Admin({ refreshProducts }) {
     try {
       const res = await fetch(COUPON_API);
       const data = await res.json();
-      if (data.success) setCoupons(data.coupons || []);
+
+      if (data.success) {
+        setCoupons(data.coupons || []);
+      }
     } catch (error) {
       console.log("Fetch coupons error:", error);
     }
@@ -362,13 +364,13 @@ function Admin({ refreshProducts }) {
   };
 
   const handleCreateCoupon = async () => {
-    if (!couponForm.code || !couponForm.discountValue) {
-      alert("Please fill coupon code and discount value");
+    if (!couponForm.code || !couponForm.discountValue || !couponForm.expiryDate) {
+      alert("Please fill coupon code, discount value and expiry date");
       return;
     }
 
     try {
-      const res = await fetch(COUPON_API, {
+      const res = await fetch(`${COUPON_API}/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -381,7 +383,8 @@ function Admin({ refreshProducts }) {
           minOrderAmount: Number(couponForm.minOrderAmount) || 0,
           maxDiscountAmount: Number(couponForm.maxDiscountAmount) || 0,
           usageLimit: Number(couponForm.usageLimit) || 0,
-          expiryDate: couponForm.expiryDate || null,
+          expiryDate: couponForm.expiryDate,
+          isActive: true,
         }),
       });
 
@@ -435,7 +438,13 @@ function Admin({ refreshProducts }) {
         <div className="adminHeader">
           <div>
             <p>Admin Control Panel</p>
-            <h1>{activeTab === "products" ? "Products" : "Dashboard"}</h1>
+            <h1>
+              {activeTab === "products"
+                ? "Products"
+                : activeTab === "coupons"
+                ? "Coupons"
+                : "Dashboard"}
+            </h1>
           </div>
 
           <button onClick={() => setActiveTab("products")}>+ Add Product</button>
@@ -987,15 +996,9 @@ function Admin({ refreshProducts }) {
                       <p>
                         {coupon.discountType} - {coupon.discountValue}
                       </p>
-                      <p>
-                        Min Order: ₹{coupon.minOrderAmount || 0}
-                      </p>
-                      <p>
-                        Max Discount: ₹{coupon.maxDiscountAmount || 0}
-                      </p>
-                      <p>
-                        Usage Limit: {coupon.usageLimit || "Unlimited"}
-                      </p>
+                      <p>Min Order: ₹{coupon.minOrderAmount || 0}</p>
+                      <p>Max Discount: ₹{coupon.maxDiscountAmount || 0}</p>
+                      <p>Usage Limit: {coupon.usageLimit || "Unlimited"}</p>
                       <p>
                         Expiry:{" "}
                         {coupon.expiryDate

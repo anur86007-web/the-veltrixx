@@ -882,21 +882,50 @@ function Admin({ refreshProducts }) {
       </div>
     ) : (
       <div className="adminProductList">
-        {orders.map((order) => (
-          <div className="adminProduct" key={order._id}>
-            <div>
-              <h3>Order #{order._id?.slice(-6)}</h3>
+        <div className="adminOrdersGrid">
+  {orders.map((order) => (
+    <div className="orderCard" key={order._id}>
+      <div className="orderCardHeader">
+        <h3>Order #{order._id?.slice(-6)}</h3>
 
-              <p><b>Customer:</b> {order.customer?.name || "N/A"}</p>
-              <p><b>Phone:</b> {order.customer?.phone || "N/A"}</p>
-              <p><b>Total:</b> ₹{order.total || 0}</p>
-              <p><b>Payment Method:</b> {order.paymentMethod || "N/A"}</p>
-              <p><b>Payment Status:</b> {order.paymentStatus || "N/A"}</p>
-              <p><b>Order Status:</b> {order.orderStatus || "Order Placed"}</p>
-              <p><b>Coupon:</b> {order.couponCode || "No coupon"}</p>
-            </div>
-          </div>
-        ))}
+        <span className="orderStatus">
+          {order.orderStatus || "Order Placed"}
+        </span>
+      </div>
+
+      <div className="orderCardBody">
+        <p>
+          <strong>Customer:</strong>{" "}
+          {order.customer?.name || "N/A"}
+        </p>
+
+        <p>
+          <strong>Phone:</strong>{" "}
+          {order.customer?.phone || "N/A"}
+        </p>
+
+        <p>
+          <strong>Total:</strong> ₹{order.total || 0}
+        </p>
+
+        <p>
+          <strong>Payment:</strong>{" "}
+          {order.paymentMethod || "N/A"}
+        </p>
+
+        <p>
+          <strong>Payment Status:</strong>{" "}
+          {order.paymentStatus || "Pending"}
+        </p>
+
+        <p>
+          <strong>Coupon:</strong>{" "}
+          {order.couponCode || "No Coupon"}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
       </div>
     )}
   </div>

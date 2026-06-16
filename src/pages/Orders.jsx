@@ -339,7 +339,7 @@ function Orders() {
                         key={index}
                         onClick={() => {
                           localStorage.setItem(
-                            "veltrixx_order_product_item",
+                            "veltrixx_order_product",
                             JSON.stringify(item)
                           );
                         }}

@@ -215,16 +215,62 @@ function ProductDetails({ products = [], addToCart }) {
   }
 
   if (!product) {
+  const savedOrderProduct = JSON.parse(
+    localStorage.getItem("veltrixx_order_product") || "null"
+  );
+
+  if (savedOrderProduct) {
     return (
       <div className="productDetailsPage">
-        <div className="detailsLoadingBox">
-          <h1>Product not found</h1>
-          <p>This product may have been removed or changed.</p>
-          <Link to="/">Back to home</Link>
+        <div className="productDetailsInner">
+          <Link to="/orders" className="backLink">
+            ← Back to orders
+          </Link>
+
+          <div className="premiumDetailsGrid">
+            <div className="detailsGallery">
+              <div className="mainDetailsImage amazonMainImage">
+                <img
+                  src={savedOrderProduct.selectedImage || savedOrderProduct.image}
+                  alt={savedOrderProduct.name}
+                />
+              </div>
+            </div>
+
+            <div className="premiumDetailsInfo">
+              <span className="detailsBrandTag">
+                {savedOrderProduct.brand} •{" "}
+                {savedOrderProduct.selectedModel || savedOrderProduct.model}
+              </span>
+
+              <h1>{savedOrderProduct.name}</h1>
+
+              <h2>₹{savedOrderProduct.price}</h2>
+
+              <p className="detailsDesc">
+                This product was part of your order. It may have been removed or updated from the live store.
+              </p>
+
+              <Link to="/">
+                <button className="detailsAddCartBtn">Continue Shopping</button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
+
+  return (
+    <div className="productDetailsPage">
+      <div className="detailsLoadingBox">
+        <h1>Product not found</h1>
+        <p>This product may have been removed or changed.</p>
+        <Link to="/">Back to home</Link>
+      </div>
+    </div>
+  );
+}
 
   const mainImage = selectedImage || product.image;
 

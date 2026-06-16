@@ -4,6 +4,10 @@ const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
+/* ==========================
+   ADD REVIEW
+========================== */
+
 router.post("/", protect, async (req, res) => {
   try {
     const { product, rating, comment } = req.body;
@@ -30,7 +34,7 @@ router.post("/", protect, async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Review added",
+      message: "Review added successfully",
       review,
     });
   } catch (error) {
@@ -40,6 +44,10 @@ router.post("/", protect, async (req, res) => {
     });
   }
 });
+
+/* ==========================
+   PRODUCT REVIEWS
+========================== */
 
 router.get("/product/:productId", async (req, res) => {
   try {
@@ -59,15 +67,20 @@ router.get("/product/:productId", async (req, res) => {
   }
 });
 
+/* ==========================
+   ADMIN - ALL REVIEWS
+========================== */
+
 router.get("/admin/all", protect, async (req, res) => {
   try {
     const reviews = await Review.find()
       .populate("user", "name email")
-      .populate("product", "name brand model")
+      .populate("product", "name brand model image")
       .sort({ createdAt: -1 });
 
     res.json({
       success: true,
+      totalReviews: reviews.length,
       reviews,
     });
   } catch (error) {
@@ -78,13 +91,26 @@ router.get("/admin/all", protect, async (req, res) => {
   }
 });
 
+/* ==========================
+   ADMIN DELETE REVIEW
+========================== */
+
 router.delete("/admin/delete/:id", protect, async (req, res) => {
   try {
+    const review = await Review.findById(req.params.id);
+
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+
     await Review.findByIdAndDelete(req.params.id);
 
     res.json({
       success: true,
-      message: "Review deleted",
+      message: "Review deleted successfully",
     });
   } catch (error) {
     res.status(500).json({

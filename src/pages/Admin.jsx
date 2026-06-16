@@ -769,6 +769,37 @@ function Admin({ refreshProducts }) {
     if (refreshProducts) refreshProducts();
   };
 
+
+  const deleteReview = async (reviewId) => {
+    if (!window.confirm("Delete this review?")) return;
+
+    try {
+      const res = await fetch(
+        `https://the-veltrixx-backend.onrender.com/api/reviews/admin/delete/${reviewId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || "Review delete failed");
+        return;
+      }
+
+      alert("Review deleted successfully");
+      fetchReviews();
+    } catch (error) {
+      console.log("Delete review error:", error);
+      alert("Something went wrong while deleting review");
+    }
+  };
+
+
   const handleCreateCoupon = async () => {
     if (!couponForm.code || !couponForm.discountValue || !couponForm.expiryDate) {
       alert("Please fill coupon code, discount value and expiry date");
@@ -1423,10 +1454,71 @@ function Admin({ refreshProducts }) {
 
         {activeTab === "reviews" && (
           <div className="adminBox">
-            <div className="adminEmptyState">
-              <h2>No Reviews Yet</h2>
-              <p>Customer reviews will appear here.</p>
+            <div className="reviewsHeader">
+              <div>
+                <h2>Customer Reviews</h2>
+                <p>Monitor product ratings, feedback and customer experience.</p>
+              </div>
+
+              <span className="reviewCountBadge">
+                {reviews.length} Review{reviews.length > 1 ? "s" : ""}
+              </span>
             </div>
+
+            {reviews.length === 0 ? (
+              <div className="adminEmptyState">
+                <h2>No Reviews Yet</h2>
+                <p>Customer reviews will appear here after users rate delivered products.</p>
+              </div>
+            ) : (
+              <div className="adminReviewsGrid">
+                {reviews.map((review) => (
+                  <div className="adminReviewCard" key={review._id}>
+                    <div className="reviewCardTop">
+                      <div>
+                        <h3>{review.product?.name || "Product"}</h3>
+                        <p>
+                          {review.product?.brand || "N/A"} •{" "}
+                          {review.product?.model || "N/A"}
+                        </p>
+                      </div>
+
+                      <span className="reviewRatingBadge">
+                        ⭐ {review.rating || 0}/5
+                      </span>
+                    </div>
+
+                    <div className="reviewCustomerBox">
+                      <p>
+                        <b>Customer:</b>{" "}
+                        {review.user?.name || review.name || "Customer"}
+                      </p>
+                      <p>
+                        <b>Email:</b> {review.user?.email || "N/A"}
+                      </p>
+                      <p>
+                        <b>Date:</b>{" "}
+                        {review.createdAt
+                          ? new Date(review.createdAt).toLocaleString()
+                          : "N/A"}
+                      </p>
+                    </div>
+
+                    <div className="reviewCommentBox">
+                      <p>{review.comment || "No comment provided."}</p>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="deleteReviewBtn"
+                      onClick={() => deleteReview(review._id)}
+                    >
+                      Delete Review
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

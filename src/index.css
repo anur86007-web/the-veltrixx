@@ -7571,13 +7571,31 @@ body {
 }
 
 .premiumDetailsInfo h1 {
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: clamp(28px, 3vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
   color: #111;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   letter-spacing: -1px;
-  max-width: 700px;
+  max-width: 600px;
+  word-break: break-word;
+}
+.premiumDetailsInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 30px;
+}
+
+@media (max-width: 768px) {
+  .premiumDetailsInfo h1 {
+    font-size: 30px;
+    max-width: 100%;
+  }
+
+  .premiumDetailsInfo {
+    padding-left: 0;
+  }
 }
 
 .detailsRatingRow {

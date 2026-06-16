@@ -8771,3 +8771,55 @@ body {
     margin-top: 18px !important;
   }
 }
+/* SAFE RESPONSIVE PRODUCT DETAILS TYPOGRAPHY */
+
+.premiumDetailsInfo h1 {
+  font-size: clamp(32px, 4vw, 54px) !important;
+  line-height: 1.12 !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.8px !important;
+  margin-bottom: 14px !important;
+}
+
+.premiumDetailsInfo h2 {
+  font-size: clamp(28px, 3vw, 40px) !important;
+  line-height: 1.1 !important;
+  margin-bottom: 18px !important;
+}
+
+.detailsBrandTag {
+  font-size: clamp(12px, 1vw, 15px) !important;
+  letter-spacing: 3px !important;
+}
+
+.detailsDesc {
+  font-size: clamp(14px, 1.2vw, 17px) !important;
+  line-height: 1.7 !important;
+  max-width: 620px !important;
+}
+
+.productOptionsBox h3,
+.colorSelectorBox h3 {
+  font-size: clamp(18px, 1.5vw, 22px) !important;
+}
+
+/* Mobile safe */
+@media (max-width: 768px) {
+  .premiumDetailsInfo h1 {
+    font-size: 30px !important;
+    line-height: 1.18 !important;
+  }
+
+  .premiumDetailsInfo h2 {
+    font-size: 28px !important;
+  }
+
+  .detailsBrandTag {
+    font-size: 12px !important;
+    letter-spacing: 2px !important;
+  }
+
+  .detailsDesc {
+    font-size: 14px !important;
+  }
+}

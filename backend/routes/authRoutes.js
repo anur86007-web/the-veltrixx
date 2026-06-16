@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const User = require("../models/User");
 
 const router = express.Router();
@@ -129,6 +130,115 @@ router.post("/login", async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+});
+
+/* FORGOT PASSWORD */
+
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "No account found with this email",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+
+    await user.save();
+
+    const frontendUrl =
+      process.env.FRONTEND_URL || "https://theveltrixx.co.in";
+
+    const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
+
+    res.json({
+      success: true,
+      message: "Password reset link generated successfully",
+      resetUrl,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Forgot password failed",
+      error: error.message,
+    });
+  }
+});
+
+/* RESET PASSWORD */
+
+router.put("/reset-password/:token", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password || password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters",
+      });
+    }
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Reset link is invalid or expired",
+      });
+    }
+
+    user.password = await bcrypt.hash(password, 10);
+    user.resetPasswordToken = "";
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Password reset successful. You are logged in.",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Password reset failed",
+      error: error.message,
     });
   }
 });

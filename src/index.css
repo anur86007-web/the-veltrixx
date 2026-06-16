@@ -8823,3 +8823,115 @@ body {
     font-size: 14px !important;
   }
 }
+
+/* ================================
+   Forgot / Reset Password Premium UI
+   THE VELTRIXX
+================================ */
+
+.premiumForgotBox {
+  max-width: 460px !important;
+  padding: 42px 38px !important;
+  border-radius: 30px !important;
+  background: #ffffff !important;
+  border: 1px solid #ececec !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.08) !important;
+}
+
+.premiumForgotBox h1 {
+  font-size: 34px !important;
+  margin-bottom: 12px !important;
+  color: #111 !important;
+  letter-spacing: -0.8px !important;
+}
+
+.authSubText {
+  margin: 0 0 24px !important;
+  text-align: left !important;
+  color: #666 !important;
+  line-height: 1.7 !important;
+  font-size: 14px !important;
+}
+
+.forgotPasswordBtn {
+  width: auto !important;
+  background: transparent !important;
+  color: #111 !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: -4px 0 18px auto !important;
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+}
+
+.forgotPasswordBtn:hover {
+  color: #d4af37 !important;
+}
+
+.resetLinkBox {
+  margin-top: 20px !important;
+  padding: 18px !important;
+  border-radius: 18px !important;
+  background: #f8f7f4 !important;
+  border: 1px solid #e8e6df !important;
+  text-align: left !important;
+}
+
+.resetLinkBox p {
+  margin: 0 0 10px !important;
+  text-align: left !important;
+  color: #111 !important;
+  font-weight: 800 !important;
+}
+
+.resetLinkBox a {
+  display: inline-block !important;
+  background: #111 !important;
+  color: #fff !important;
+  padding: 12px 18px !important;
+  border-radius: 999px !important;
+  text-decoration: none !important;
+  font-weight: 800 !important;
+  margin-bottom: 10px !important;
+}
+
+.resetLinkBox a:hover {
+  background: #d4af37 !important;
+  color: #111 !important;
+}
+
+.resetLinkBox small {
+  display: block !important;
+  color: #666 !important;
+  line-height: 1.5 !important;
+}
+
+.authBox input:focus {
+  border-color: #111 !important;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+.authBox button:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed !important;
+}
+
+@media (max-width: 600px) {
+  .premiumForgotBox,
+  .authBox {
+    padding: 30px 22px !important;
+    border-radius: 24px !important;
+  }
+
+  .premiumForgotBox h1,
+  .authBox h1 {
+    font-size: 30px !important;
+  }
+
+  .forgotPasswordBtn {
+    margin-right: 0 !important;
+  }
+}
+

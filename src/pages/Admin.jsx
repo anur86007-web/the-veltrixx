@@ -378,12 +378,6 @@ function Admin({ refreshProducts }) {
     }
 
     alert("Order status updated successfully");
-
-    setOrderStatusDraft({
-      ...orderStatusDraft,
-      [orderId]: "",
-    });
-
     fetchOrders();
   } catch (error) {
     console.log("Update order error:", error);

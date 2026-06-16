@@ -21,13 +21,71 @@ function ProductDetails({ products, addToCart }) {
     comment: "",
   });
 
+  const normalizeText = (value) =>
+    String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, " ");
+
+  const findFallbackProduct = (productList = []) => {
+    const lastName = localStorage.getItem("veltrixx_last_product_name");
+    const lastBrand = localStorage.getItem("veltrixx_last_product_brand");
+    const lastModel = localStorage.getItem("veltrixx_last_product_model");
+    const lastImage = localStorage.getItem("veltrixx_last_product_image");
+
+    const normalizedLastName = normalizeText(lastName);
+    const normalizedLastBrand = normalizeText(lastBrand);
+    const normalizedLastModel = normalizeText(lastModel);
+
+    if (!Array.isArray(productList) || productList.length === 0) {
+      return null;
+    }
+
+    const exactIdMatch = productList.find(
+      (item) => String(item._id || item.id) === String(id)
+    );
+
+    if (exactIdMatch) return exactIdMatch;
+
+    const exactNameMatch = productList.find(
+      (item) => normalizeText(item.name) === normalizedLastName
+    );
+
+    if (exactNameMatch) return exactNameMatch;
+
+    const strongTextMatch = productList.find((item) => {
+      const itemName = normalizeText(item.name);
+      const itemBrand = normalizeText(item.brand);
+      const itemModel = normalizeText(item.model);
+
+      return (
+        normalizedLastName &&
+        itemName.includes(normalizedLastName) &&
+        (!normalizedLastBrand || itemBrand.includes(normalizedLastBrand)) &&
+        (!normalizedLastModel || itemModel.includes(normalizedLastModel))
+      );
+    });
+
+    if (strongTextMatch) return strongTextMatch;
+
+    const imageMatch = productList.find((item) => {
+      const itemImages = [
+        item.image,
+        ...(item.images || []),
+        ...(item.colorOptions?.map((color) => color.image).filter(Boolean) || []),
+      ];
+
+      return lastImage && itemImages.includes(lastImage);
+    });
+
+    return imageMatch || null;
+  };
+
   const loadProduct = async () => {
     try {
       setProductLoading(true);
 
-      const localProduct = products.find(
-        (item) => String(item._id || item.id) === String(id)
-      );
+      const localProduct = findFallbackProduct(products);
 
       if (localProduct) {
         setProduct(localProduct);
@@ -37,8 +95,18 @@ function ProductDetails({ products, addToCart }) {
       const res = await fetch(`${PRODUCT_API}/${id}`);
       const data = await res.json();
 
-      if (data.success) {
+      if (data.success && data.product) {
         setProduct(data.product);
+        return;
+      }
+
+      const allProductsRes = await fetch(PRODUCT_API);
+      const allProductsData = await allProductsRes.json();
+
+      const matchedProduct = findFallbackProduct(allProductsData.products || []);
+
+      if (matchedProduct) {
+        setProduct(matchedProduct);
       } else {
         setProduct(null);
       }

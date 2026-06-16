@@ -7271,3 +7271,165 @@ body {
     height: 42px;
   }
 }
+.ordersHeader {
+  margin-bottom: 24px;
+}
+
+.ordersHeader h2 {
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+
+.ordersHeader p {
+  color: #777;
+}
+
+.adminOrdersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 24px;
+}
+
+.orderCard {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
+}
+
+.orderCardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.orderCardHeader h3 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.orderCardHeader p {
+  margin-top: 5px;
+  color: #777;
+  font-size: 14px;
+}
+
+.orderStatusBadge {
+  height: fit-content;
+  background: #fff3cd;
+  color: #856404;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.orderCustomerBox,
+.orderItemsBox,
+.orderPaymentBox,
+.orderStatusBox {
+  background: #fafafa;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.orderCustomerBox h4,
+.orderItemsBox h4 {
+  margin-bottom: 10px;
+}
+
+.orderCustomerBox p,
+.orderPaymentBox p {
+  margin: 7px 0;
+  color: #444;
+}
+
+.orderItemMini {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.orderItemMini:last-child {
+  border-bottom: none;
+}
+
+.orderItemMini img {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.orderItemMini p {
+  margin: 0 0 4px;
+}
+
+.orderItemMini span {
+  display: block;
+  color: #666;
+  font-size: 13px;
+}
+
+.orderPaymentBox h3 {
+  margin-top: 12px;
+  font-size: 22px;
+}
+
+.orderStatusBox label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.orderStatusBox select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.orderFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  color: #444;
+  font-size: 14px;
+  margin-top: 14px;
+}
+
+@media (max-width: 768px) {
+  .adminOrdersGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .orderFooter {
+    flex-direction: column;
+  }
+}
+.orderUpdateRow {
+  display: flex;
+  gap: 10px;
+}
+
+.orderUpdateRow select {
+  flex: 1;
+}
+
+.orderUpdateRow button {
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0 20px;
+  font-weight: 700;
+  cursor: pointer;
+}

@@ -974,21 +974,37 @@ function Admin({ refreshProducts }) {
             </div>
 
             <div className="orderStatusBox">
-              <label>Update Order Status</label>
+  <label>Update Order Status</label>
 
-              <select
-                value={order.orderStatus || "Order Placed"}
-                onChange={(e) => updateOrderStatus(order._id, e.target.value)}
-              >
-                <option value="Order Placed">Order Placed</option>
-                <option value="Processing">Processing</option>
-                <option value="Packed">Packed</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Out For Delivery">Out For Delivery</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
-            </div>
+  <div className="orderUpdateRow">
+    <select
+      defaultValue={order.orderStatus || "Order Placed"}
+      onChange={(e) => {
+        order.newStatus = e.target.value;
+      }}
+    >
+      <option value="Order Placed">Order Placed</option>
+      <option value="Processing">Processing</option>
+      <option value="Packed">Packed</option>
+      <option value="Shipped">Shipped</option>
+      <option value="Out For Delivery">Out For Delivery</option>
+      <option value="Delivered">Delivered</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+
+    <button
+      type="button"
+      onClick={() =>
+        updateOrderStatus(
+          order._id,
+          order.newStatus || order.orderStatus || "Order Placed"
+        )
+      }
+    >
+      Update
+    </button>
+  </div>
+</div>
 
             <div className="orderFooter">
               <span><b>Payment:</b> {order.paymentMethod || "N/A"}</span>

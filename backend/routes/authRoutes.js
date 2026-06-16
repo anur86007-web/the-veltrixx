@@ -14,7 +14,12 @@ const generateToken = (id) => {
 
 const sendOtpEmail = async (email, otp) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 30000,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -26,12 +31,27 @@ const sendOtpEmail = async (email, otp) => {
     to: email,
     subject: "THE VELTRIXX Password Reset OTP",
     html: `
-      <div style="font-family:Arial;padding:20px;">
-        <h2>Password Reset OTP</h2>
-        <p>Your OTP for resetting your THE VELTRIXX account password is:</p>
-        <h1 style="letter-spacing:4px;">${otp}</h1>
-        <p>This OTP will expire in 10 minutes.</p>
-        <p>If you did not request this, please ignore this email.</p>
+      <div style="font-family:Arial;padding:20px;background:#f7f7f7;">
+        <div style="max-width:520px;margin:auto;background:white;padding:28px;border-radius:16px;border:1px solid #eee;">
+          <h2 style="margin:0 0 10px;color:#111;">THE VELTRIXX</h2>
+          <h3 style="margin:0 0 18px;color:#111;">Password Reset OTP</h3>
+
+          <p style="color:#555;font-size:15px;line-height:1.6;">
+            Your OTP for resetting your THE VELTRIXX account password is:
+          </p>
+
+          <div style="font-size:34px;font-weight:bold;letter-spacing:6px;background:#111;color:#fff;padding:16px;text-align:center;border-radius:12px;margin:20px 0;">
+            ${otp}
+          </div>
+
+          <p style="color:#555;font-size:14px;">
+            This OTP will expire in 10 minutes.
+          </p>
+
+          <p style="color:#777;font-size:13px;">
+            If you did not request this, please ignore this email.
+          </p>
+        </div>
       </div>
     `,
   });

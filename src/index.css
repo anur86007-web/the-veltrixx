@@ -8132,4 +8132,52 @@ body {
     padding: 8px 13px;
     font-size: 12px;
   }
+}/* SAME SIZE PRODUCT CARDS */
+.velProductCard {
+  width: 340px;
+  min-height: 590px;
+  display: flex;
+  flex-direction: column;
+}
+
+.velProductImageBox {
+  height: 360px;
+  flex-shrink: 0;
+}
+
+.velProductImageBox img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.velProductInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.velProductName {
+  min-height: 58px;
+}
+
+.velRating {
+  margin-top: auto;
+}
+
+.velBottom {
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .velProductCard {
+    min-height: 390px;
+  }
+
+  .velProductImageBox {
+    height: 220px;
+  }
+
+  .velProductName {
+    min-height: 40px;
+  }
 }

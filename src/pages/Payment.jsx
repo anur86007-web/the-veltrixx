@@ -10,7 +10,6 @@ function Payment({ cart, placeOrder }) {
 
   const savedProfile =
     JSON.parse(localStorage.getItem("veltrixx_profile")) || {};
-
   const couponData =
     JSON.parse(localStorage.getItem("veltrixx_coupon")) || null;
 
@@ -21,7 +20,7 @@ function Payment({ cart, placeOrder }) {
 
   const shipping = subtotal >= 999 ? 0 : 49;
   const discount = couponData?.discount ? Number(couponData.discount) : 0;
-  const total = Math.max(subtotal + shipping - discount, 0);
+  const total = Number(Math.max(subtotal + shipping - discount, 0).toFixed(2));
 
   const [form, setForm] = useState({
     name: savedProfile.name || "",
@@ -34,37 +33,23 @@ function Payment({ cart, placeOrder }) {
   });
 
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [isEditingAddress, setIsEditingAddress] = useState(
-    !savedProfile.address
-  );
+  const [isEditingAddress, setIsEditingAddress] = useState(!savedProfile.address);
   const [loading, setLoading] = useState(false);
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
-      if (window.Razorpay) {
-        resolve(true);
-        return;
-      }
+      if (window.Razorpay) return resolve(true);
 
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
       script.onload = () => resolve(true);
       script.onerror = () => resolve(false);
-
       document.body.appendChild(script);
     });
   };
 
   const validateAddress = () => {
-    if (
-      !form.name ||
-      !form.phone ||
-      !form.address ||
-      !form.city ||
-      !form.state ||
-      !form.pincode
-    ) {
+    if (!form.name || !form.phone || !form.address || !form.city || !form.state || !form.pincode) {
       alert("Please fill all required address details");
       return false;
     }
@@ -84,7 +69,6 @@ function Payment({ cart, placeOrder }) {
 
   const saveAddress = () => {
     if (!validateAddress()) return;
-
     localStorage.setItem("veltrixx_profile", JSON.stringify(form));
     setIsEditingAddress(false);
     alert("Address saved successfully");
@@ -149,10 +133,7 @@ function Payment({ cart, placeOrder }) {
     const token = localStorage.getItem("veltrixx_token");
 
     const isCouponValid = await recheckCouponBeforeOrder();
-
-    if (!isCouponValid) {
-      return null;
-    }
+    if (!isCouponValid) return null;
 
     const orderData = {
       items: cart.map((item) => ({
@@ -167,19 +148,15 @@ function Payment({ cart, placeOrder }) {
         selectedColor: item.selectedColor || "Default",
         selectedModel: item.selectedModel || item.model,
       })),
-
       customer: form,
-
       subtotal,
       shipping,
       discount,
       couponCode: couponData?.code || "",
       total,
-
       paymentMethod: method,
       paymentStatus,
       orderStatus: "Order Placed",
-
       razorpayOrderId: razorpayData.razorpay_order_id || "",
       razorpayPaymentId: razorpayData.razorpay_payment_id || "",
     };
@@ -206,10 +183,7 @@ function Payment({ cart, placeOrder }) {
   };
 
   const placeCODOrder = async () => {
-    const order = await saveOrder(
-      "Pending - Cash On Delivery",
-      "Cash On Delivery"
-    );
+    const order = await saveOrder("Pending - Cash On Delivery", "Cash On Delivery");
 
     if (order) {
       alert("Order placed successfully");
@@ -218,21 +192,13 @@ function Payment({ cart, placeOrder }) {
   };
 
   const handleWhatsAppPayment = async () => {
-    const order = await saveOrder(
-      "Pending - WhatsApp Payment",
-      "WhatsApp Payment"
-    );
-
+    const order = await saveOrder("Pending - WhatsApp Payment", "WhatsApp Payment");
     if (!order) return;
 
     const productsText = cart
       .map(
         (item, index) =>
-          `${index + 1}. ${item.name} (${item.brand} ${
-            item.selectedModel || item.model
-          }) - ₹${item.price} × ${item.qty} - Color: ${
-            item.selectedColor || "Default"
-          }`
+          `${index + 1}. ${item.name} (${item.brand} ${item.selectedModel || item.model}) - ₹${item.price} × ${item.qty} - Color: ${item.selectedColor || "Default"}`
       )
       .join("\n");
 
@@ -262,14 +228,10 @@ Coupon: ${couponData?.code || "Not applied"}
 Total Amount: ₹${total}
 
 Payment Method: WhatsApp Payment
-
-Please share payment details / QR code.
 `;
 
-    const whatsappNumber = "919899723391";
-
     window.open(
-      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
+      `https://wa.me/919899723391?text=${encodeURIComponent(message)}`,
       "_blank"
     );
 
@@ -296,7 +258,7 @@ Please share payment details / QR code.
     const orderData = await orderRes.json();
 
     if (!orderData.success) {
-      alert(orderData.message || "Could not create Razorpay order");
+      alert(orderData.error || orderData.message || "Razorpay order create failed");
       return;
     }
 
@@ -307,16 +269,13 @@ Please share payment details / QR code.
       name: "THE VELTRIXX",
       description: "Phone Case Order",
       order_id: orderData.order.id,
-
       prefill: {
         name: form.name,
         contact: form.phone,
       },
-
       theme: {
         color: "#111111",
       },
-
       handler: async function (response) {
         const verifyRes = await fetch(`${PAYMENT_API}/verify`, {
           method: "POST",
@@ -329,15 +288,11 @@ Please share payment details / QR code.
         const verifyData = await verifyRes.json();
 
         if (!verifyData.success) {
-          alert("Payment verification failed");
+          alert(verifyData.message || "Payment verification failed");
           return;
         }
 
-        const order = await saveOrder(
-          "Paid",
-          "Razorpay Online Payment",
-          response
-        );
+        const order = await saveOrder("Paid", "Razorpay Online Payment", response);
 
         if (order) {
           alert("Payment successful. Order placed.");
@@ -349,7 +304,6 @@ Please share payment details / QR code.
     const razorpay = new window.Razorpay(options);
 
     razorpay.on("payment.failed", function (response) {
-      console.log("PAYMENT FAILED:", response);
       alert(response.error.description || "Payment failed");
     });
 
@@ -405,61 +359,13 @@ Please share payment details / QR code.
 
               {isEditingAddress ? (
                 <>
-                  <input
-                    placeholder="Full Name *"
-                    value={form.name}
-                    onChange={(e) =>
-                      setForm({ ...form, name: e.target.value })
-                    }
-                  />
-
-                  <input
-                    placeholder="Phone Number *"
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm({ ...form, phone: e.target.value })
-                    }
-                  />
-
-                  <input
-                    placeholder="House No, Street, Area *"
-                    value={form.address}
-                    onChange={(e) =>
-                      setForm({ ...form, address: e.target.value })
-                    }
-                  />
-
-                  <input
-                    placeholder="Landmark"
-                    value={form.landmark}
-                    onChange={(e) =>
-                      setForm({ ...form, landmark: e.target.value })
-                    }
-                  />
-
-                  <input
-                    placeholder="City *"
-                    value={form.city}
-                    onChange={(e) =>
-                      setForm({ ...form, city: e.target.value })
-                    }
-                  />
-
-                  <input
-                    placeholder="State *"
-                    value={form.state}
-                    onChange={(e) =>
-                      setForm({ ...form, state: e.target.value })
-                    }
-                  />
-
-                  <input
-                    placeholder="Pincode *"
-                    value={form.pincode}
-                    onChange={(e) =>
-                      setForm({ ...form, pincode: e.target.value })
-                    }
-                  />
+                  <input placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                  <input placeholder="Phone Number *" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                  <input placeholder="House No, Street, Area *" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+                  <input placeholder="Landmark" value={form.landmark} onChange={(e) => setForm({ ...form, landmark: e.target.value })} />
+                  <input placeholder="City *" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+                  <input placeholder="State *" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
+                  <input placeholder="Pincode *" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value })} />
 
                   <button type="button" onClick={saveAddress}>
                     Save Address
@@ -483,29 +389,27 @@ Please share payment details / QR code.
             <div className="checkoutSection">
               <h2>Payment Method</h2>
 
-              {[
-                "Cash On Delivery",
-                "WhatsApp Payment",
-                "Razorpay Online Payment",
-              ].map((method) => (
-                <label
-                  key={method}
-                  className={
-                    paymentMethod === method
-                      ? "paymentOption selectedPayment"
-                      : "paymentOption"
-                  }
-                >
-                  <input
-                    type="radio"
-                    name="payment"
-                    value={method}
-                    checked={paymentMethod === method}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                  />
-                  <span>{method}</span>
-                </label>
-              ))}
+              {["Cash On Delivery", "WhatsApp Payment", "Razorpay Online Payment"].map(
+                (method) => (
+                  <label
+                    key={method}
+                    className={
+                      paymentMethod === method
+                        ? "paymentOption selectedPayment"
+                        : "paymentOption"
+                    }
+                  >
+                    <input
+                      type="radio"
+                      name="payment"
+                      value={method}
+                      checked={paymentMethod === method}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <span>{method}</span>
+                  </label>
+                )
+              )}
 
               <p className="paymentNote">
                 Choose COD, WhatsApp Payment, or Razorpay online payment.

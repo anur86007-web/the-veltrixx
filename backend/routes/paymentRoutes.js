@@ -4,14 +4,16 @@ const crypto = require("crypto");
 
 const router = express.Router();
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
-
 router.post("/create-order", async (req, res) => {
   try {
     const { amount } = req.body;
+
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Razorpay keys missing in backend environment",
+      });
+    }
 
     if (!amount || Number(amount) <= 0) {
       return res.status(400).json({
@@ -20,8 +22,16 @@ router.post("/create-order", async (req, res) => {
       });
     }
 
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
+
+    const amountInRupees = Number(amount).toFixed(2);
+    const amountInPaise = Math.round(Number(amountInRupees) * 100);
+
     const order = await razorpay.orders.create({
-      amount: Math.round(Number(amount) * 100),
+      amount: amountInPaise,
       currency: "INR",
       receipt: `veltrixx_${Date.now()}`,
     });

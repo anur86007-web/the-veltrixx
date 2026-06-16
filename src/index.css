@@ -8586,3 +8586,188 @@ body {
     font-size: 20px;
   }
 }
+/* ===============================
+   MOBILE CART PAGE PROFESSIONAL FIX
+================================ */
+
+@media (max-width: 768px) {
+  .cartPage {
+    padding: 26px 16px 45px !important;
+    background: #faf9f6 !important;
+  }
+
+  .cartPageInner {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .backLink {
+    font-size: 16px !important;
+    margin-bottom: 26px !important;
+    display: inline-block !important;
+  }
+
+  .cartHeader {
+    margin-bottom: 26px !important;
+  }
+
+  .cartHeader p {
+    font-size: 12px !important;
+    letter-spacing: 4px !important;
+  }
+
+  .cartHeader h1 {
+    font-size: 46px !important;
+    line-height: 1 !important;
+  }
+
+  .cartHeader span {
+    font-size: 14px !important;
+    padding: 10px 18px !important;
+    border-radius: 999px !important;
+  }
+
+  .cartMainLayout {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+
+  .cartItemsArea {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+  }
+
+  .cartProductCard {
+    display: grid !important;
+    grid-template-columns: 92px 1fr !important;
+    gap: 14px !important;
+    align-items: start !important;
+    padding: 16px !important;
+    border-radius: 22px !important;
+    background: #fff !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.07) !important;
+    position: relative !important;
+  }
+
+  .cartProductImageLink {
+    width: 92px !important;
+    height: 92px !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    display: block !important;
+  }
+
+  .cartProductImageLink img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .cartProductInfo {
+    padding: 0 !important;
+  }
+
+  .cartProductInfo h3 {
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 6px !important;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .cartProductInfo p {
+    font-size: 13px !important;
+    color: #777 !important;
+    margin: 3px 0 !important;
+  }
+
+  .cartPriceInfo {
+    margin-top: 8px !important;
+  }
+
+  .cartPriceInfo strong {
+    font-size: 20px !important;
+    display: block !important;
+  }
+
+  .cartPriceInfo small {
+    font-size: 12px !important;
+    color: #777 !important;
+  }
+
+  .cartQtyControl {
+    grid-column: 2 !important;
+    justify-content: flex-start !important;
+    margin-top: 10px !important;
+    width: fit-content !important;
+  }
+
+  .cartQtyControl button {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .cartQtyControl span {
+    min-width: 34px !important;
+    font-size: 15px !important;
+  }
+
+  .cartDeleteBtn {
+    position: absolute !important;
+    right: 14px !important;
+    bottom: 14px !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+  }
+
+  .cartSummaryCard {
+    padding: 22px 18px !important;
+    border-radius: 24px !important;
+    background: #fff !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.07) !important;
+  }
+
+  .cartSummaryCard h2 {
+    font-size: 28px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .cartCouponRow {
+    display: flex !important;
+    gap: 10px !important;
+  }
+
+  .cartCouponRow input {
+    min-width: 0 !important;
+    height: 48px !important;
+    font-size: 14px !important;
+  }
+
+  .cartCouponRow button {
+    height: 48px !important;
+    padding: 0 16px !important;
+    font-size: 13px !important;
+  }
+
+  .cartSummaryRow {
+    font-size: 15px !important;
+    margin: 14px 0 !important;
+  }
+
+  .cartGrandTotal {
+    font-size: 22px !important;
+  }
+
+  .cartPaymentBtn {
+    width: 100% !important;
+    height: 54px !important;
+    border-radius: 999px !important;
+    margin-top: 18px !important;
+  }
+}

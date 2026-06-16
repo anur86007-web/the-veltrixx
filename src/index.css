@@ -33,6 +33,9 @@ button, a {
   color: #111;
   font-size: 19px;
   font-weight: 800;
+  height:auto;
+  display:block;
+  margin:0 auto 15px auto;
   letter-spacing: 2.5px;
 }
 
@@ -7195,4 +7198,15 @@ body {
   height: 48px;
   width: auto;
   object-fit: contain;
+}
+.brandSection{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.brandSection h1{
+  margin-top:10px;
 }

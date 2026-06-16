@@ -5,6 +5,7 @@ const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
+/* PLACE ORDER */
 router.post("/", protect, async (req, res) => {
   try {
     const { couponCode, subtotal } = req.body;
@@ -100,6 +101,7 @@ router.post("/", protect, async (req, res) => {
   }
 });
 
+/* USER ORDERS */
 router.get("/my-orders", protect, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id }).sort({
@@ -118,6 +120,7 @@ router.get("/my-orders", protect, async (req, res) => {
   }
 });
 
+/* ADMIN GET ALL ORDERS */
 router.get("/admin/all", protect, async (req, res) => {
   try {
     const orders = await Order.find()
@@ -136,6 +139,7 @@ router.get("/admin/all", protect, async (req, res) => {
   }
 });
 
+/* ADMIN UPDATE ORDER STATUS - OLD ENDPOINT */
 router.put("/admin/update/:id", protect, async (req, res) => {
   try {
     const { orderStatus } = req.body;
@@ -149,14 +153,13 @@ router.put("/admin/update/:id", protect, async (req, res) => {
       });
     }
 
-    if (order.orderStatus !== orderStatus) {
-      order.orderStatus = orderStatus;
+    order.orderStatus = orderStatus;
 
-      order.statusHistory.push({
-        status: orderStatus,
-        date: new Date(),
-      });
-    }
+    order.statusHistory = order.statusHistory || [];
+    order.statusHistory.push({
+      status: orderStatus,
+      date: new Date(),
+    });
 
     await order.save();
 
@@ -173,6 +176,69 @@ router.put("/admin/update/:id", protect, async (req, res) => {
   }
 });
 
+/* ADMIN UPDATE ORDER STATUS - FRONTEND ENDPOINT */
+router.put("/admin/all/:id/status", protect, async (req, res) => {
+  try {
+    const { orderStatus } = req.body;
+
+    if (!orderStatus) {
+      return res.status(400).json({
+        success: false,
+        message: "Order status is required",
+      });
+    }
+
+    const allowedStatuses = [
+      "Order Placed",
+      "Processing",
+      "Packed",
+      "Shipped",
+      "Out For Delivery",
+      "Delivered",
+      "Cancelled",
+    ];
+
+    if (!allowedStatuses.includes(orderStatus)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid order status",
+      });
+    }
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    order.orderStatus = orderStatus;
+
+    order.statusHistory = order.statusHistory || [];
+    order.statusHistory.push({
+      status: orderStatus,
+      date: new Date(),
+    });
+
+    await order.save();
+
+    res.json({
+      success: true,
+      message: "Order status updated successfully",
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Order status update failed",
+      error: error.message,
+    });
+  }
+});
+
+/* ADMIN DELETE ORDER */
 router.delete("/admin/delete/:id", protect, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
@@ -189,6 +255,7 @@ router.delete("/admin/delete/:id", protect, async (req, res) => {
   }
 });
 
+/* USER CANCEL ORDER */
 router.put("/cancel/:id", protect, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -211,6 +278,7 @@ router.put("/cancel/:id", protect, async (req, res) => {
 
     order.orderStatus = "Cancelled";
 
+    order.statusHistory = order.statusHistory || [];
     order.statusHistory.push({
       status: "Cancelled",
       date: new Date(),
@@ -226,43 +294,6 @@ router.put("/cancel/:id", protect, async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message,
-    });
-  }
-});
-router.put("/admin/all/:id/status", protect, async (req, res) => {
-  try {
-    const { orderStatus } = req.body;
-
-    const order = await Order.findById(req.params.id);
-
-    if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "Order not found",
-      });
-    }
-
-    if (order.orderStatus !== orderStatus) {
-      order.orderStatus = orderStatus;
-
-      order.statusHistory.push({
-        status: orderStatus,
-        date: new Date(),
-      });
-    }
-
-    await order.save();
-
-    res.json({
-      success: true,
-      message: "Order status updated",
-      order,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Order status update failed",
-      error: error.message,
     });
   }
 });

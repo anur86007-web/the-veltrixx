@@ -7510,3 +7510,47 @@ body {
     max-height: 360px;
   }
 }
+.amazonMainImage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.amazonMainImage img {
+  width: 100%;
+  max-width: 650px;
+  border-radius: 20px;
+  object-fit: contain;
+}
+
+.bottomThumbs {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bottomThumbs button {
+  width: 90px;
+  height: 90px;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.bottomThumbs button:hover,
+.bottomThumbs .activeBottomThumb {
+  border-color: black;
+  transform: scale(1.05);
+}
+
+.bottomThumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -182,8 +182,7 @@ function ProductDetails({ products, addToCart }) {
   const galleryImages = [
     product.image,
     ...(product.images || []),
-    ...(product.colorOptions?.map((color) => color.image).filter(Boolean) ||
-      []),
+    ...(product.colorOptions?.map((color) => color.image).filter(Boolean) || []),
   ]
     .filter(Boolean)
     .filter((img, index, arr) => arr.indexOf(img) === index);
@@ -196,16 +195,18 @@ function ProductDetails({ products, addToCart }) {
         </Link>
 
         <div className="premiumDetailsGrid">
-          <div className="detailsGallery amazonStyleGallery">
+          <div className="detailsGallery">
+            <div className="mainDetailsImage amazonMainImage">
+              <img src={mainImage} alt={product.name} />
+            </div>
+
             {galleryImages.length > 1 && (
-              <div className="verticalThumbs">
+              <div className="bottomThumbs">
                 {galleryImages.map((img, index) => (
                   <button
                     key={index}
                     type="button"
-                    className={
-                      selectedImage === img ? "activeVerticalThumb" : ""
-                    }
+                    className={selectedImage === img ? "activeBottomThumb" : ""}
                     onClick={() => setSelectedImage(img)}
                   >
                     <img src={img} alt={`${product.name} ${index + 1}`} />
@@ -213,10 +214,6 @@ function ProductDetails({ products, addToCart }) {
                 ))}
               </div>
             )}
-
-            <div className="mainDetailsImage amazonMainImage">
-              <img src={mainImage} alt={product.name} />
-            </div>
           </div>
 
           <div className="premiumDetailsInfo">

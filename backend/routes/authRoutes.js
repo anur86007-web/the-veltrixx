@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 const User = require("../models/User");
 
 const router = express.Router();
@@ -9,6 +9,31 @@ const router = express.Router();
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
+  });
+};
+
+const sendOtpEmail = async (email, otp) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: `"THE VELTRIXX" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: "THE VELTRIXX Password Reset OTP",
+    html: `
+      <div style="font-family:Arial;padding:20px;">
+        <h2>Password Reset OTP</h2>
+        <p>Your OTP for resetting your THE VELTRIXX account password is:</p>
+        <h1 style="letter-spacing:4px;">${otp}</h1>
+        <p>This OTP will expire in 10 minutes.</p>
+        <p>If you did not request this, please ignore this email.</p>
+      </div>
+    `,
   });
 };
 
@@ -134,7 +159,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-/* FORGOT PASSWORD */
+/* FORGOT PASSWORD - SEND OTP */
 
 router.post("/forgot-password", async (req, res) => {
   try {
@@ -156,70 +181,116 @@ router.post("/forgot-password", async (req, res) => {
       });
     }
 
-    const resetToken = crypto.randomBytes(32).toString("hex");
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const hashedToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
-
-    user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+    user.resetOtp = await bcrypt.hash(otp, 10);
+    user.resetOtpExpire = Date.now() + 10 * 60 * 1000;
+    user.isOtpVerified = false;
 
     await user.save();
 
-    const frontendUrl =
-      process.env.FRONTEND_URL || "https://theveltrixx.co.in";
-
-    const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
+    await sendOtpEmail(email, otp);
 
     res.json({
       success: true,
-      message: "Password reset link generated successfully",
-      resetUrl,
+      message: "OTP sent to your registered email",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Forgot password failed",
+      message: "OTP sending failed",
       error: error.message,
     });
   }
 });
 
-/* RESET PASSWORD */
+/* VERIFY RESET OTP */
 
-router.put("/reset-password/:token", async (req, res) => {
+router.post("/verify-reset-otp", async (req, res) => {
   try {
-    const { password } = req.body;
+    const { email, otp } = req.body;
 
-    if (!password || password.length < 6) {
+    if (!email || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and OTP are required",
+      });
+    }
+
+    const user = await User.findOne({
+      email,
+      resetOtpExpire: { $gt: Date.now() },
+    });
+
+    if (!user || !user.resetOtp) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP is invalid or expired",
+      });
+    }
+
+    const isOtpMatch = await bcrypt.compare(otp, user.resetOtp);
+
+    if (!isOtpMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    }
+
+    user.isOtpVerified = true;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "OTP verified successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "OTP verification failed",
+      error: error.message,
+    });
+  }
+});
+
+/* RESET PASSWORD AFTER OTP VERIFY */
+
+router.put("/reset-password", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and new password are required",
+      });
+    }
+
+    if (password.length < 6) {
       return res.status(400).json({
         success: false,
         message: "Password must be at least 6 characters",
       });
     }
 
-    const hashedToken = crypto
-      .createHash("sha256")
-      .update(req.params.token)
-      .digest("hex");
-
     const user = await User.findOne({
-      resetPasswordToken: hashedToken,
-      resetPasswordExpire: { $gt: Date.now() },
+      email,
+      isOtpVerified: true,
+      resetOtpExpire: { $gt: Date.now() },
     });
 
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Reset link is invalid or expired",
+        message: "OTP verification required or OTP expired",
       });
     }
 
     user.password = await bcrypt.hash(password, 10);
-    user.resetPasswordToken = "";
-    user.resetPasswordExpire = undefined;
+    user.resetOtp = "";
+    user.resetOtpExpire = undefined;
+    user.isOtpVerified = false;
 
     await user.save();
 

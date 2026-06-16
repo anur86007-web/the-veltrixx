@@ -302,11 +302,6 @@ function App() {
         <Route path="/login" element={<Login setUser={setUser} />} />
 
         <Route
-          path="/reset-password/:token"
-          element={<Login setUser={setUser} />}
-        />
-
-        <Route
           path="/admin"
           element={
             <AdminProtectedRoute user={user}>

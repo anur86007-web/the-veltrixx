@@ -1,21 +1,21 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const API_URL = "https://the-veltrixx-backend.onrender.com/api/auth";
 
 function Login({ setUser }) {
   const navigate = useNavigate();
-  const { token } = useParams();
 
   const [isRegister, setIsRegister] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [resetLink, setResetLink] = useState("");
+  const [forgotStep, setForgotStep] = useState("email");
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
+    otp: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -73,15 +73,14 @@ function Login({ setUser }) {
     }
   };
 
-  const handleForgotPassword = async () => {
+  const handleSendOtp = async () => {
     if (!form.email) {
-      alert("Please enter your email address");
+      alert("Please enter your registered email");
       return;
     }
 
     try {
       setLoading(true);
-      setResetLink("");
 
       const res = await fetch(`${API_URL}/forgot-password`, {
         method: "POST",
@@ -96,15 +95,52 @@ function Login({ setUser }) {
       const data = await res.json();
 
       if (!data.success) {
-        alert(data.message || "Could not generate reset link");
+        alert(data.message || "Could not send OTP");
         return;
       }
 
-      setResetLink(data.resetUrl || "");
-      alert("Reset link generated successfully");
+      alert("OTP sent to your email");
+      setForgotStep("otp");
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      alert("Something went wrong while sending OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!form.email || !form.otp) {
+      alert("Please enter OTP");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${API_URL}/verify-reset-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email,
+          otp: form.otp,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || "Invalid OTP");
+        return;
+      }
+
+      alert("OTP verified successfully");
+      setForgotStep("password");
+    } catch (error) {
+      console.log(error);
+      alert("OTP verification failed");
     } finally {
       setLoading(false);
     }
@@ -129,12 +165,13 @@ function Login({ setUser }) {
     try {
       setLoading(true);
 
-      const res = await fetch(`${API_URL}/reset-password/${token}`, {
+      const res = await fetch(`${API_URL}/reset-password`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          email: form.email,
           password: form.newPassword,
         }),
       });
@@ -152,70 +189,27 @@ function Login({ setUser }) {
       setUser(data.user);
 
       alert("Password reset successful. You are logged in.");
-
       navigate("/");
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      alert("Something went wrong while resetting password");
     } finally {
       setLoading(false);
     }
   };
 
-  if (token) {
-    return (
-      <div className="authPage">
-        <div className="authBox premiumForgotBox">
-          <Link to="/" className="backLink">
-            ← Back to shop
-          </Link>
-
-          <h1>Create New Password</h1>
-
-          <p className="authSubText">
-            Enter your new password below. After reset, your account will login
-            automatically.
-          </p>
-
-          <input
-            type="password"
-            placeholder="New password"
-            value={form.newPassword}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                newPassword: e.target.value,
-              })
-            }
-          />
-
-          <input
-            type="password"
-            placeholder="Confirm new password"
-            value={form.confirmPassword}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                confirmPassword: e.target.value,
-              })
-            }
-          />
-
-          <button onClick={handleResetPassword} disabled={loading}>
-            {loading ? "Resetting..." : "Reset Password"}
-          </button>
-
-          <button
-            type="button"
-            className="switchAuthBtn"
-            onClick={() => navigate("/login")}
-          >
-            Back to Login
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const backToLogin = () => {
+    setIsForgotPassword(false);
+    setForgotStep("email");
+    setForm({
+      name: "",
+      email: "",
+      password: "",
+      otp: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+  };
 
   if (isForgotPassword) {
     return (
@@ -225,51 +219,111 @@ function Login({ setUser }) {
             ← Back to shop
           </Link>
 
-          <h1>Forgot Password?</h1>
+          {forgotStep === "email" && (
+            <>
+              <h1>Forgot Password?</h1>
 
-          <p className="authSubText">
-            Enter your registered email address. We will generate a secure reset
-            link for your account.
-          </p>
+              <p className="authSubText">
+                Enter your registered email address. We will send an OTP to your
+                email.
+              </p>
 
-          <input
-            type="email"
-            placeholder="Enter registered email"
-            value={form.email}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                email: e.target.value,
-              })
-            }
-          />
+              <input
+                type="email"
+                placeholder="Enter registered email"
+                value={form.email}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    email: e.target.value,
+                  })
+                }
+              />
 
-          <button onClick={handleForgotPassword} disabled={loading}>
-            {loading ? "Generating..." : "Get Reset Link"}
-          </button>
+              <button onClick={handleSendOtp} disabled={loading}>
+                {loading ? "Sending OTP..." : "Send OTP"}
+              </button>
+            </>
+          )}
 
-          {resetLink && (
-            <div className="resetLinkBox">
-              <p>Your reset link is ready:</p>
+          {forgotStep === "otp" && (
+            <>
+              <h1>Verify OTP</h1>
 
-              <Link to={resetLink.replace(window.location.origin, "")}>
-                Open Reset Password Page
-              </Link>
+              <p className="authSubText">
+                We sent a 6-digit OTP to your registered email.
+              </p>
 
-              <small>
-                This link will expire in 15 minutes. Use it to create a new
-                password.
-              </small>
-            </div>
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                maxLength="6"
+                value={form.otp}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    otp: e.target.value,
+                  })
+                }
+              />
+
+              <button onClick={handleVerifyOtp} disabled={loading}>
+                {loading ? "Verifying..." : "Verify OTP"}
+              </button>
+
+              <button
+                type="button"
+                className="switchAuthBtn"
+                onClick={handleSendOtp}
+                disabled={loading}
+              >
+                Resend OTP
+              </button>
+            </>
+          )}
+
+          {forgotStep === "password" && (
+            <>
+              <h1>Create New Password</h1>
+
+              <p className="authSubText">
+                OTP verified. Now create your new password.
+              </p>
+
+              <input
+                type="password"
+                placeholder="New password"
+                value={form.newPassword}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    newPassword: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                type="password"
+                placeholder="Confirm new password"
+                value={form.confirmPassword}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    confirmPassword: e.target.value,
+                  })
+                }
+              />
+
+              <button onClick={handleResetPassword} disabled={loading}>
+                {loading ? "Resetting..." : "Reset Password"}
+              </button>
+            </>
           )}
 
           <button
             type="button"
             className="switchAuthBtn"
-            onClick={() => {
-              setIsForgotPassword(false);
-              setResetLink("");
-            }}
+            onClick={backToLogin}
           >
             Back to Login
           </button>
@@ -329,7 +383,10 @@ function Login({ setUser }) {
           <button
             type="button"
             className="forgotPasswordBtn"
-            onClick={() => setIsForgotPassword(true)}
+            onClick={() => {
+              setIsForgotPassword(true);
+              setForgotStep("email");
+            }}
           >
             Forgot Password?
           </button>

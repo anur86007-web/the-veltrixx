@@ -346,7 +346,7 @@ function Admin({ refreshProducts }) {
   const deleteProduct = async (id) => {
     if (!window.confirm("Delete this product?")) return;
 
-  cconst updateOrderStatus = async (orderId, orderStatus) => {
+  const updateOrderStatus = async (orderId, orderStatus) => {
   try {
     const res = await fetch(`${ORDER_API}/${orderId}/status`, {
       method: "PUT",

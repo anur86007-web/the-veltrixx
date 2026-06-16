@@ -802,38 +802,147 @@ function Admin({ refreshProducts }) {
             </div>
           </>
         )}
-
-        {activeTab !== "dashboard" && activeTab !== "products" && (
-          <div className="adminBox">
-  {activeTab === "orders" && (
+        
+          {/* ORDERS */}
+{activeTab === "orders" && (
+  <div className="adminBox">
     <div className="adminEmptyState">
-      <h3>No Orders Yet</h3>
+      <h2>No Orders Yet</h2>
       <p>No customer orders have been placed yet.</p>
     </div>
-  )}
+  </div>
+)}
 
-  {activeTab === "reviews" && (
+{/* REVIEWS */}
+{activeTab === "reviews" && (
+  <div className="adminBox">
     <div className="adminEmptyState">
-      <h3>No Reviews Yet</h3>
+      <h2>No Reviews Yet</h2>
       <p>Customer reviews will appear here.</p>
     </div>
-  )}
+  </div>
+)}
 
-  {activeTab === "coupons" && (
-    <div className="adminEmptyState">
-      <h3>No Coupons Available</h3>
-      <p>Create your first coupon to start offering discounts.</p>
+{/* COUPONS */}
+{activeTab === "coupons" && (
+  <div className="adminBox">
+    <h2>Create Coupon</h2>
+
+    <div className="adminFormSection">
+      <input
+        placeholder="Coupon Code"
+        value={couponForm.code}
+        onChange={(e) =>
+          setCouponForm({
+            ...couponForm,
+            code: e.target.value.toUpperCase(),
+          })
+        }
+      />
+
+      <select
+        value={couponForm.discountType}
+        onChange={(e) =>
+          setCouponForm({
+            ...couponForm,
+            discountType: e.target.value,
+          })
+        }
+      >
+        <option value="percentage">Percentage</option>
+        <option value="flat">Flat Amount</option>
+      </select>
+
+      <input
+        type="number"
+        placeholder="Discount Value"
+        value={couponForm.discountValue}
+        onChange={(e) =>
+          setCouponForm({
+            ...couponForm,
+            discountValue: e.target.value,
+          })
+        }
+      />
+
+      <input
+        type="number"
+        placeholder="Minimum Order Amount"
+        value={couponForm.minOrderAmount}
+        onChange={(e) =>
+          setCouponForm({
+            ...couponForm,
+            minOrderAmount: e.target.value,
+          })
+        }
+      />
+
+      <input
+        type="number"
+        placeholder="Usage Limit"
+        value={couponForm.usageLimit}
+        onChange={(e) =>
+          setCouponForm({
+            ...couponForm,
+            usageLimit: e.target.value,
+          })
+        }
+      />
+
+      <input
+        type="date"
+        value={couponForm.expiryDate}
+        onChange={(e) =>
+          setCouponForm({
+            ...couponForm,
+            expiryDate: e.target.value,
+          })
+        }
+      />
+
+      <button onClick={handleCreateCoupon}>
+        Create Coupon
+      </button>
     </div>
-  )}
 
-  {activeTab === "users" && (
+    {coupons.length === 0 ? (
+      <div className="adminEmptyState">
+        <h3>No Coupons Available</h3>
+        <p>Create your first coupon to start offering discounts.</p>
+      </div>
+    ) : (
+      <div className="adminProductList">
+        {coupons.map((coupon) => (
+          <div className="adminProduct" key={coupon._id}>
+            <h3>{coupon.code}</h3>
+
+            <p>
+              {coupon.discountType} - {coupon.discountValue}
+            </p>
+
+            <p>
+              Expiry:
+              {" "}
+              {coupon.expiryDate
+                ? coupon.expiryDate.slice(0, 10)
+                : "No Expiry"}
+            </p>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+{/* USERS */}
+{activeTab === "users" && (
+  <div className="adminBox">
     <div className="adminEmptyState">
-      <h3>No Users Found</h3>
+      <h2>No Users Found</h2>
       <p>Registered users will appear here.</p>
     </div>
-  )}
-</div>
-        )}
+  </div>
+)}
       </main>
     </div>
   );

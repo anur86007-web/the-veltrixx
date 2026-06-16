@@ -5,7 +5,7 @@ import { ShoppingBag, Star, ShieldCheck, Truck, RotateCcw } from "lucide-react";
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 
-function ProductDetails({ products, addToCart }) {
+function ProductDetails({ products = [], addToCart }) {
   const { id } = useParams();
 
   const [product, setProduct] = useState(null);
@@ -21,71 +21,50 @@ function ProductDetails({ products, addToCart }) {
     comment: "",
   });
 
-  const normalizeText = (value) =>
-    String(value || "")
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, " ");
+  const normalize = (value) => String(value || "").trim().toLowerCase();
 
-  const findFallbackProduct = (productList = []) => {
-    const lastName = localStorage.getItem("veltrixx_last_product_name");
-    const lastBrand = localStorage.getItem("veltrixx_last_product_brand");
-    const lastModel = localStorage.getItem("veltrixx_last_product_model");
-    const lastImage = localStorage.getItem("veltrixx_last_product_image");
-
-    const normalizedLastName = normalizeText(lastName);
-    const normalizedLastBrand = normalizeText(lastBrand);
-    const normalizedLastModel = normalizeText(lastModel);
-
-    if (!Array.isArray(productList) || productList.length === 0) {
+  const getSavedOrderItem = () => {
+    try {
+      return JSON.parse(localStorage.getItem("veltrixx_order_product_item")) || null;
+    } catch {
       return null;
     }
+  };
 
-    const exactIdMatch = productList.find(
-      (item) => String(item._id || item.id) === String(id)
+  const findMatchingProduct = (allProducts = []) => {
+    const savedItem = getSavedOrderItem();
+
+    if (!savedItem || allProducts.length === 0) return null;
+
+    return (
+      allProducts.find((item) => {
+        const nameMatch = normalize(item.name) === normalize(savedItem.name);
+
+        const brandMatch =
+          !savedItem.brand || normalize(item.brand) === normalize(savedItem.brand);
+
+        const savedModel =
+          savedItem.selectedModel || savedItem.model || savedItem.availableModel || "";
+
+        const modelMatch =
+          !savedModel ||
+          normalize(item.model) === normalize(savedModel) ||
+          item.availableModels?.map((model) => normalize(model)).includes(normalize(savedModel));
+
+        return nameMatch && brandMatch && modelMatch;
+      }) ||
+      allProducts.find((item) => normalize(item.name) === normalize(savedItem.name)) ||
+      null
     );
-
-    if (exactIdMatch) return exactIdMatch;
-
-    const exactNameMatch = productList.find(
-      (item) => normalizeText(item.name) === normalizedLastName
-    );
-
-    if (exactNameMatch) return exactNameMatch;
-
-    const strongTextMatch = productList.find((item) => {
-      const itemName = normalizeText(item.name);
-      const itemBrand = normalizeText(item.brand);
-      const itemModel = normalizeText(item.model);
-
-      return (
-        normalizedLastName &&
-        itemName.includes(normalizedLastName) &&
-        (!normalizedLastBrand || itemBrand.includes(normalizedLastBrand)) &&
-        (!normalizedLastModel || itemModel.includes(normalizedLastModel))
-      );
-    });
-
-    if (strongTextMatch) return strongTextMatch;
-
-    const imageMatch = productList.find((item) => {
-      const itemImages = [
-        item.image,
-        ...(item.images || []),
-        ...(item.colorOptions?.map((color) => color.image).filter(Boolean) || []),
-      ];
-
-      return lastImage && itemImages.includes(lastImage);
-    });
-
-    return imageMatch || null;
   };
 
   const loadProduct = async () => {
     try {
       setProductLoading(true);
 
-      const localProduct = findFallbackProduct(products);
+      const localProduct = products.find(
+        (item) => String(item._id || item.id) === String(id)
+      );
 
       if (localProduct) {
         setProduct(localProduct);
@@ -100,19 +79,31 @@ function ProductDetails({ products, addToCart }) {
         return;
       }
 
-      const allProductsRes = await fetch(PRODUCT_API);
-      const allProductsData = await allProductsRes.json();
+      const allRes = await fetch(PRODUCT_API);
+      const allData = await allRes.json();
 
-      const matchedProduct = findFallbackProduct(allProductsData.products || []);
+      if (allData.success) {
+        const matchedProduct = findMatchingProduct(allData.products || []);
 
-      if (matchedProduct) {
-        setProduct(matchedProduct);
-      } else {
-        setProduct(null);
+        if (matchedProduct) {
+          setProduct(matchedProduct);
+          return;
+        }
       }
+
+      const matchedFromProps = findMatchingProduct(products);
+
+      if (matchedFromProps) {
+        setProduct(matchedFromProps);
+        return;
+      }
+
+      setProduct(null);
     } catch (error) {
       console.log("Product load error:", error);
-      setProduct(null);
+
+      const matchedFromProps = findMatchingProduct(products);
+      setProduct(matchedFromProps || null);
     } finally {
       setProductLoading(false);
     }
@@ -228,6 +219,7 @@ function ProductDetails({ products, addToCart }) {
       <div className="productDetailsPage">
         <div className="detailsLoadingBox">
           <h1>Product not found</h1>
+          <p>This product may have been removed or changed.</p>
           <Link to="/">Back to home</Link>
         </div>
       </div>

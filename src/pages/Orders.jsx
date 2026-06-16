@@ -337,6 +337,12 @@ function Orders() {
                         to={productId ? `/product/${productId}` : "#"}
                         className="orderItemCard"
                         key={index}
+                        onClick={() => {
+                          localStorage.setItem(
+                            "veltrixx_order_product_item",
+                            JSON.stringify(item)
+                          );
+                        }}
                       >
                         <img
                           src={item.selectedImage || item.image}

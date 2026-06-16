@@ -13,15 +13,27 @@ const generateToken = (id) => {
 };
 
 const sendOtpEmail = async (email, otp) => {
+  if (
+    !process.env.SMTP_HOST ||
+    !process.env.SMTP_PORT ||
+    !process.env.SMTP_USER ||
+    !process.env.SMTP_PASS
+  ) {
+    throw new Error("Brevo SMTP environment variables missing");
+  }
+
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT) || 587,
+    port: Number(process.env.SMTP_PORT),
     secure: false,
+    requireTLS: true,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
   });
+
+  await transporter.verify();
 
   await transporter.sendMail({
     from: `"THE VELTRIXX" <theveltrixx@gmail.com>`,
@@ -180,6 +192,8 @@ router.post("/login", async (req, res) => {
 
 router.post("/forgot-password", async (req, res) => {
   try {
+    console.log("FORGOT PASSWORD REQUEST RECEIVED");
+
     const { email } = req.body;
 
     if (!email) {
@@ -206,13 +220,19 @@ router.post("/forgot-password", async (req, res) => {
 
     await user.save();
 
+    console.log("OTP GENERATED, SENDING EMAIL");
+
     await sendOtpEmail(email, otp);
+
+    console.log("OTP EMAIL SENT SUCCESSFULLY");
 
     res.json({
       success: true,
       message: "OTP sent to your registered email",
     });
   } catch (error) {
+    console.error("FORGOT PASSWORD OTP ERROR:", error);
+
     res.status(500).json({
       success: false,
       message: "OTP sending failed",

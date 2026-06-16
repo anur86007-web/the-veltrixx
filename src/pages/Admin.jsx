@@ -805,12 +805,34 @@ function Admin({ refreshProducts }) {
 
         {activeTab !== "dashboard" && activeTab !== "products" && (
           <div className="adminBox">
-            <h2>{activeTab}</h2>
-            <p>
-              Tumhare existing {activeTab} section ka code same reh sakta hai.
-              Products section updated ho gaya hai.
-            </p>
-          </div>
+  {activeTab === "orders" && (
+    <div className="adminEmptyState">
+      <h3>No Orders Yet</h3>
+      <p>No customer orders have been placed yet.</p>
+    </div>
+  )}
+
+  {activeTab === "reviews" && (
+    <div className="adminEmptyState">
+      <h3>No Reviews Yet</h3>
+      <p>Customer reviews will appear here.</p>
+    </div>
+  )}
+
+  {activeTab === "coupons" && (
+    <div className="adminEmptyState">
+      <h3>No Coupons Available</h3>
+      <p>Create your first coupon to start offering discounts.</p>
+    </div>
+  )}
+
+  {activeTab === "users" && (
+    <div className="adminEmptyState">
+      <h3>No Users Found</h3>
+      <p>Registered users will appear here.</p>
+    </div>
+  )}
+</div>
         )}
       </main>
     </div>

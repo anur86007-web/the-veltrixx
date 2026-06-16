@@ -8219,3 +8219,88 @@ body {
     text-transform: uppercase !important;
   }
 }
+/* MOBILE PRODUCT CARD - ONLY IMAGE + NAME */
+@media (max-width: 768px) {
+  .productsGrid,
+  .productGrid,
+  .premiumProductsGrid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 18px !important;
+    padding: 0 18px 24px !important;
+    scroll-snap-type: x mandatory !important;
+  }
+
+  .productsGrid::-webkit-scrollbar,
+  .productGrid::-webkit-scrollbar,
+  .premiumProductsGrid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .productCard,
+  .premiumProductCard {
+    flex: 0 0 48% !important;
+    min-width: 48% !important;
+    max-width: 48% !important;
+    height: auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    scroll-snap-align: start !important;
+  }
+
+  .productImageBox,
+  .productCardImage {
+    width: 100% !important;
+    height: 210px !important;
+    background: #f6f6f6 !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .productCard img,
+  .premiumProductCard img,
+  .productImageBox img {
+    width: 100% !important;
+    height: 210px !important;
+    object-fit: cover !important;
+    border-radius: 0 !important;
+  }
+
+  .productCard h3,
+  .premiumProductCard h3 {
+    font-size: 15px !important;
+    line-height: 1.25 !important;
+    font-weight: 500 !important;
+    margin: 10px 0 0 !important;
+    color: #111 !important;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .productCard p,
+  .premiumProductCard p,
+  .productCard strong,
+  .premiumProductCard strong,
+  .stockBadge,
+  .wishlistBtn,
+  .modelChips,
+  .colorCircles,
+  .ratingRow,
+  .productRating,
+  .addCartBtn,
+  .viewDetailsBtn,
+  .quickViewBtn,
+  .productPrice,
+  .productBrand,
+  .productModel {
+    display: none !important;
+  }
+}

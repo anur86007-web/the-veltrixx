@@ -11,9 +11,13 @@ function Navbar({ user, cart = [], wishlist = [], logout }) {
   return (
     <nav className="navbar">
       <div className="navLogo">
-        <Link to="/" onClick={closeMenu}>
-          THE VELTRIXX
-        </Link>
+        <Link to="/" onClick={closeMenu} className="logoLink">
+  <img
+    src="/images/logo.PNG"
+    alt="THE VELTRIXX"
+    className="navLogoImg"
+  />
+</Link>
       </div>
 
       <button

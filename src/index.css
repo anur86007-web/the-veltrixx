@@ -7186,3 +7186,13 @@ body {
     text-align: center;
   }
 }
+.logoLink {
+  display: flex;
+  align-items: center;
+}
+
+.navLogoImg {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}

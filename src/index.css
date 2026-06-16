@@ -8304,3 +8304,82 @@ body {
     display: none !important;
   }
 }
+/* FORCE MOBILE PRODUCT CARD FIX */
+@media (max-width: 768px) {
+  .productsGrid,
+  .productGrid,
+  .premiumProductsGrid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: scroll !important;
+    gap: 18px !important;
+    padding: 0 18px 25px !important;
+  }
+
+  .productCard,
+  .premiumProductCard,
+  .productCard * ,
+  .premiumProductCard * {
+    box-sizing: border-box !important;
+  }
+
+  .productCard,
+  .premiumProductCard {
+    width: 160px !important;
+    min-width: 160px !important;
+    max-width: 160px !important;
+    flex: 0 0 160px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .productImageBox,
+  .productCardImage {
+    width: 160px !important;
+    height: 210px !important;
+    overflow: hidden !important;
+    background: #f5f5f5 !important;
+  }
+
+  .productImageBox img,
+  .productCard img,
+  .premiumProductCard img {
+    width: 160px !important;
+    height: 210px !important;
+    object-fit: cover !important;
+  }
+
+  .productCard h3,
+  .premiumProductCard h3 {
+    display: block !important;
+    font-size: 15px !important;
+    line-height: 1.25 !important;
+    font-weight: 500 !important;
+    margin: 9px 0 0 !important;
+    color: #111 !important;
+    max-height: 38px !important;
+    overflow: hidden !important;
+  }
+
+  .stockBadge,
+  .wishlistBtn,
+  .productCard p,
+  .premiumProductCard p,
+  .productCard strong,
+  .premiumProductCard strong,
+  .modelChips,
+  .colorCircles,
+  .ratingRow,
+  .productRating,
+  .addCartBtn,
+  .viewDetailsBtn,
+  .quickViewBtn,
+  .productPrice {
+    display: none !important;
+  }
+}

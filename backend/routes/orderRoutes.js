@@ -229,5 +229,42 @@ router.put("/cancel/:id", protect, async (req, res) => {
     });
   }
 });
+router.put("/admin/all/:id/status", protect, async (req, res) => {
+  try {
+    const { orderStatus } = req.body;
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    if (order.orderStatus !== orderStatus) {
+      order.orderStatus = orderStatus;
+
+      order.statusHistory.push({
+        status: orderStatus,
+        date: new Date(),
+      });
+    }
+
+    await order.save();
+
+    res.json({
+      success: true,
+      message: "Order status updated",
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Order status update failed",
+      error: error.message,
+    });
+  }
+});
 
 module.exports = router;

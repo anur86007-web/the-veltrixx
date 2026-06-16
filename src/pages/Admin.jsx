@@ -345,6 +345,32 @@ function Admin({ refreshProducts }) {
   const deleteProduct = async (id) => {
     if (!window.confirm("Delete this product?")) return;
 
+  const updateOrderStatus = async (orderId, orderStatus) => {
+  try {
+    const res = await fetch(`${ORDER_API}/${orderId}/status`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ orderStatus }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert(data.message || "Order status update failed");
+      return;
+    }
+
+    alert("Order status updated");
+    fetchOrders();
+  } catch (error) {
+    console.log("Update order error:", error);
+    alert("Something went wrong");
+  }
+};
+
     const res = await fetch(`${PRODUCT_API}/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
@@ -873,7 +899,12 @@ function Admin({ refreshProducts }) {
 
         {activeTab === "orders" && (
   <div className="adminBox">
-    <h2>Manage Orders</h2>
+    <div className="ordersHeader">
+      <div>
+        <h2>Manage Orders</h2>
+        <p>Track orders, update status and manage deliveries.</p>
+      </div>
+    </div>
 
     {orders.length === 0 ? (
       <div className="adminEmptyState">
@@ -881,51 +912,90 @@ function Admin({ refreshProducts }) {
         <p>No customer orders have been placed yet.</p>
       </div>
     ) : (
-      <div className="adminProductList">
-        <div className="adminOrdersGrid">
-  {orders.map((order) => (
-    <div className="orderCard" key={order._id}>
-      <div className="orderCardHeader">
-        <h3>Order #{order._id?.slice(-6)}</h3>
+      <div className="adminOrdersGrid">
+        {orders.map((order) => (
+          <div className="orderCard" key={order._id}>
+            <div className="orderCardHeader">
+              <div>
+                <h3>Order #{order._id?.slice(-6)}</h3>
+                <p>
+                  {order.createdAt
+                    ? new Date(order.createdAt).toLocaleString()
+                    : "Date not available"}
+                </p>
+              </div>
 
-        <span className="orderStatus">
-          {order.orderStatus || "Order Placed"}
-        </span>
-      </div>
+              <span className="orderStatusBadge">
+                {order.orderStatus || "Order Placed"}
+              </span>
+            </div>
 
-      <div className="orderCardBody">
-        <p>
-          <strong>Customer:</strong>{" "}
-          {order.customer?.name || "N/A"}
-        </p>
+            <div className="orderCustomerBox">
+              <h4>Customer Details</h4>
+              <p><b>Name:</b> {order.customer?.name || "N/A"}</p>
+              <p><b>Phone:</b> {order.customer?.phone || "N/A"}</p>
+              <p>
+                <b>Address:</b>{" "}
+                {order.customer?.address || "N/A"},{" "}
+                {order.customer?.city || ""},{" "}
+                {order.customer?.state || ""} -{" "}
+                {order.customer?.pincode || ""}
+              </p>
+            </div>
 
-        <p>
-          <strong>Phone:</strong>{" "}
-          {order.customer?.phone || "N/A"}
-        </p>
+            <div className="orderItemsBox">
+              <h4>Products</h4>
 
-        <p>
-          <strong>Total:</strong> ₹{order.total || 0}
-        </p>
+              {order.items?.length > 0 ? (
+                order.items.map((item, index) => (
+                  <div className="orderItemMini" key={index}>
+                    <img src={item.image} alt={item.name} />
 
-        <p>
-          <strong>Payment:</strong>{" "}
-          {order.paymentMethod || "N/A"}
-        </p>
+                    <div>
+                      <p><b>{item.name}</b></p>
+                      <span>
+                        {item.brand} • {item.model} • Qty: {item.qty}
+                      </span>
+                      <span>Color: {item.selectedColor || "Default"}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No products found</p>
+              )}
+            </div>
 
-        <p>
-          <strong>Payment Status:</strong>{" "}
-          {order.paymentStatus || "Pending"}
-        </p>
+            <div className="orderPaymentBox">
+              <p><b>Subtotal:</b> ₹{order.subtotal || 0}</p>
+              <p><b>Shipping:</b> ₹{order.shipping || 0}</p>
+              <p><b>Discount:</b> ₹{order.discount || 0}</p>
+              <p><b>Coupon:</b> {order.couponCode || "No Coupon"}</p>
+              <h3>Total: ₹{order.total || 0}</h3>
+            </div>
 
-        <p>
-          <strong>Coupon:</strong>{" "}
-          {order.couponCode || "No Coupon"}
-        </p>
-      </div>
-    </div>
-  ))}
-</div>
+            <div className="orderStatusBox">
+              <label>Update Order Status</label>
+
+              <select
+                value={order.orderStatus || "Order Placed"}
+                onChange={(e) => updateOrderStatus(order._id, e.target.value)}
+              >
+                <option value="Order Placed">Order Placed</option>
+                <option value="Processing">Processing</option>
+                <option value="Packed">Packed</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Out For Delivery">Out For Delivery</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <div className="orderFooter">
+              <span><b>Payment:</b> {order.paymentMethod || "N/A"}</span>
+              <span><b>Status:</b> {order.paymentStatus || "Pending"}</span>
+            </div>
+          </div>
+        ))}
       </div>
     )}
   </div>

@@ -872,13 +872,35 @@ function Admin({ refreshProducts }) {
         )}
 
         {activeTab === "orders" && (
-          <div className="adminBox">
-            <div className="adminEmptyState">
-              <h2>No Orders Yet</h2>
-              <p>No customer orders have been placed yet.</p>
+  <div className="adminBox">
+    <h2>Manage Orders</h2>
+
+    {orders.length === 0 ? (
+      <div className="adminEmptyState">
+        <h2>No Orders Yet</h2>
+        <p>No customer orders have been placed yet.</p>
+      </div>
+    ) : (
+      <div className="adminProductList">
+        {orders.map((order) => (
+          <div className="adminProduct" key={order._id}>
+            <div>
+              <h3>Order #{order._id?.slice(-6)}</h3>
+
+              <p><b>Customer:</b> {order.customer?.name || "N/A"}</p>
+              <p><b>Phone:</b> {order.customer?.phone || "N/A"}</p>
+              <p><b>Total:</b> ₹{order.total || 0}</p>
+              <p><b>Payment Method:</b> {order.paymentMethod || "N/A"}</p>
+              <p><b>Payment Status:</b> {order.paymentStatus || "N/A"}</p>
+              <p><b>Order Status:</b> {order.orderStatus || "Order Placed"}</p>
+              <p><b>Coupon:</b> {order.couponCode || "No coupon"}</p>
             </div>
           </div>
-        )}
+        ))}
+      </div>
+    )}
+  </div>
+)}
 
         {activeTab === "reviews" && (
           <div className="adminBox">

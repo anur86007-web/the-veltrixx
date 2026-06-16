@@ -14,21 +14,17 @@ const generateToken = (id) => {
 
 const sendOtpEmail = async (email, otp) => {
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-port: 587,
-secure: false,
-requireTLS: true,
-connectionTimeout: 15000,
-greetingTimeout: 15000,
-socketTimeout: 15000,
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: false,
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
   });
 
   await transporter.sendMail({
-    from: `"THE VELTRIXX" <${process.env.EMAIL_USER}>`,
+    from: `"THE VELTRIXX" <theveltrixx@gmail.com>`,
     to: email,
     subject: "THE VELTRIXX Password Reset OTP",
     html: `

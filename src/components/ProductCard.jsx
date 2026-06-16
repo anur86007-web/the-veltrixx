@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Heart, ShoppingBag, Star, Eye } from "lucide-react";
+import { Heart, ShoppingBag, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
+function ProductCard({ product, wishlist, addToCart, toggleWishlist }) {
   const productId = product._id || product.id;
   const firstColor = product.colorOptions?.[0] || null;
 
@@ -12,113 +12,83 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
   );
 
   const currentImage = selectedColor?.image || product.image;
-
-  const selectedProductForCart = {
-    ...product,
-    selectedColor: selectedColor?.name || "Default",
-    selectedImage: currentImage,
-    selectedModel,
-    image: currentImage,
-  };
+  const stock = Number(product.stock || 0);
+  const isOutOfStock = stock <= 0;
 
   const isWishlisted = wishlist.some(
     (item) => (item._id || item.id) === productId
   );
 
-  const stock = Number(product.stock || 0);
-  const isOutOfStock = stock <= 0;
+  const cartProduct = {
+    ...product,
+    image: currentImage,
+    selectedImage: currentImage,
+    selectedColor: selectedColor?.name || "Default",
+    selectedModel,
+  };
 
   return (
-    <div className="premiumCaseCard">
-      <div className="caseImageBox">
-        <Link to={`/product/${productId}`}>
-          <img src={currentImage} alt={product.name} />
-        </Link>
+    <div className="velProductCard">
+      <Link to={`/product/${productId}`} className="velProductImageBox">
+        <img src={currentImage} alt={product.name} />
 
-        <span className={isOutOfStock ? "caseStock out" : "caseStock"}>
-          {isOutOfStock ? "Out of Stock" : "In Stock"}
+        <span className={isOutOfStock ? "velStock out" : "velStock"}>
+          {isOutOfStock ? "Out" : "In Stock"}
         </span>
+      </Link>
 
-        <button
-          type="button"
-          className={isWishlisted ? "caseWish activeWish" : "caseWish"}
-          onClick={() => toggleWishlist(selectedProductForCart)}
-        >
-          <Heart size={18} fill={isWishlisted ? "red" : "none"} />
-        </button>
-      </div>
+      <button
+        type="button"
+        className={isWishlisted ? "velWish active" : "velWish"}
+        onClick={() => toggleWishlist(cartProduct)}
+      >
+        <Heart size={18} fill={isWishlisted ? "#e11d48" : "none"} />
+      </button>
 
-      <div className="caseInfo">
-        <p className="caseBrand">
-          {product.brand} • {product.model}
+      <div className="velProductInfo">
+        <p className="velBrand">
+          {product.brand} • {selectedModel || product.model}
         </p>
 
-        <Link to={`/product/${productId}`} className="caseNameLink">
-          <h3>{product.name}</h3>
+        <Link to={`/product/${productId}`} className="velProductName">
+          {product.name}
         </Link>
 
+        <div className="velRating">
+          <Star size={14} fill="black" />
+          <span>{product.rating || 4.8}</span>
+          <small>({product.reviews?.length || 0})</small>
+        </div>
+
         {product.colorOptions?.length > 0 && (
-          <div className="caseColors">
-            {product.colorOptions.slice(0, 5).map((color) => (
+          <div className="velColors">
+            {product.colorOptions.slice(0, 4).map((color) => (
               <button
                 key={color.name}
                 type="button"
                 title={color.name}
                 className={
-                  selectedColor?.name === color.name
-                    ? "caseColor activeCaseColor"
-                    : "caseColor"
+                  selectedColor?.name === color.name ? "activeColor" : ""
                 }
-                style={{
-                  backgroundColor: color.hex || color.name || "#000",
-                }}
+                style={{ backgroundColor: color.hex || "#111" }}
                 onClick={() => setSelectedColor(color)}
               />
             ))}
           </div>
         )}
 
-        <div className="caseMetaRow">
-          <span>{selectedColor?.name || "Default"}</span>
-
-          {product.availableModels?.length > 0 && (
-            <select
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-            >
-              {product.availableModels.map((model) => (
-                <option key={model} value={model}>
-                  {model}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
-
-        <div className="caseRating">
-          <Star size={15} fill="black" />
-          <span>{product.rating || 4.8} ({product.reviews?.length || 0} reviews)</span>
-        </div>
-
-        <div className="caseBottom">
-          <div>
-            <h4>₹{product.price}</h4>
-          </div>
+        <div className="velBottom">
+          <h3>₹{product.price}</h3>
 
           <button
             type="button"
             disabled={isOutOfStock}
-            onClick={() => addToCart(selectedProductForCart)}
+            onClick={() => addToCart(cartProduct)}
           >
             <ShoppingBag size={17} />
             Add
           </button>
         </div>
-
-        <Link to={`/product/${productId}`} className="caseViewBtn">
-          <Eye size={16} />
-          View Details
-        </Link>
       </div>
     </div>
   );

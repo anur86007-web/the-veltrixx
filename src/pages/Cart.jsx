@@ -37,6 +37,13 @@ function Cart({ cart, increaseQty, decreaseQty, removeFromCart }) {
   const grandTotal = Math.max(subtotal + shipping - safeDiscount, 0);
 
   const applyCoupon = async () => {
+    const token = localStorage.getItem("veltrixx_token");
+
+    if (!token) {
+      alert("Please login first to apply coupon");
+      return;
+    }
+
     if (!couponCode.trim()) {
       alert("Please enter coupon code");
       return;
@@ -47,8 +54,12 @@ function Cart({ cart, increaseQty, decreaseQty, removeFromCart }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ code: couponCode, subtotal }),
+        body: JSON.stringify({
+          code: couponCode.trim().toUpperCase(),
+          subtotal,
+        }),
       });
 
       const data = await res.json();
@@ -115,7 +126,9 @@ function Cart({ cart, increaseQty, decreaseQty, removeFromCart }) {
             <h1>Your Cart</h1>
           </div>
 
-          <span>{cart.length} item{cart.length > 1 ? "s" : ""}</span>
+          <span>
+            {cart.length} item{cart.length > 1 ? "s" : ""}
+          </span>
         </div>
 
         <div className="cartMainLayout">

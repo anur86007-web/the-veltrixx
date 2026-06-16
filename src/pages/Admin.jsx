@@ -175,15 +175,32 @@ function Admin({ refreshProducts }) {
     }
   };
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (searchValue = userSearch) => {
     try {
-      const res = await fetch(`${USER_API}?search=${userSearch}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `${USER_API}?search=${encodeURIComponent(searchValue || "")}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const data = await res.json();
-      if (Array.isArray(data)) setUsers(data);
-      else setUsers([]);
+
+      if (!res.ok) {
+        console.log("Fetch users failed:", data);
+        setUsers([]);
+        return;
+      }
+
+      if (Array.isArray(data)) {
+        setUsers(data);
+      } else if (Array.isArray(data.users)) {
+        setUsers(data.users);
+      } else if (Array.isArray(data.data)) {
+        setUsers(data.data);
+      } else {
+        setUsers([]);
+      }
     } catch (error) {
       console.log("Fetch users error:", error);
       setUsers([]);
@@ -202,7 +219,7 @@ function Admin({ refreshProducts }) {
     if (activeTab === "orders") fetchOrders();
     if (activeTab === "reviews") fetchReviews();
     if (activeTab === "coupons") fetchCoupons();
-    if (activeTab === "users") fetchUsers();
+    if (activeTab === "users") fetchUsers(userSearch);
   }, [activeTab]);
 
   const parsedColors = form.colorOptions
@@ -1649,10 +1666,80 @@ function Admin({ refreshProducts }) {
 
         {activeTab === "users" && (
           <div className="adminBox">
-            <div className="adminEmptyState">
-              <h2>No Users Found</h2>
-              <p>Registered users will appear here.</p>
+            <div className="usersAdminHeader">
+              <div>
+                <h2>Users</h2>
+                <p>View registered customers and their account details.</p>
+              </div>
+
+              <span className="userCountBadge">
+                {users.length} User{users.length > 1 ? "s" : ""}
+              </span>
             </div>
+
+            <div className="usersSearchRow">
+              <input
+                type="text"
+                placeholder="Search user by name or email..."
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") fetchUsers(userSearch);
+                }}
+              />
+
+              <button type="button" onClick={() => fetchUsers(userSearch)}>
+                Search
+              </button>
+
+              {userSearch && (
+                <button
+                  type="button"
+                  className="clearUserSearchBtn"
+                  onClick={() => {
+                    setUserSearch("");
+                    fetchUsers("");
+                  }}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {users.length === 0 ? (
+              <div className="adminEmptyState">
+                <h2>No Users Found</h2>
+                <p>Registered users will appear here.</p>
+              </div>
+            ) : (
+              <div className="adminUsersGrid">
+                {users.map((user) => (
+                  <div className="adminUserCard" key={user._id || user.id}>
+                    <div className="userAvatar">
+                      {(user.name || user.email || "U").charAt(0).toUpperCase()}
+                    </div>
+
+                    <div className="userDetails">
+                      <h3>{user.name || "No Name"}</h3>
+                      <p>{user.email || "No Email"}</p>
+
+                      <div className="userMetaGrid">
+                        <span>
+                          <b>Role:</b> {user.role || "customer"}
+                        </span>
+
+                        <span>
+                          <b>Joined:</b>{" "}
+                          {user.createdAt
+                            ? new Date(user.createdAt).toLocaleDateString()
+                            : "N/A"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </main>

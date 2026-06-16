@@ -4,14 +4,20 @@ const { protect, adminOnly } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// Get All Users
+/* =========================
+   GET ALL USERS
+========================= */
+
 router.get("/", protect, adminOnly, async (req, res) => {
   try {
-    const keyword = req.query.search
+    const search = req.query.search || "";
+
+    const keyword = search
       ? {
           $or: [
-            { name: { $regex: req.query.search, $options: "i" } },
-            { email: { $regex: req.query.search, $options: "i" } },
+            { name: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+            { role: { $regex: search, $options: "i" } },
           ],
         }
       : {};
@@ -20,16 +26,24 @@ router.get("/", protect, adminOnly, async (req, res) => {
       .select("-password")
       .sort({ createdAt: -1 });
 
-    res.json(users);
+    res.json({
+      success: true,
+      count: users.length,
+      users,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Failed to fetch users",
+      error: error.message,
     });
   }
 });
 
-// Update User Role
+/* =========================
+   UPDATE USER ROLE
+========================= */
+
 router.put("/:id/role", protect, adminOnly, async (req, res) => {
   try {
     const { role } = req.body;
@@ -41,7 +55,7 @@ router.put("/:id/role", protect, adminOnly, async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select("-password");
 
     if (!user) {
       return res.status(404).json({
@@ -56,16 +70,21 @@ router.put("/:id/role", protect, adminOnly, async (req, res) => {
     res.json({
       success: true,
       message: "Role updated successfully",
+      user,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Failed to update role",
+      error: error.message,
     });
   }
 });
 
-// Delete User
+/* =========================
+   DELETE USER
+========================= */
+
 router.delete("/:id", protect, adminOnly, async (req, res) => {
   try {
     if (req.user._id.toString() === req.params.id) {
@@ -89,11 +108,13 @@ router.delete("/:id", protect, adminOnly, async (req, res) => {
     res.json({
       success: true,
       message: "User deleted successfully",
+      deletedUserId: req.params.id,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Failed to delete user",
+      error: error.message,
     });
   }
 });

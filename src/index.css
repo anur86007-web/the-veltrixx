@@ -5129,7 +5129,10 @@ button, a {
   right: 10px !important;
   top: 115px !important;
   transform: rotate(10deg) !important;
-  background-image: url("https://cdn.shopify.com/s/files/1/0551/6227/3942/files/Alcantara_iPhone_17_Pro_Max_Red_Luriax_Side_Button_v2.1.jpg?v=1779059299") !important;
+
+  background-image: url("/images/cardC.PNG") !important;
+  background-size: cover !important;
+  background-position: center !important;
 }
 
 .heroPhoneCard:hover {

@@ -8066,3 +8066,67 @@ body {
     font-size: 15px;
   }
 }
+/* MOBILE COMPACT PRODUCT CARD */
+@media (max-width: 768px) {
+  .productCard,
+  .premiumProductCard {
+    min-width: 48% !important;
+    max-width: 48% !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  .productCard img,
+  .premiumProductCard img,
+  .productImageBox img {
+    height: 190px !important;
+    object-fit: cover !important;
+  }
+
+  .productCard h3,
+  .premiumProductCard h3 {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    margin: 8px 10px 4px !important;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .productCard p,
+  .premiumProductCard p {
+    font-size: 12px !important;
+    margin: 0 10px 6px !important;
+    color: #777 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .productCard strong,
+  .premiumProductCard strong {
+    font-size: 20px !important;
+    margin: 0 10px 10px !important;
+    display: block !important;
+  }
+
+  .modelChips,
+  .colorCircles,
+  .productDesc,
+  .quickViewBtn,
+  .addCartBtn {
+    display: none !important;
+  }
+
+  .detailsRatingRow,
+  .productRating,
+  .ratingRow {
+    font-size: 13px !important;
+    margin: 0 10px 8px !important;
+  }
+}

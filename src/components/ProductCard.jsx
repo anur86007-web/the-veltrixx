@@ -29,28 +29,24 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
   const isOutOfStock = stock <= 0;
 
   return (
-    <div className="premiumCaseCard mobileMinimalProductCard">
-      <Link to={`/product/${productId}`} className="mobileProductClickArea">
-        <div className="caseImageBox">
+    <div className="premiumCaseCard">
+      <div className="caseImageBox">
+        <Link to={`/product/${productId}`}>
           <img src={currentImage} alt={product.name} />
+        </Link>
 
-          <span className={isOutOfStock ? "caseStock out" : "caseStock"}>
-            {isOutOfStock ? "Out of Stock" : "In Stock"}
-          </span>
-        </div>
+        <span className={isOutOfStock ? "caseStock out" : "caseStock"}>
+          {isOutOfStock ? "Out of Stock" : "In Stock"}
+        </span>
 
-        <div className="mobileOnlyProductInfo">
-          <h3>{product.name}</h3>
-        </div>
-      </Link>
-
-      <button
-        type="button"
-        className={isWishlisted ? "caseWish activeWish" : "caseWish"}
-        onClick={() => toggleWishlist(selectedProductForCart)}
-      >
-        <Heart size={18} fill={isWishlisted ? "red" : "none"} />
-      </button>
+        <button
+          type="button"
+          className={isWishlisted ? "caseWish activeWish" : "caseWish"}
+          onClick={() => toggleWishlist(selectedProductForCart)}
+        >
+          <Heart size={18} fill={isWishlisted ? "red" : "none"} />
+        </button>
+      </div>
 
       <div className="caseInfo">
         <p className="caseBrand">
@@ -101,9 +97,7 @@ function ProductCard({ product, cart, wishlist, addToCart, toggleWishlist }) {
 
         <div className="caseRating">
           <Star size={15} fill="black" />
-          <span>
-            {product.rating || 4.8} ({product.reviews?.length || 0} reviews)
-          </span>
+          <span>{product.rating || 4.8} ({product.reviews?.length || 0} reviews)</span>
         </div>
 
         <div className="caseBottom">

@@ -395,6 +395,358 @@ function Admin({ refreshProducts }) {
     }
   };
 
+
+  const formatCurrency = (value) => {
+    const amount = Number(value || 0);
+    return `₹${amount.toLocaleString("en-IN")}`;
+  };
+
+  const downloadInvoice = (order) => {
+    const invoiceWindow = window.open("", "_blank");
+
+    if (!invoiceWindow) {
+      alert("Please allow popups to download invoice");
+      return;
+    }
+
+    const safe = (value) =>
+      String(value || "N/A")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+
+    const orderDate = order.createdAt
+      ? new Date(order.createdAt).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
+      : "N/A";
+
+    const itemsHtml =
+      order.items?.length > 0
+        ? order.items
+            .map((item, index) => {
+              const qty = Number(item.qty || 1);
+              const price = Number(item.price || 0);
+              const lineTotal = qty * price;
+
+              return `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>
+                    <strong>${safe(item.name)}</strong>
+                    <br />
+                    <small>${safe(item.brand)} • ${safe(item.model)}</small>
+                  </td>
+                  <td>${safe(item.selectedColor || "Default")}</td>
+                  <td>${qty}</td>
+                  <td>${formatCurrency(price)}</td>
+                  <td>${formatCurrency(lineTotal)}</td>
+                </tr>
+              `;
+            })
+            .join("")
+        : `
+          <tr>
+            <td colspan="6" style="text-align:center;">No products found</td>
+          </tr>
+        `;
+
+    invoiceWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Invoice - ${safe(order._id)}</title>
+          <style>
+            * {
+              box-sizing: border-box;
+            }
+
+            body {
+              margin: 0;
+              padding: 40px;
+              background: #f3f4f6;
+              color: #111;
+              font-family: Arial, Helvetica, sans-serif;
+            }
+
+            .invoicePage {
+              max-width: 950px;
+              margin: 0 auto;
+              background: #fff;
+              border-radius: 24px;
+              overflow: hidden;
+              box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            }
+
+            .invoiceHeader {
+              background: #111;
+              color: #fff;
+              padding: 34px 40px;
+              display: flex;
+              justify-content: space-between;
+              gap: 30px;
+            }
+
+            .brandTitle {
+              font-size: 30px;
+              letter-spacing: 3px;
+              margin: 0 0 8px;
+              font-weight: 800;
+            }
+
+            .brandSub {
+              margin: 0;
+              color: #d9d9d9;
+              font-size: 14px;
+            }
+
+            .invoiceMeta {
+              text-align: right;
+            }
+
+            .invoiceMeta h2 {
+              margin: 0 0 8px;
+              font-size: 28px;
+            }
+
+            .invoiceMeta p {
+              margin: 4px 0;
+              color: #d9d9d9;
+              font-size: 14px;
+            }
+
+            .invoiceBody {
+              padding: 36px 40px;
+            }
+
+            .infoGrid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 22px;
+              margin-bottom: 32px;
+            }
+
+            .infoCard {
+              border: 1px solid #e8e8e8;
+              border-radius: 18px;
+              padding: 20px;
+              background: #fafafa;
+            }
+
+            .infoCard h3 {
+              margin: 0 0 12px;
+              font-size: 18px;
+            }
+
+            .infoCard p {
+              margin: 7px 0;
+              color: #333;
+              line-height: 1.5;
+            }
+
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 16px;
+              border: 1px solid #e8e8e8;
+              overflow: hidden;
+              border-radius: 16px;
+            }
+
+            th {
+              background: #111;
+              color: #fff;
+              padding: 14px;
+              font-size: 13px;
+              text-align: left;
+            }
+
+            td {
+              padding: 14px;
+              border-bottom: 1px solid #eee;
+              color: #222;
+              vertical-align: top;
+            }
+
+            td small {
+              color: #666;
+            }
+
+            .summarySection {
+              display: flex;
+              justify-content: flex-end;
+              margin-top: 28px;
+            }
+
+            .summaryBox {
+              width: 350px;
+              border: 1px solid #e8e8e8;
+              border-radius: 18px;
+              padding: 20px;
+              background: #fafafa;
+            }
+
+            .summaryRow {
+              display: flex;
+              justify-content: space-between;
+              margin: 10px 0;
+              color: #333;
+            }
+
+            .grandTotal {
+              border-top: 1px solid #ddd;
+              margin-top: 14px;
+              padding-top: 14px;
+              font-size: 22px;
+              font-weight: 800;
+              color: #111;
+            }
+
+            .invoiceFooter {
+              margin-top: 32px;
+              padding-top: 24px;
+              border-top: 1px solid #eee;
+              display: flex;
+              justify-content: space-between;
+              gap: 20px;
+              color: #555;
+              font-size: 14px;
+            }
+
+            .printBtn {
+              margin-top: 28px;
+              width: 100%;
+              padding: 15px;
+              border: none;
+              border-radius: 14px;
+              background: #111;
+              color: #fff;
+              font-size: 15px;
+              font-weight: 800;
+              cursor: pointer;
+            }
+
+            .printBtn:hover {
+              background: #333;
+            }
+
+            @media print {
+              body {
+                background: #fff;
+                padding: 0;
+              }
+
+              .invoicePage {
+                box-shadow: none;
+                border-radius: 0;
+              }
+
+              .printBtn {
+                display: none;
+              }
+            }
+          </style>
+        </head>
+
+        <body>
+          <div class="invoicePage">
+            <div class="invoiceHeader">
+              <div>
+                <h1 class="brandTitle">THE VELTRIXX</h1>
+                <p class="brandSub">Premium Custom Phone Cases</p>
+              </div>
+
+              <div class="invoiceMeta">
+                <h2>INVOICE</h2>
+                <p><strong>Order:</strong> #${safe(order._id?.slice(-8))}</p>
+                <p><strong>Date:</strong> ${orderDate}</p>
+              </div>
+            </div>
+
+            <div class="invoiceBody">
+              <div class="infoGrid">
+                <div class="infoCard">
+                  <h3>Bill To</h3>
+                  <p><strong>${safe(order.customer?.name)}</strong></p>
+                  <p>${safe(order.customer?.phone)}</p>
+                  <p>
+                    ${safe(order.customer?.address)},
+                    ${safe(order.customer?.city)},
+                    ${safe(order.customer?.state)} -
+                    ${safe(order.customer?.pincode)}
+                  </p>
+                </div>
+
+                <div class="infoCard">
+                  <h3>Order Details</h3>
+                  <p><strong>Payment:</strong> ${safe(order.paymentMethod)}</p>
+                  <p><strong>Payment Status:</strong> ${safe(order.paymentStatus || "Pending")}</p>
+                  <p><strong>Order Status:</strong> ${safe(order.orderStatus || "Order Placed")}</p>
+                  <p><strong>Coupon:</strong> ${safe(order.couponCode || "No Coupon")}</p>
+                </div>
+              </div>
+
+              <h3>Purchased Items</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Color</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${itemsHtml}
+                </tbody>
+              </table>
+
+              <div class="summarySection">
+                <div class="summaryBox">
+                  <div class="summaryRow">
+                    <span>Subtotal</span>
+                    <strong>${formatCurrency(order.subtotal)}</strong>
+                  </div>
+
+                  <div class="summaryRow">
+                    <span>Shipping</span>
+                    <strong>${formatCurrency(order.shipping)}</strong>
+                  </div>
+
+                  <div class="summaryRow">
+                    <span>Discount</span>
+                    <strong>- ${formatCurrency(order.discount)}</strong>
+                  </div>
+
+                  <div class="summaryRow grandTotal">
+                    <span>Total</span>
+                    <span>${formatCurrency(order.total)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="invoiceFooter">
+                <p>Thank you for shopping with THE VELTRIXX.</p>
+                <p>This is a computer generated invoice.</p>
+              </div>
+
+              <button class="printBtn" onclick="window.print()">
+                Download / Print Invoice
+              </button>
+            </div>
+          </div>
+        </body>
+      </html>
+    `);
+
+    invoiceWindow.document.close();
+  };
+
   const deleteProduct = async (id) => {
     if (!window.confirm("Delete this product?")) return;
 
@@ -1053,6 +1405,15 @@ function Admin({ refreshProducts }) {
               <span><b>Payment:</b> {order.paymentMethod || "N/A"}</span>
               <span><b>Status:</b> {order.paymentStatus || "Pending"}</span>
             </div>
+
+            <button
+              type="button"
+              className="downloadInvoiceBtn"
+              onClick={() => downloadInvoice(order)}
+            >
+              Download Invoice
+            </button>
+
           </div>
         ))}
       </div>

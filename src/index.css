@@ -7713,3 +7713,18 @@ body {
 .deleteUploadedImageBtn:hover {
   background: #d62828;
 }
+.downloadInvoiceBtn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: #111;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.downloadInvoiceBtn:hover {
+  background: #333;
+}

@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 const ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/all";
-const UPDATE_ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/update";
-const DELETE_ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/delete";
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/all";
-const DELETE_REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews/admin/delete";
 const COUPON_API = "https://the-veltrixx-backend.onrender.com/api/coupons";
 const USER_API = "https://the-veltrixx-backend.onrender.com/api/users";
 
@@ -123,41 +120,62 @@ function Admin({ refreshProducts }) {
   };
 
   const fetchProducts = async () => {
-    const res = await fetch(PRODUCT_API);
-    const data = await res.json();
-    if (data.success) setProducts(data.products || []);
+    try {
+      const res = await fetch(PRODUCT_API);
+      const data = await res.json();
+      if (data.success) setProducts(data.products || []);
+    } catch (error) {
+      console.log("Fetch products error:", error);
+    }
   };
 
   const fetchOrders = async () => {
-    const res = await fetch(ORDER_API, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (data.success) setOrders(data.orders || []);
+    try {
+      const res = await fetch(ORDER_API, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data.success) setOrders(data.orders || []);
+    } catch (error) {
+      console.log("Fetch orders error:", error);
+    }
   };
 
   const fetchReviews = async () => {
-    const res = await fetch(REVIEW_API, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (data.success) setReviews(data.reviews || []);
+    try {
+      const res = await fetch(REVIEW_API, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data.success) setReviews(data.reviews || []);
+    } catch (error) {
+      console.log("Fetch reviews error:", error);
+    }
   };
 
   const fetchCoupons = async () => {
-    const res = await fetch(COUPON_API);
-    const data = await res.json();
-    if (data.success) setCoupons(data.coupons || []);
+    try {
+      const res = await fetch(COUPON_API);
+      const data = await res.json();
+      if (data.success) setCoupons(data.coupons || []);
+    } catch (error) {
+      console.log("Fetch coupons error:", error);
+    }
   };
 
   const fetchUsers = async () => {
-    const res = await fetch(`${USER_API}?search=${userSearch}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      const res = await fetch(`${USER_API}?search=${userSearch}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const data = await res.json();
-    if (Array.isArray(data)) setUsers(data);
-    else setUsers([]);
+      const data = await res.json();
+      if (Array.isArray(data)) setUsers(data);
+      else setUsers([]);
+    } catch (error) {
+      console.log("Fetch users error:", error);
+      setUsers([]);
+    }
   };
 
   useEffect(() => {
@@ -203,6 +221,7 @@ function Admin({ refreshProducts }) {
   };
 
   const profit = Number(form.price || 0) - Number(form.costPrice || 0);
+
   const margin =
     Number(form.price || 0) > 0
       ? Math.round((profit / Number(form.price)) * 100)
@@ -273,6 +292,7 @@ function Admin({ refreshProducts }) {
     setForm(emptyForm);
     setEditingProductId(null);
     fetchProducts();
+
     if (refreshProducts) refreshProducts();
   };
 
@@ -337,7 +357,48 @@ function Admin({ refreshProducts }) {
 
     alert("Product deleted");
     fetchProducts();
+
     if (refreshProducts) refreshProducts();
+  };
+
+  const handleCreateCoupon = async () => {
+    if (!couponForm.code || !couponForm.discountValue) {
+      alert("Please fill coupon code and discount value");
+      return;
+    }
+
+    try {
+      const res = await fetch(COUPON_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          code: couponForm.code.trim().toUpperCase(),
+          discountType: couponForm.discountType,
+          discountValue: Number(couponForm.discountValue),
+          minOrderAmount: Number(couponForm.minOrderAmount) || 0,
+          maxDiscountAmount: Number(couponForm.maxDiscountAmount) || 0,
+          usageLimit: Number(couponForm.usageLimit) || 0,
+          expiryDate: couponForm.expiryDate || null,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || "Coupon create failed");
+        return;
+      }
+
+      alert("Coupon created successfully");
+      setCouponForm(emptyCouponForm);
+      fetchCoupons();
+    } catch (error) {
+      console.log("Coupon create error:", error);
+      alert("Something went wrong while creating coupon");
+    }
   };
 
   const totalRevenue = orders.reduce(
@@ -785,9 +846,7 @@ function Admin({ refreshProducts }) {
                     </div>
 
                     <div>
-                      <button onClick={() => startEditProduct(item)}>
-                        Edit
-                      </button>
+                      <button onClick={() => startEditProduct(item)}>Edit</button>
 
                       <button
                         className="dangerBtn"
@@ -802,147 +861,164 @@ function Admin({ refreshProducts }) {
             </div>
           </>
         )}
-        
-          {/* ORDERS */}
-{activeTab === "orders" && (
-  <div className="adminBox">
-    <div className="adminEmptyState">
-      <h2>No Orders Yet</h2>
-      <p>No customer orders have been placed yet.</p>
-    </div>
-  </div>
-)}
 
-{/* REVIEWS */}
-{activeTab === "reviews" && (
-  <div className="adminBox">
-    <div className="adminEmptyState">
-      <h2>No Reviews Yet</h2>
-      <p>Customer reviews will appear here.</p>
-    </div>
-  </div>
-)}
-
-{/* COUPONS */}
-{activeTab === "coupons" && (
-  <div className="adminBox">
-    <h2>Create Coupon</h2>
-
-    <div className="adminFormSection">
-      <input
-        placeholder="Coupon Code"
-        value={couponForm.code}
-        onChange={(e) =>
-          setCouponForm({
-            ...couponForm,
-            code: e.target.value.toUpperCase(),
-          })
-        }
-      />
-
-      <select
-        value={couponForm.discountType}
-        onChange={(e) =>
-          setCouponForm({
-            ...couponForm,
-            discountType: e.target.value,
-          })
-        }
-      >
-        <option value="percentage">Percentage</option>
-        <option value="flat">Flat Amount</option>
-      </select>
-
-      <input
-        type="number"
-        placeholder="Discount Value"
-        value={couponForm.discountValue}
-        onChange={(e) =>
-          setCouponForm({
-            ...couponForm,
-            discountValue: e.target.value,
-          })
-        }
-      />
-
-      <input
-        type="number"
-        placeholder="Minimum Order Amount"
-        value={couponForm.minOrderAmount}
-        onChange={(e) =>
-          setCouponForm({
-            ...couponForm,
-            minOrderAmount: e.target.value,
-          })
-        }
-      />
-
-      <input
-        type="number"
-        placeholder="Usage Limit"
-        value={couponForm.usageLimit}
-        onChange={(e) =>
-          setCouponForm({
-            ...couponForm,
-            usageLimit: e.target.value,
-          })
-        }
-      />
-
-      <input
-        type="date"
-        value={couponForm.expiryDate}
-        onChange={(e) =>
-          setCouponForm({
-            ...couponForm,
-            expiryDate: e.target.value,
-          })
-        }
-      />
-
-      <button onClick={handleCreateCoupon}>
-        Create Coupon
-      </button>
-    </div>
-
-    {coupons.length === 0 ? (
-      <div className="adminEmptyState">
-        <h3>No Coupons Available</h3>
-        <p>Create your first coupon to start offering discounts.</p>
-      </div>
-    ) : (
-      <div className="adminProductList">
-        {coupons.map((coupon) => (
-          <div className="adminProduct" key={coupon._id}>
-            <h3>{coupon.code}</h3>
-
-            <p>
-              {coupon.discountType} - {coupon.discountValue}
-            </p>
-
-            <p>
-              Expiry:
-              {" "}
-              {coupon.expiryDate
-                ? coupon.expiryDate.slice(0, 10)
-                : "No Expiry"}
-            </p>
+        {activeTab === "orders" && (
+          <div className="adminBox">
+            <div className="adminEmptyState">
+              <h2>No Orders Yet</h2>
+              <p>No customer orders have been placed yet.</p>
+            </div>
           </div>
-        ))}
-      </div>
-    )}
-  </div>
-)}
+        )}
 
-{/* USERS */}
-{activeTab === "users" && (
-  <div className="adminBox">
-    <div className="adminEmptyState">
-      <h2>No Users Found</h2>
-      <p>Registered users will appear here.</p>
-    </div>
-  </div>
-)}
+        {activeTab === "reviews" && (
+          <div className="adminBox">
+            <div className="adminEmptyState">
+              <h2>No Reviews Yet</h2>
+              <p>Customer reviews will appear here.</p>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "coupons" && (
+          <div className="adminBox productAdminBox">
+            <h2>Create Coupon</h2>
+
+            <div className="adminFormSection">
+              <h3>Coupon Details</h3>
+
+              <input
+                placeholder="Coupon Code"
+                value={couponForm.code}
+                onChange={(e) =>
+                  setCouponForm({
+                    ...couponForm,
+                    code: e.target.value.toUpperCase(),
+                  })
+                }
+              />
+
+              <select
+                value={couponForm.discountType}
+                onChange={(e) =>
+                  setCouponForm({
+                    ...couponForm,
+                    discountType: e.target.value,
+                  })
+                }
+              >
+                <option value="percentage">Percentage</option>
+                <option value="flat">Flat Amount</option>
+              </select>
+
+              <input
+                type="number"
+                placeholder="Discount Value"
+                value={couponForm.discountValue}
+                onChange={(e) =>
+                  setCouponForm({
+                    ...couponForm,
+                    discountValue: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                type="number"
+                placeholder="Minimum Order Amount"
+                value={couponForm.minOrderAmount}
+                onChange={(e) =>
+                  setCouponForm({
+                    ...couponForm,
+                    minOrderAmount: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                type="number"
+                placeholder="Max Discount Amount"
+                value={couponForm.maxDiscountAmount}
+                onChange={(e) =>
+                  setCouponForm({
+                    ...couponForm,
+                    maxDiscountAmount: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                type="number"
+                placeholder="Usage Limit"
+                value={couponForm.usageLimit}
+                onChange={(e) =>
+                  setCouponForm({
+                    ...couponForm,
+                    usageLimit: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                type="date"
+                value={couponForm.expiryDate}
+                onChange={(e) =>
+                  setCouponForm({
+                    ...couponForm,
+                    expiryDate: e.target.value,
+                  })
+                }
+              />
+
+              <button onClick={handleCreateCoupon}>Create Coupon</button>
+            </div>
+
+            {coupons.length === 0 ? (
+              <div className="adminEmptyState">
+                <h3>No Coupons Available</h3>
+                <p>Create your first coupon to start offering discounts.</p>
+              </div>
+            ) : (
+              <div className="adminProductList">
+                {coupons.map((coupon) => (
+                  <div className="adminProduct" key={coupon._id}>
+                    <div>
+                      <h3>{coupon.code}</h3>
+                      <p>
+                        {coupon.discountType} - {coupon.discountValue}
+                      </p>
+                      <p>
+                        Min Order: ₹{coupon.minOrderAmount || 0}
+                      </p>
+                      <p>
+                        Max Discount: ₹{coupon.maxDiscountAmount || 0}
+                      </p>
+                      <p>
+                        Usage Limit: {coupon.usageLimit || "Unlimited"}
+                      </p>
+                      <p>
+                        Expiry:{" "}
+                        {coupon.expiryDate
+                          ? coupon.expiryDate.slice(0, 10)
+                          : "No Expiry"}
+                      </p>
+                      <p>Status: {coupon.isActive ? "Active" : "Inactive"}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "users" && (
+          <div className="adminBox">
+            <div className="adminEmptyState">
+              <h2>No Users Found</h2>
+              <p>Registered users will appear here.</p>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

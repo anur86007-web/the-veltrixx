@@ -7433,3 +7433,80 @@ body {
   font-weight: 700;
   cursor: pointer;
 }
+.amazonStyleGallery {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.verticalThumbs {
+  width: 82px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 100px;
+}
+
+.verticalThumbs button {
+  width: 72px;
+  height: 72px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  border-radius: 14px;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.verticalThumbs button:hover,
+.verticalThumbs .activeVerticalThumb {
+  border-color: #111;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.verticalThumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.amazonMainImage {
+  flex: 1;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.amazonMainImage img {
+  max-width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .amazonStyleGallery {
+    flex-direction: column-reverse;
+  }
+
+  .verticalThumbs {
+    width: 100%;
+    flex-direction: row;
+    position: static;
+    overflow-x: auto;
+  }
+
+  .verticalThumbs button {
+    min-width: 68px;
+  }
+
+  .amazonMainImage {
+    min-height: 360px;
+  }
+
+  .amazonMainImage img {
+    max-height: 360px;
+  }
+}

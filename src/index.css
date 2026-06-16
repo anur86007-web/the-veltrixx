@@ -7927,3 +7927,180 @@ body {
 .deleteReviewBtn:hover {
   background: #b91c1c;
 }
+/* ===============================
+   FINAL MOBILE PROFESSIONAL FIX
+================================ */
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  /* HERO MOBILE */
+  .premiumHero,
+  .heroSection {
+    margin: 14px 14px 28px !important;
+    padding: 28px 18px !important;
+    min-height: auto !important;
+    border-radius: 26px !important;
+  }
+
+  .heroRight,
+  .premiumHeroImage,
+  .heroImage,
+  .heroStats,
+  .heroCards,
+  .heroVisual {
+    display: none !important;
+  }
+
+  .premiumHeroText,
+  .heroLeft {
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .premiumHeroText h1,
+  .heroLeft h1 {
+    font-size: 36px !important;
+    line-height: 1.05 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .premiumHeroText p,
+  .heroLeft p {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 22px !important;
+  }
+
+  .heroActions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .heroActions button,
+  .heroActions a {
+    width: 100% !important;
+    height: 52px !important;
+    font-size: 15px !important;
+  }
+
+  /* SERVICE CARDS HIDE/COMPACT */
+  .featuresGrid,
+  .trustGrid,
+  .benefitsGrid {
+    display: none !important;
+  }
+
+  /* SECTION HEADINGS */
+  .brandArea h1,
+  .productsSection h1,
+  .productsSection h2,
+  .sectionHeader h2,
+  .homeSectionHeader h2 {
+    font-size: 26px !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+    margin: 20px 14px 16px !important;
+  }
+
+  /* PRODUCT SLIDER */
+  .productsGrid,
+  .productGrid,
+  .premiumProductsGrid {
+    display: flex !important;
+    gap: 14px !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    padding: 0 14px 18px !important;
+    grid-template-columns: none !important;
+  }
+
+  .productsGrid::-webkit-scrollbar,
+  .productGrid::-webkit-scrollbar,
+  .premiumProductsGrid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* COMPACT PRODUCT CARD */
+  .productCard,
+  .premiumProductCard {
+    min-width: 72% !important;
+    max-width: 72% !important;
+    flex: 0 0 72% !important;
+    scroll-snap-align: start !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .productImageBox,
+  .productCardImage {
+    height: auto !important;
+  }
+
+  .productCard img,
+  .premiumProductCard img,
+  .productImageBox img {
+    height: 230px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .productCard h3,
+  .premiumProductCard h3 {
+    font-size: 19px !important;
+    line-height: 1.18 !important;
+    font-weight: 700 !important;
+    margin: 10px 14px 6px !important;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .productCard p,
+  .premiumProductCard p,
+  .productBrand,
+  .productModel {
+    font-size: 13px !important;
+    color: #777 !important;
+    margin: 0 14px 8px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .productCard strong,
+  .premiumProductCard strong,
+  .productPrice {
+    font-size: 24px !important;
+    margin: 8px 14px 14px !important;
+    display: block !important;
+  }
+
+  .ratingRow,
+  .productRating {
+    font-size: 13px !important;
+    margin: 0 14px 8px !important;
+  }
+
+  .modelChips,
+  .colorCircles,
+  .productDesc,
+  .viewDetailsBtn,
+  .quickViewBtn {
+    display: none !important;
+  }
+
+  .addCartBtn {
+    font-size: 13px !important;
+    padding: 10px 14px !important;
+    border-radius: 999px !important;
+    margin: 0 14px 14px !important;
+  }
+}

@@ -352,47 +352,52 @@ function Admin({ refreshProducts }) {
     setForm(emptyForm);
   };
 
-  const deleteProduct = async (id) => {
-    if (!window.confirm("Delete this product?")) return;
-
   const updateOrderStatus = async (orderId, orderStatus) => {
-  if (!orderId) {
-    alert("Order ID missing");
-    return;
-  }
-
-  if (!orderStatus) {
-    alert("Please select order status");
-    return;
-  }
-
-  try {
-    const res = await fetch(
-      `https://the-veltrixx-backend.onrender.com/api/orders/admin/all/${orderId}/status`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ orderStatus }),
-      }
-    );
-
-    const data = await res.json();
-
-    if (!data.success) {
-      alert(data.message || data.error || "Order status update failed");
+    if (!orderId) {
+      alert("Order ID missing");
       return;
     }
 
-    alert("Order status updated successfully");
-    fetchOrders();
-  } catch (error) {
-    console.log("Update order error:", error);
-    alert("Something went wrong while updating order");
-  }
-};
+    if (!orderStatus) {
+      alert("Please select order status");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://the-veltrixx-backend.onrender.com/api/orders/admin/all/${orderId}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ orderStatus }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || data.error || "Order status update failed");
+        return;
+      }
+
+      alert("Order status updated successfully");
+      setOrderStatusDraft({
+        ...orderStatusDraft,
+        [orderId]: "",
+      });
+      fetchOrders();
+    } catch (error) {
+      console.log("Update order error:", error);
+      alert("Something went wrong while updating order");
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    if (!window.confirm("Delete this product?")) return;
+
 
     const res = await fetch(`${PRODUCT_API}/${id}`, {
       method: "DELETE",
@@ -671,6 +676,7 @@ function Admin({ refreshProducts }) {
   )}
 </div>
 
+              </div>
               <div className="adminFormSection">
                 <h3>Product Options</h3>
 
@@ -926,6 +932,8 @@ function Admin({ refreshProducts }) {
                 ))
               )}
             </div>
+
+
           </>
         )}
 

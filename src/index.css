@@ -7728,3 +7728,100 @@ body {
 .downloadInvoiceBtn:hover {
   background: #333;
 }
+.deliveredReviewBox {
+  margin-top: 24px;
+  padding: 22px;
+  border-radius: 20px;
+  background: #fffdf7;
+  border: 1px solid #f1dfaa;
+}
+
+.deliveredReviewHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.deliveredReviewHeader p {
+  color: #8a6d1f;
+  font-weight: 700;
+  margin: 0;
+}
+
+.deliveredReviewHeader h3 {
+  margin: 5px 0 0;
+}
+
+.deliveredReviewHeader span {
+  color: #777;
+  font-size: 14px;
+}
+
+.productReviewCard {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 15px;
+}
+
+.productReviewInfo {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.productReviewInfo img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.starRatingRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.reviewStar {
+  border: none;
+  background: none;
+  font-size: 28px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.activeReviewStar {
+  color: #f5b301;
+}
+
+.reviewFormBox textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+}
+
+.submitReviewBtn {
+  margin-top: 12px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #111;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reviewSuccessBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0a8f3d;
+  font-weight: 700;
+}

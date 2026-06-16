@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PackageCheck, Truck, XCircle, ShoppingBag } from "lucide-react";
+import { PackageCheck, Truck, XCircle, ShoppingBag, Star } from "lucide-react";
 
 const API = "https://the-veltrixx-backend.onrender.com/api/orders/my-orders";
 const CANCEL_API = "https://the-veltrixx-backend.onrender.com/api/orders/cancel";
+const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reviewForms, setReviewForms] = useState({});
+  const [reviewSubmitting, setReviewSubmitting] = useState({});
+  const [reviewSubmitted, setReviewSubmitted] = useState({});
 
   const trackingSteps = [
     "Order Placed",
@@ -82,6 +86,86 @@ function Orders() {
     return index === -1 ? 0 : index;
   };
 
+  const getProductId = (item) => item.productId || item._id || item.id;
+
+  const getReviewKey = (orderId, item) => {
+    return `${orderId}-${getProductId(item) || item.name}`;
+  };
+
+  const getReviewForm = (key) => {
+    return reviewForms[key] || { rating: 5, comment: "" };
+  };
+
+  const updateReviewForm = (key, field, value) => {
+    setReviewForms({
+      ...reviewForms,
+      [key]: {
+        ...getReviewForm(key),
+        [field]: value,
+      },
+    });
+  };
+
+  const submitProductReview = async (orderId, item) => {
+    const productId = getProductId(item);
+    const reviewKey = getReviewKey(orderId, item);
+    const form = getReviewForm(reviewKey);
+
+    if (!productId) {
+      alert("Product ID missing. Review cannot be submitted.");
+      return;
+    }
+
+    if (!form.comment.trim()) {
+      alert("Please write your review");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("veltrixx_token");
+
+      if (!token) {
+        alert("Please login first");
+        return;
+      }
+
+      setReviewSubmitting({ ...reviewSubmitting, [reviewKey]: true });
+
+      const res = await fetch(REVIEW_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product: productId,
+          rating: Number(form.rating),
+          comment: form.comment.trim(),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || "Review submit failed");
+        return;
+      }
+
+      setReviewSubmitted({ ...reviewSubmitted, [reviewKey]: true });
+      setReviewForms({
+        ...reviewForms,
+        [reviewKey]: { rating: 5, comment: "" },
+      });
+
+      alert("Review submitted successfully");
+    } catch (error) {
+      console.log("Review submit error:", error);
+      alert("Something went wrong while submitting review");
+    } finally {
+      setReviewSubmitting({ ...reviewSubmitting, [reviewKey]: false });
+    }
+  };
+
   if (loading) {
     return (
       <div className="ordersPage">
@@ -121,13 +205,16 @@ function Orders() {
             <h1>My Orders</h1>
           </div>
 
-          <span>{orders.length} order{orders.length > 1 ? "s" : ""}</span>
+          <span>
+            {orders.length} order{orders.length > 1 ? "s" : ""}
+          </span>
         </div>
 
         <div className="ordersList">
           {orders.map((order) => {
             const currentIndex = getCurrentIndex(order.orderStatus);
             const isCancelled = order.orderStatus === "Cancelled";
+            const isDelivered = order.orderStatus === "Delivered";
 
             return (
               <div className="premiumOrderCard" key={order._id}>
@@ -142,7 +229,11 @@ function Orders() {
                       isCancelled ? "cancelStatusPill" : "orderStatusPill"
                     }
                   >
-                    {isCancelled ? <XCircle size={16} /> : <PackageCheck size={16} />}
+                    {isCancelled ? (
+                      <XCircle size={16} />
+                    ) : (
+                      <PackageCheck size={16} />
+                    )}
                     {order.orderStatus}
                   </span>
                 </div>
@@ -185,7 +276,7 @@ function Orders() {
 
                 <div className="orderItemsGrid">
                   {order.items.map((item, index) => {
-                    const productId = item.productId || item._id || item.id;
+                    const productId = getProductId(item);
 
                     return (
                       <Link
@@ -258,6 +349,100 @@ function Orders() {
                     <h2>Total: ₹{order.total}</h2>
                   </div>
                 </div>
+
+                {isDelivered && (
+                  <div className="deliveredReviewBox">
+                    <div className="deliveredReviewHeader">
+                      <div>
+                        <p>Delivered Order</p>
+                        <h3>Rate your purchased products</h3>
+                      </div>
+                      <span>Feedback helps other customers</span>
+                    </div>
+
+                    {order.items.map((item, index) => {
+                      const reviewKey = getReviewKey(order._id, item);
+                      const form = getReviewForm(reviewKey);
+                      const productId = getProductId(item);
+
+                      return (
+                        <div className="productReviewCard" key={reviewKey}>
+                          <div className="productReviewInfo">
+                            <img
+                              src={item.selectedImage || item.image}
+                              alt={item.name}
+                            />
+
+                            <div>
+                              <h4>{item.name}</h4>
+                              <p>
+                                {item.brand} • {item.selectedModel || item.model}
+                              </p>
+                              <p>Color: {item.selectedColor || "Default"}</p>
+                            </div>
+                          </div>
+
+                          {reviewSubmitted[reviewKey] ? (
+                            <div className="reviewSuccessBox">
+                              <Star size={18} fill="currentColor" />
+                              Review submitted successfully
+                            </div>
+                          ) : (
+                            <div className="reviewFormBox">
+                              <div className="starRatingRow">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <button
+                                    key={star}
+                                    type="button"
+                                    className={
+                                      Number(form.rating) >= star
+                                        ? "reviewStar activeReviewStar"
+                                        : "reviewStar"
+                                    }
+                                    onClick={() =>
+                                      updateReviewForm(reviewKey, "rating", star)
+                                    }
+                                  >
+                                    ★
+                                  </button>
+                                ))}
+
+                                <span>{form.rating}/5</span>
+                              </div>
+
+                              <textarea
+                                placeholder="Share your experience with this product..."
+                                value={form.comment}
+                                onChange={(e) =>
+                                  updateReviewForm(
+                                    reviewKey,
+                                    "comment",
+                                    e.target.value
+                                  )
+                                }
+                              />
+
+                              <button
+                                type="button"
+                                className="submitReviewBtn"
+                                disabled={
+                                  reviewSubmitting[reviewKey] || !productId
+                                }
+                                onClick={() =>
+                                  submitProductReview(order._id, item, index)
+                                }
+                              >
+                                {reviewSubmitting[reviewKey]
+                                  ? "Submitting..."
+                                  : "Submit Review"}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
 
                 <div className="statusHistoryBox premiumStatusHistory">
                   <h3>Status History</h3>

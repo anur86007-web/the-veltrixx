@@ -5,6 +5,7 @@ import { PackageCheck, Truck, XCircle, ShoppingBag, Star } from "lucide-react";
 const API = "https://the-veltrixx-backend.onrender.com/api/orders/my-orders";
 const CANCEL_API = "https://the-veltrixx-backend.onrender.com/api/orders/cancel";
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
+const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,7 @@ function Orders() {
   const [reviewForms, setReviewForms] = useState({});
   const [reviewSubmitting, setReviewSubmitting] = useState({});
   const [reviewSubmitted, setReviewSubmitted] = useState({});
+  const [products, setProducts] = useState([]);
 
   const trackingSteps = [
     "Order Placed",
@@ -45,8 +47,22 @@ function Orders() {
     }
   };
 
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch(PRODUCT_API);
+      const data = await res.json();
+
+      if (data.success) {
+        setProducts(data.products || []);
+      }
+    } catch (error) {
+      console.log("Could not fetch products:", error);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
+    fetchProducts();
   }, []);
 
   const cancelOrder = async (id) => {
@@ -86,7 +102,45 @@ function Orders() {
     return index === -1 ? 0 : index;
   };
 
-  const getProductId = (item) => item.productId || item._id || item.id;
+  const getRawProductId = (value) => {
+    if (!value) return "";
+    if (typeof value === "object") return value._id || value.id || "";
+    return value;
+  };
+
+  const getProductId = (item) => {
+    const directProductId =
+      getRawProductId(item.product) || getRawProductId(item.productId);
+
+    const directProductExists = products.some(
+      (product) => String(product._id || product.id) === String(directProductId)
+    );
+
+    if (directProductId && directProductExists) {
+      return directProductId;
+    }
+
+    const matchedProduct = products.find((product) => {
+      const nameMatch =
+        product.name?.trim().toLowerCase() === item.name?.trim().toLowerCase();
+
+      const brandMatch =
+        !item.brand ||
+        product.brand?.trim().toLowerCase() === item.brand?.trim().toLowerCase();
+
+      const modelMatch =
+        !item.model ||
+        !product.model ||
+        product.model?.trim().toLowerCase() === item.model?.trim().toLowerCase() ||
+        product.availableModels
+          ?.map((model) => model.trim().toLowerCase())
+          .includes(item.model?.trim().toLowerCase());
+
+      return nameMatch && brandMatch && modelMatch;
+    });
+
+    return matchedProduct?._id || matchedProduct?.id || directProductId || "";
+  };
 
   const getReviewKey = (orderId, item) => {
     return `${orderId}-${getProductId(item) || item.name}`;

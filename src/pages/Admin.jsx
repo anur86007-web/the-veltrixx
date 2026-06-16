@@ -118,6 +118,15 @@ function Admin({ refreshProducts }) {
       });
     }
   };
+  const deleteProductImage = (imageUrl) => {
+  const updatedImages = form.images.filter((img) => img !== imageUrl);
+
+  setForm({
+    ...form,
+    images: updatedImages,
+    image: form.image === imageUrl ? updatedImages[0] || "" : form.image,
+  });
+};
 
   const fetchProducts = async () => {
     try {
@@ -643,15 +652,24 @@ function Admin({ refreshProducts }) {
                 </label>
 
                 <div className="uploadedImageGrid">
-                  {form.images.length === 0 ? (
-                    <p>No images uploaded</p>
-                  ) : (
-                    form.images.map((img, index) => (
-                      <img key={index} src={img} alt={`Product ${index + 1}`} />
-                    ))
-                  )}
-                </div>
-              </div>
+  {form.images.length === 0 ? (
+    <p>No images uploaded</p>
+  ) : (
+    form.images.map((img, index) => (
+      <div className="uploadedImageBox" key={index}>
+        <img src={img} alt={`Product ${index + 1}`} />
+
+        <button
+          type="button"
+          className="deleteUploadedImageBtn"
+          onClick={() => deleteProductImage(img)}
+        >
+          ×
+        </button>
+      </div>
+    ))
+  )}
+</div>
 
               <div className="adminFormSection">
                 <h3>Product Options</h3>

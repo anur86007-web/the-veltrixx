@@ -50,9 +50,13 @@ function ProductDetails({ products, addToCart }) {
     }
   };
 
-  const fetchReviews = async () => {
+  const getCurrentProductId = () => product?._id || product?.id || id;
+
+  const fetchReviews = async (productId = getCurrentProductId()) => {
+    if (!productId) return;
+
     try {
-      const res = await fetch(`${REVIEW_API}/product/${id}`);
+      const res = await fetch(`${REVIEW_API}/product/${productId}`);
       const data = await res.json();
 
       if (data.success) {
@@ -65,7 +69,6 @@ function ProductDetails({ products, addToCart }) {
 
   useEffect(() => {
     loadProduct();
-    fetchReviews();
   }, [id, products]);
 
   useEffect(() => {
@@ -77,6 +80,7 @@ function ProductDetails({ products, addToCart }) {
       setSelectedColor(firstColor);
       setSelectedImage(firstGalleryImage);
       setSelectedModel(product.availableModels?.[0] || product.model || "");
+      fetchReviews(product._id || product.id || id);
     }
   }, [product]);
 
@@ -101,7 +105,7 @@ function ProductDetails({ products, addToCart }) {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          product: id,
+          product: getCurrentProductId(),
           rating: Number(reviewForm.rating),
           comment: reviewForm.comment,
         }),

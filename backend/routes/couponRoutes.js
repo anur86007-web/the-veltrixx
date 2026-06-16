@@ -4,6 +4,7 @@ const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
+/* CREATE COUPON */
 router.post("/create", async (req, res) => {
   try {
     const {
@@ -24,8 +25,15 @@ router.post("/create", async (req, res) => {
       });
     }
 
+    if (discountType === "percentage" && Number(discountValue) > 90) {
+      return res.status(400).json({
+        success: false,
+        message: "Percentage discount cannot be more than 90%",
+      });
+    }
+
     const existingCoupon = await Coupon.findOne({
-      code: code.toUpperCase(),
+      code: code.trim().toUpperCase(),
     });
 
     if (existingCoupon) {
@@ -36,12 +44,12 @@ router.post("/create", async (req, res) => {
     }
 
     const coupon = await Coupon.create({
-      code: code.toUpperCase(),
+      code: code.trim().toUpperCase(),
       discountType: discountType || "percentage",
       discountValue: Number(discountValue),
       minOrderAmount: Number(minOrderAmount) || 0,
       maxDiscountAmount: Number(maxDiscountAmount) || 0,
-      expiryDate,
+      expiryDate: new Date(expiryDate),
       isActive: isActive !== undefined ? isActive : true,
       usageLimit: Number(usageLimit) || 0,
       usedCount: 0,
@@ -62,6 +70,7 @@ router.post("/create", async (req, res) => {
   }
 });
 
+/* GET ALL COUPONS */
 router.get("/", async (req, res) => {
   try {
     const coupons = await Coupon.find().sort({ createdAt: -1 });
@@ -79,6 +88,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+/* APPLY COUPON */
 router.post("/apply", protect, async (req, res) => {
   try {
     const { code, subtotal } = req.body;
@@ -91,7 +101,7 @@ router.post("/apply", protect, async (req, res) => {
     }
 
     const coupon = await Coupon.findOne({
-      code: code.toUpperCase(),
+      code: code.trim().toUpperCase(),
     });
 
     if (!coupon) {
@@ -170,6 +180,7 @@ router.post("/apply", protect, async (req, res) => {
   }
 });
 
+/* TOGGLE COUPON STATUS */
 router.put("/:id/toggle", async (req, res) => {
   try {
     const coupon = await Coupon.findById(req.params.id);
@@ -198,6 +209,7 @@ router.put("/:id/toggle", async (req, res) => {
   }
 });
 
+/* DELETE COUPON */
 router.delete("/:id", async (req, res) => {
   try {
     const coupon = await Coupon.findByIdAndDelete(req.params.id);

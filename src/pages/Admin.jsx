@@ -347,28 +347,47 @@ function Admin({ refreshProducts }) {
     if (!window.confirm("Delete this product?")) return;
 
   const updateOrderStatus = async (orderId, orderStatus) => {
+  if (!orderId) {
+    alert("Order ID missing");
+    return;
+  }
+
+  if (!orderStatus) {
+    alert("Please select order status");
+    return;
+  }
+
   try {
-    const res = await fetch(`${ORDER_API}/${orderId}/status`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ orderStatus }),
-    });
+    const res = await fetch(
+      `https://the-veltrixx-backend.onrender.com/api/orders/admin/all/${orderId}/status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderStatus }),
+      }
+    );
 
     const data = await res.json();
 
     if (!data.success) {
-      alert(data.message || "Order status update failed");
+      alert(data.message || data.error || "Order status update failed");
       return;
     }
 
     alert("Order status updated successfully");
+
+    setOrderStatusDraft({
+      ...orderStatusDraft,
+      [orderId]: "",
+    });
+
     fetchOrders();
   } catch (error) {
     console.log("Update order error:", error);
-    alert("Something went wrong");
+    alert("Something went wrong while updating order");
   }
 };
 

@@ -22,6 +22,30 @@ function ProductDetails({ products = [], addToCart }) {
   });
 
   const [reviewImages, setReviewImages] = useState([]);
+  const [zoomStyle, setZoomStyle] = useState({
+    transform: "scale(1)",
+    transformOrigin: "center",
+  });
+
+  const handleZoomMove = (e) => {
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
+
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+
+    setZoomStyle({
+      transformOrigin: `${x}% ${y}%`,
+      transform: "scale(2)",
+    });
+  };
+
+  const handleZoomLeave = () => {
+    setZoomStyle({
+      transform: "scale(1)",
+      transformOrigin: "center",
+    });
+  };
 
   const normalize = (value) => String(value || "").trim().toLowerCase();
 
@@ -242,10 +266,16 @@ function ProductDetails({ products = [], addToCart }) {
 
             <div className="premiumDetailsGrid">
               <div className="detailsGallery">
-                <div className="mainDetailsImage amazonMainImage">
+                <div
+                  className="mainDetailsImage amazonMainImage zoomContainer"
+                  onMouseMove={handleZoomMove}
+                  onMouseLeave={handleZoomLeave}
+                >
                   <img
                     src={savedOrderProduct.selectedImage || savedOrderProduct.image}
                     alt={savedOrderProduct.name}
+                    className="zoomImage"
+                    style={zoomStyle}
                   />
                 </div>
               </div>
@@ -319,8 +349,17 @@ function ProductDetails({ products = [], addToCart }) {
 
         <div className="premiumDetailsGrid">
           <div className="detailsGallery">
-            <div className="mainDetailsImage amazonMainImage">
-              <img src={mainImage} alt={product.name} />
+            <div
+              className="mainDetailsImage amazonMainImage zoomContainer"
+              onMouseMove={handleZoomMove}
+              onMouseLeave={handleZoomLeave}
+            >
+              <img
+                src={mainImage}
+                alt={product.name}
+                className="zoomImage"
+                style={zoomStyle}
+              />
             </div>
 
             {galleryImages.length > 1 && (

@@ -9262,3 +9262,34 @@ body {
   right: 18px;
   left: auto;
 }
+
+/* WhatsApp Floating Support Button */
+.whatsappSupport {
+  position: fixed;
+  bottom: 90px;
+  right: 25px;
+  background: #25d366;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
+  z-index: 9999;
+  transition: all 0.3s ease;
+}
+
+.whatsappSupport:hover {
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .whatsappSupport {
+    bottom: 85px;
+    right: 15px;
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+}

@@ -369,6 +369,17 @@ function App() {
 
       {!isAdminPage && <Footer />}
 
+      {!isAdminPage && (
+        <a
+          href="https://wa.me/919899723391?text=Hi%20THE%20VELTRIXX,%20I%20need%20help%20with%20my%20order."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whatsappSupport"
+        >
+          💬 Need Help?
+        </a>
+      )}
+
       {showFloatingCart && (
         <Link to="/cart" className="floatingCartBtn">
           Go To Cart ({cart.length})

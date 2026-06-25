@@ -88,53 +88,6 @@ router.post("/", protect, async (req, res) => {
         }
       );
     }
-    try {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  const userEmail = req.user.email;
-
-  const itemsHtml = order.items
-    .map(
-      (item) =>
-        `<li>${item.name} × ${item.qty} - ₹${item.price}</li>`
-    )
-    .join("");
-
-  await transporter.sendMail({
-    from: `"THE VELTRIXX" <${process.env.EMAIL_USER}>`,
-    to: userEmail,
-    subject: "Order Confirmed - THE VELTRIXX ✅",
-    html: `
-      <h2>Thank you for your order 🎉</h2>
-
-      <p>Hello ${order.customer?.name || "Customer"},</p>
-
-      <p>Your order has been placed successfully.</p>
-
-      <p><b>Order ID:</b> ${order._id}</p>
-      <p><b>Total Amount:</b> ₹${order.total}</p>
-      <p><b>Status:</b> ${order.orderStatus}</p>
-
-      <h3>Ordered Items</h3>
-      <ul>${itemsHtml}</ul>
-
-      <br>
-
-      <p>We will notify you when your order is shipped.</p>
-
-      <p><b>THE VELTRIXX</b></p>
-    `,
-  });
-} catch (mailError) {
-  console.log("Email Error:", mailError.message);
-}
-
     res.status(201).json({
       success: true,
       message: "Order placed",

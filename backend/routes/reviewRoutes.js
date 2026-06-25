@@ -1,16 +1,24 @@
 const express = require("express");
 const Review = require("../models/Review");
 const { protect } = require("../middleware/authMiddleware");
+const { upload } = require("../config/cloudinary");
 
 const router = express.Router();
 
 /* ==========================
-   ADD REVIEW
+   ADD REVIEW WITH PHOTOS
 ========================== */
 
-router.post("/", protect, async (req, res) => {
+router.post("/", protect, upload.array("images", 3), async (req, res) => {
   try {
     const { product, rating, comment } = req.body;
+
+    if (!product || !rating || !comment) {
+      return res.status(400).json({
+        success: false,
+        message: "Product, rating and comment are required",
+      });
+    }
 
     const alreadyReviewed = await Review.findOne({
       user: req.user._id,
@@ -24,12 +32,16 @@ router.post("/", protect, async (req, res) => {
       });
     }
 
+    const imageUrls = req.files ? req.files.map((file) => file.path) : [];
+
     const review = await Review.create({
       user: req.user._id,
       product,
       name: req.user.name,
-      rating,
+      rating: Number(rating),
       comment,
+      images: imageUrls,
+      verifiedPurchase: false,
     });
 
     res.status(201).json({
@@ -57,6 +69,7 @@ router.get("/product/:productId", async (req, res) => {
 
     res.json({
       success: true,
+      totalReviews: reviews.length,
       reviews,
     });
   } catch (error) {

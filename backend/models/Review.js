@@ -15,6 +15,7 @@ const reviewSchema = new mongoose.Schema(
     },
 
     name: String,
+
     rating: {
       type: Number,
       required: true,
@@ -25,6 +26,16 @@ const reviewSchema = new mongoose.Schema(
     comment: {
       type: String,
       required: true,
+    },
+
+    images: {
+      type: [String],
+      default: [],
+    },
+
+    verifiedPurchase: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

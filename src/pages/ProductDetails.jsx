@@ -21,6 +21,8 @@ function ProductDetails({ products = [], addToCart }) {
     comment: "",
   });
 
+  const [reviewImages, setReviewImages] = useState([]);
+
   const normalize = (value) => String(value || "").trim().toLowerCase();
 
   const getSavedOrderItem = () => {
@@ -157,17 +159,22 @@ function ProductDetails({ products = [], addToCart }) {
     }
 
     try {
+      const formData = new FormData();
+
+      formData.append("product", getCurrentProductId());
+      formData.append("rating", reviewForm.rating);
+      formData.append("comment", reviewForm.comment);
+
+      reviewImages.forEach((image) => {
+        formData.append("images", image);
+      });
+
       const res = await fetch(REVIEW_API, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          product: getCurrentProductId(),
-          rating: Number(reviewForm.rating),
-          comment: reviewForm.comment,
-        }),
+        body: formData,
       });
 
       const data = await res.json();
@@ -178,7 +185,13 @@ function ProductDetails({ products = [], addToCart }) {
       }
 
       alert("Review added successfully");
-      setReviewForm({ rating: 5, comment: "" });
+
+      setReviewForm({
+        rating: 5,
+        comment: "",
+      });
+
+      setReviewImages([]);
       fetchReviews();
     } catch (error) {
       console.log("Review submit error:", error);
@@ -215,62 +228,62 @@ function ProductDetails({ products = [], addToCart }) {
   }
 
   if (!product) {
-  const savedOrderProduct = JSON.parse(
-    localStorage.getItem("veltrixx_order_product") || "null"
-  );
+    const savedOrderProduct = JSON.parse(
+      localStorage.getItem("veltrixx_order_product") || "null"
+    );
 
-  if (savedOrderProduct) {
-    return (
-      <div className="productDetailsPage">
-        <div className="productDetailsInner">
-          <Link to="/orders" className="backLink">
-            ← Back to orders
-          </Link>
+    if (savedOrderProduct) {
+      return (
+        <div className="productDetailsPage">
+          <div className="productDetailsInner">
+            <Link to="/orders" className="backLink">
+              ← Back to orders
+            </Link>
 
-          <div className="premiumDetailsGrid">
-            <div className="detailsGallery">
-              <div className="mainDetailsImage amazonMainImage">
-                <img
-                  src={savedOrderProduct.selectedImage || savedOrderProduct.image}
-                  alt={savedOrderProduct.name}
-                />
+            <div className="premiumDetailsGrid">
+              <div className="detailsGallery">
+                <div className="mainDetailsImage amazonMainImage">
+                  <img
+                    src={savedOrderProduct.selectedImage || savedOrderProduct.image}
+                    alt={savedOrderProduct.name}
+                  />
+                </div>
+              </div>
+
+              <div className="premiumDetailsInfo">
+                <span className="detailsBrandTag">
+                  {savedOrderProduct.brand} •{" "}
+                  {savedOrderProduct.selectedModel || savedOrderProduct.model}
+                </span>
+
+                <h1>{savedOrderProduct.name}</h1>
+
+                <h2>₹{savedOrderProduct.price}</h2>
+
+                <p className="detailsDesc">
+                  This product was part of your order. It may have been removed or updated from the live store.
+                </p>
+
+                <Link to="/">
+                  <button className="detailsAddCartBtn">Continue Shopping</button>
+                </Link>
               </div>
             </div>
-
-            <div className="premiumDetailsInfo">
-              <span className="detailsBrandTag">
-                {savedOrderProduct.brand} •{" "}
-                {savedOrderProduct.selectedModel || savedOrderProduct.model}
-              </span>
-
-              <h1>{savedOrderProduct.name}</h1>
-
-              <h2>₹{savedOrderProduct.price}</h2>
-
-              <p className="detailsDesc">
-                This product was part of your order. It may have been removed or updated from the live store.
-              </p>
-
-              <Link to="/">
-                <button className="detailsAddCartBtn">Continue Shopping</button>
-              </Link>
-            </div>
           </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="productDetailsPage">
+        <div className="detailsLoadingBox">
+          <h1>Product not found</h1>
+          <p>This product may have been removed or changed.</p>
+          <Link to="/">Back to home</Link>
         </div>
       </div>
     );
   }
-
-  return (
-    <div className="productDetailsPage">
-      <div className="detailsLoadingBox">
-        <h1>Product not found</h1>
-        <p>This product may have been removed or changed.</p>
-        <Link to="/">Back to home</Link>
-      </div>
-    </div>
-  );
-}
 
   const mainImage = selectedImage || product.image;
 
@@ -393,8 +406,7 @@ function ProductDetails({ products = [], addToCart }) {
                           : "colorCircle"
                       }
                       style={{
-                        "--circle-color":
-                          color.hex || color.name || "#000000",
+                        "--circle-color": color.hex || color.name || "#000000",
                       }}
                       onClick={() => {
                         setSelectedColor(color);
@@ -463,6 +475,19 @@ function ProductDetails({ products = [], addToCart }) {
               }
             />
 
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => setReviewImages([...e.target.files])}
+            />
+
+            {reviewImages.length > 0 && (
+              <p className="selectedReviewImagesText">
+                {reviewImages.length} image selected
+              </p>
+            )}
+
             <button onClick={submitReview}>Submit Review</button>
           </div>
 
@@ -475,8 +500,27 @@ function ProductDetails({ products = [], addToCart }) {
               reviews.map((review) => (
                 <div className="reviewCard" key={review._id}>
                   <h3>{review.user?.name || review.name || "Customer"}</h3>
+
+                  {review.verifiedPurchase && (
+                    <span className="verifiedBadge">✔ Verified Purchase</span>
+                  )}
+
                   <p>{"⭐".repeat(Number(review.rating))}</p>
                   <p>{review.comment}</p>
+
+                  {review.images?.length > 0 && (
+                    <div className="reviewImages">
+                      {review.images.map((img, index) => (
+                        <img
+                          key={index}
+                          src={img}
+                          alt="Customer Review"
+                          className="reviewImage"
+                        />
+                      ))}
+                    </div>
+                  )}
+
                   <small>
                     {new Date(review.createdAt).toLocaleDateString()}
                   </small>

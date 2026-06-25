@@ -8934,4 +8934,31 @@ body {
     margin-right: 0 !important;
   }
 }
+.reviewImages {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
 
+.reviewImage {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.verifiedBadge {
+  display: inline-block;
+  margin: 5px 0;
+  color: green;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.selectedReviewImagesText {
+  font-size: 13px;
+  color: #555;
+  margin-top: 6px;
+}

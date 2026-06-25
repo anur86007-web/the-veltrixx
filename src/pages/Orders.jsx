@@ -24,6 +24,7 @@ function Orders({ reorderItems }) {
   const [reviewSubmitted, setReviewSubmitted] = useState({});
   const [products, setProducts] = useState([]);
   const [invoiceLoading, setInvoiceLoading] = useState({});
+  const [reviewImages, setReviewImages] = useState({});
 
   const trackingSteps = [
     "Order Placed",
@@ -232,19 +233,23 @@ function Orders({ reorderItems }) {
         return;
       }
 
-      setReviewSubmitting({ ...reviewSubmitting, [reviewKey]: true });
+      setReviewSubmitting((prev) => ({ ...prev, [reviewKey]: true }));
+
+      const formData = new FormData();
+      formData.append("product", productId);
+      formData.append("rating", Number(form.rating));
+      formData.append("comment", form.comment.trim());
+
+      (reviewImages[reviewKey] || []).forEach((image) => {
+        formData.append("images", image);
+      });
 
       const res = await fetch(REVIEW_API, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          product: productId,
-          rating: Number(form.rating),
-          comment: form.comment.trim(),
-        }),
+        body: formData,
       });
 
       const data = await res.json();
@@ -254,18 +259,22 @@ function Orders({ reorderItems }) {
         return;
       }
 
-      setReviewSubmitted({ ...reviewSubmitted, [reviewKey]: true });
-      setReviewForms({
-        ...reviewForms,
+      setReviewSubmitted((prev) => ({ ...prev, [reviewKey]: true }));
+      setReviewForms((prev) => ({
+        ...prev,
         [reviewKey]: { rating: 5, comment: "" },
-      });
+      }));
+      setReviewImages((prev) => ({
+        ...prev,
+        [reviewKey]: [],
+      }));
 
       alert("Review submitted successfully");
     } catch (error) {
       console.log("Review submit error:", error);
       alert("Something went wrong while submitting review");
     } finally {
-      setReviewSubmitting({ ...reviewSubmitting, [reviewKey]: false });
+      setReviewSubmitting((prev) => ({ ...prev, [reviewKey]: false }));
     }
   };
 
@@ -569,6 +578,25 @@ function Orders({ reorderItems }) {
                                   )
                                 }
                               />
+
+                              <input
+  type="file"
+  multiple
+  accept="image/*"
+  className="orderReviewImageInput"
+  onChange={(e) =>
+    setReviewImages({
+      ...reviewImages,
+      [reviewKey]: Array.from(e.target.files),
+    })
+  }
+/>
+
+{reviewImages[reviewKey]?.length > 0 && (
+  <p className="selectedOrderReviewImages">
+    {reviewImages[reviewKey].length} image selected
+  </p>
+)}
 
                               <button
                                 type="button"

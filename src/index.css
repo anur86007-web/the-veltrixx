@@ -9492,3 +9492,18 @@ body {
 .deleteOrderBtn:hover{
     background:#991b1b;
 }
+.orderReviewImageInput {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.selectedOrderReviewImages {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #16a34a;
+  font-weight: 700;
+}

@@ -41,7 +41,7 @@ router.post("/", protect, upload.array("images", 3), async (req, res) => {
       rating: Number(rating),
       comment,
       images: imageUrls,
-      verifiedPurchase: false,
+      verifiedPurchase: true,
     });
 
     res.status(201).json({

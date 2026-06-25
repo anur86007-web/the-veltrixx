@@ -19,6 +19,7 @@ import ProductCard from "../components/ProductCard";
 function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlist }) {
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [search, setSearch] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     const decreaseHandler = (e) => {
@@ -56,6 +57,23 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
     return brandMatch && searchMatch && item.status !== "draft";
   });
 
+  const searchSuggestions =
+    search.trim().length > 0
+      ? products
+          .filter((item) => {
+            const text = search.toLowerCase().trim();
+
+            return (
+              item.status !== "draft" &&
+              (item.name?.toLowerCase().includes(text) ||
+                item.brand?.toLowerCase().includes(text) ||
+                item.model?.toLowerCase().includes(text) ||
+                item.availableModels?.join(" ").toLowerCase().includes(text))
+            );
+          })
+          .slice(0, 6)
+      : [];
+
   const cartCount = cart.reduce((sum, item) => sum + Number(item.qty || 1), 0);
 
   return (
@@ -73,9 +91,61 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
               <input
                 placeholder="Search iPhone, Samsung, Carbon..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onFocus={() => setShowSuggestions(true)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setShowSuggestions(true);
+                }}
               />
+
+              {search && (
+                <button
+                  type="button"
+                  className="clearSearchBtn"
+                  onClick={() => {
+                    setSearch("");
+                    setShowSuggestions(false);
+                  }}
+                >
+                  ×
+                </button>
+              )}
             </div>
+
+            {showSuggestions && searchSuggestions.length > 0 && (
+              <div className="searchSuggestionBox">
+                {searchSuggestions.map((item) => (
+                  <Link
+                    to={`/product/${item._id || item.id}`}
+                    className="searchSuggestionItem"
+                    key={item._id || item.id}
+                    onClick={() => {
+                      setSearch("");
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    <img src={item.image} alt={item.name} />
+
+                    <div>
+                      <h4>{item.name}</h4>
+                      <p>
+                        {item.brand} • {item.model}
+                      </p>
+                      <strong>₹{item.price}</strong>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {showSuggestions && search.trim() && searchSuggestions.length === 0 && (
+              <div className="searchSuggestionBox">
+                <div className="noSearchResult">
+                  <p>No matching products found</p>
+                  <span>Try iPhone, Samsung, OnePlus, Matte, Carbon</span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="homeNavActions">

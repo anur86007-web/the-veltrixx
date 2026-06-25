@@ -9293,3 +9293,79 @@ body {
     font-size: 13px;
   }
 }
+.homeSearchArea {
+  position: relative;
+}
+
+.clearSearchBtn {
+  border: none;
+  background: #111;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.searchSuggestionBox {
+  position: absolute;
+  top: 58px;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #eeeeee;
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.searchSuggestionItem {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  text-decoration: none;
+  color: #111;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.searchSuggestionItem:hover {
+  background: #fafafa;
+}
+
+.searchSuggestionItem img {
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.searchSuggestionItem h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.searchSuggestionItem p {
+  margin: 0 0 5px;
+  color: #666;
+  font-size: 13px;
+}
+
+.searchSuggestionItem strong {
+  font-size: 14px;
+}
+
+.noSearchResult {
+  padding: 18px;
+}
+
+.noSearchResult p {
+  margin: 0 0 5px;
+  font-weight: 700;
+}
+
+.noSearchResult span {
+  color: #777;
+  font-size: 13px;
+}

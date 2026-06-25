@@ -9097,3 +9097,17 @@ body {
     font-size: 26px;
   }
 }
+.velRating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 8px 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.velRating small {
+  color: #777;
+  font-size: 12px;
+  font-weight: 500;
+}

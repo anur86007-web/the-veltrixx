@@ -1,8 +1,51 @@
 const express = require("express");
 const Product = require("../models/Product");
+const Review = require("../models/Review");
 const { upload } = require("../config/cloudinary");
 
 const router = express.Router();
+
+const attachReviewStats = async (products) => {
+  const productsArray = Array.isArray(products) ? products : [products];
+
+  const productIds = productsArray.map((p) => p._id);
+
+  const stats = await Review.aggregate([
+    {
+      $match: {
+        product: { $in: productIds },
+      },
+    },
+    {
+      $group: {
+        _id: "$product",
+        averageRating: { $avg: "$rating" },
+        reviewCount: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const statsMap = {};
+  stats.forEach((item) => {
+    statsMap[item._id.toString()] = {
+      averageRating: Number(item.averageRating.toFixed(1)),
+      reviewCount: item.reviewCount,
+    };
+  });
+
+  const finalProducts = productsArray.map((product) => {
+    const obj = product.toObject();
+    const productStats = statsMap[obj._id.toString()];
+
+    return {
+      ...obj,
+      averageRating: productStats?.averageRating || 0,
+      reviewCount: productStats?.reviewCount || 0,
+    };
+  });
+
+  return Array.isArray(products) ? finalProducts : finalProducts[0];
+};
 
 router.post("/upload", upload.array("images", 10), async (req, res) => {
   try {
@@ -25,10 +68,11 @@ router.post("/upload", upload.array("images", 10), async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
+    const productsWithStats = await attachReviewStats(products);
 
     res.json({
       success: true,
-      products,
+      products: productsWithStats,
     });
   } catch (error) {
     res.status(500).json({
@@ -49,9 +93,11 @@ router.get("/:id", async (req, res) => {
       });
     }
 
+    const productWithStats = await attachReviewStats(product);
+
     res.json({
       success: true,
-      product,
+      product: productWithStats,
     });
   } catch (error) {
     res.status(500).json({

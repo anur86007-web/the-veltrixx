@@ -15,6 +15,9 @@ function ProductCard({ product, wishlist, addToCart, toggleWishlist }) {
   const stock = Number(product.stock || 0);
   const isOutOfStock = stock <= 0;
 
+  const averageRating = product.averageRating || product.rating || "4.8";
+  const reviewCount = product.reviewCount || product.reviews?.length || 0;
+
   const isWishlisted = wishlist.some(
     (item) => (item._id || item.id) === productId
   );
@@ -33,7 +36,7 @@ function ProductCard({ product, wishlist, addToCart, toggleWishlist }) {
         <img src={currentImage} alt={product.name} />
 
         <span className={isOutOfStock ? "velStock out" : "velStock"}>
-          {isOutOfStock ? "Out" : "In Stock"}
+          {isOutOfStock ? "Out of Stock" : "In Stock"}
         </span>
       </Link>
 
@@ -56,8 +59,8 @@ function ProductCard({ product, wishlist, addToCart, toggleWishlist }) {
 
         <div className="velRating">
           <Star size={14} fill="black" />
-          <span>{product.rating || 4.8}</span>
-          <small>({product.reviews?.length || 0})</small>
+          <span>{averageRating}</span>
+          <small>({reviewCount} reviews)</small>
         </div>
 
         {product.colorOptions?.length > 0 && (

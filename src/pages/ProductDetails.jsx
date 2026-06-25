@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ShoppingBag, Star, ShieldCheck, Truck, RotateCcw } from "lucide-react";
+import {
+  ShoppingBag,
+  Star,
+  ShieldCheck,
+  Truck,
+  RotateCcw,
+  Share2,
+} from "lucide-react";
 
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
@@ -240,6 +247,25 @@ function ProductDetails({ products = [], addToCart }) {
       selectedColor: selectedColor?.name || "Default",
     });
   };
+
+  const shareProduct = async () => {
+  const productUrl = window.location.href;
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: product.name,
+        text: `Check out ${product.name} on THE VELTRIXX`,
+        url: productUrl,
+      });
+    } else {
+      await navigator.clipboard.writeText(productUrl);
+      alert("Product link copied successfully");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   if (productLoading) {
     return (

@@ -9388,3 +9388,24 @@ body {
     cursor: default;
   }
 }
+.shareProductBtn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 15px;
+  border: 2px solid #111;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.shareProductBtn:hover {
+  background: #111;
+  color: #fff;
+}

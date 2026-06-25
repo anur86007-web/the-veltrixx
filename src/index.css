@@ -9220,3 +9220,45 @@ body {
   font-size: 12px;
   font-weight: 700;
 }
+.velProductImageBox {
+  position: relative;
+}
+
+.productBadgeStack {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  z-index: 3;
+}
+
+.productBadge {
+  width: fit-content;
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.bestSellerBadge {
+  background: #111;
+}
+
+.newArrivalBadge {
+  background: #16a34a;
+}
+
+.trendingBadge {
+  background: #dc2626;
+}
+
+.velStock {
+  top: 18px;
+  right: 18px;
+  left: auto;
+}

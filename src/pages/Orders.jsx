@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   Star,
   FileText,
+  RotateCcw,
 } from "lucide-react";
 
 const API = "https://the-veltrixx-backend.onrender.com/api/orders/my-orders";
@@ -15,7 +16,7 @@ const INVOICE_API = "https://the-veltrixx-backend.onrender.com/api/orders/invoic
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 
-function Orders() {
+function Orders({ reorderItems }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reviewForms, setReviewForms] = useState({});
@@ -38,16 +39,12 @@ function Orders() {
       const token = localStorage.getItem("veltrixx_token");
 
       const res = await fetch(API, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = await res.json();
 
-      if (data.success) {
-        setOrders(data.orders || []);
-      }
+      if (data.success) setOrders(data.orders || []);
     } catch (error) {
       console.log(error);
       alert("Could not fetch orders");
@@ -61,9 +58,7 @@ function Orders() {
       const res = await fetch(PRODUCT_API);
       const data = await res.json();
 
-      if (data.success) {
-        setProducts(data.products || []);
-      }
+      if (data.success) setProducts(data.products || []);
     } catch (error) {
       console.log("Could not fetch products:", error);
     }
@@ -75,20 +70,14 @@ function Orders() {
   }, []);
 
   const cancelOrder = async (id) => {
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel this order?"
-    );
-
-    if (!confirmCancel) return;
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
 
     try {
       const token = localStorage.getItem("veltrixx_token");
 
       const res = await fetch(`${CANCEL_API}/${id}`, {
         method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = await res.json();
@@ -118,9 +107,7 @@ function Orders() {
       setInvoiceLoading({ ...invoiceLoading, [orderId]: true });
 
       const res = await fetch(`${INVOICE_API}/${orderId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!res.ok) {
@@ -166,9 +153,7 @@ function Orders() {
       (product) => String(product._id || product.id) === String(directProductId)
     );
 
-    if (directProductId && directProductExists) {
-      return directProductId;
-    }
+    if (directProductId && directProductExists) return directProductId;
 
     const matchedProduct = products.find((product) => {
       const nameMatch =
@@ -287,7 +272,6 @@ function Orders() {
           <ShoppingBag size={56} />
           <h1>No Orders Yet</h1>
           <p>Your purchased phone cases will appear here.</p>
-
           <Link to="/">
             <button>Start Shopping</button>
           </Link>
@@ -333,7 +317,11 @@ function Orders() {
                       isCancelled ? "cancelStatusPill" : "orderStatusPill"
                     }
                   >
-                    {isCancelled ? <XCircle size={16} /> : <PackageCheck size={16} />}
+                    {isCancelled ? (
+                      <XCircle size={16} />
+                    ) : (
+                      <PackageCheck size={16} />
+                    )}
                     {order.orderStatus}
                   </span>
                 </div>
@@ -366,7 +354,6 @@ function Orders() {
                           <div className="premiumTimelineCircle">
                             {index <= currentIndex ? "✓" : index + 1}
                           </div>
-
                           <p>{step}</p>
                         </div>
                       ))}
@@ -390,7 +377,10 @@ function Orders() {
                           );
                         }}
                       >
-                        <img src={item.selectedImage || item.image} alt={item.name} />
+                        <img
+                          src={item.selectedImage || item.image}
+                          alt={item.name}
+                        />
 
                         <div>
                           <h3>{item.name}</h3>
@@ -462,6 +452,15 @@ function Orders() {
                         ? "Downloading..."
                         : "Download Invoice"}
                     </button>
+
+                    <button
+                      type="button"
+                      className="reorderBtn"
+                      onClick={() => reorderItems(order.items)}
+                    >
+                      <RotateCcw size={17} />
+                      Reorder
+                    </button>
                   </div>
                 </div>
 
@@ -483,7 +482,10 @@ function Orders() {
                       return (
                         <div className="productReviewCard" key={reviewKey}>
                           <div className="productReviewInfo">
-                            <img src={item.selectedImage || item.image} alt={item.name} />
+                            <img
+                              src={item.selectedImage || item.image}
+                              alt={item.name}
+                            />
 
                             <div>
                               <h4>{item.name}</h4>
@@ -518,7 +520,6 @@ function Orders() {
                                     ★
                                   </button>
                                 ))}
-
                                 <span>{form.rating}/5</span>
                               </div>
 

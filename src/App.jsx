@@ -128,7 +128,7 @@ function App() {
     return true;
   };
 
-  const getId = (product) => product._id || product.id;
+  const getId = (product) => product._id || product.id || product.productId || product.name;
 
   const getCartKey = (product) => {
     return `${getId(product)}-${
@@ -172,6 +172,57 @@ function App() {
     }
 
     showToast("Added to cart");
+  };
+
+  const reorderItems = (items = []) => {
+    if (!requireLogin()) return;
+
+    const preparedItems = items.map((item) => {
+      const selectedModel = item.selectedModel || item.model || "Default";
+      const selectedColor = item.selectedColor || "Default";
+      const image = item.selectedImage || item.image;
+
+      const productForCart = {
+        ...item,
+        _id: item.productId || item._id || item.id || item.name,
+        id: item.productId || item._id || item.id || item.name,
+        image,
+        selectedImage: image,
+        selectedModel,
+        selectedColor,
+      };
+
+      return {
+        ...productForCart,
+        cartKey: getCartKey(productForCart),
+        qty: Number(item.qty) || 1,
+      };
+    });
+
+    setCart((prevCart) => {
+      let updatedCart = [...prevCart];
+
+      preparedItems.forEach((newItem) => {
+        const existingItem = updatedCart.find(
+          (cartItem) => cartItem.cartKey === newItem.cartKey
+        );
+
+        if (existingItem) {
+          updatedCart = updatedCart.map((cartItem) =>
+            cartItem.cartKey === newItem.cartKey
+              ? { ...cartItem, qty: cartItem.qty + newItem.qty }
+              : cartItem
+          );
+        } else {
+          updatedCart.push(newItem);
+        }
+      });
+
+      return updatedCart;
+    });
+
+    showToast("Order items added to cart");
+    navigate("/cart");
   };
 
   const increaseQty = (cartKey) => {
@@ -297,7 +348,10 @@ function App() {
           element={<Payment cart={cart} placeOrder={placeOrder} />}
         />
 
-        <Route path="/orders" element={<Orders orders={orders} />} />
+        <Route
+          path="/orders"
+          element={<Orders orders={orders} reorderItems={reorderItems} />}
+        />
 
         <Route path="/login" element={<Login setUser={setUser} />} />
 

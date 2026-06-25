@@ -9156,3 +9156,52 @@ body {
   background: #111;
   color: #fff;
 }
+.deliveryEstimateBox {
+  background: #f8f8f8;
+  border: 1px solid #eeeeee;
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin: 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.deliveryEstimateBox p {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.deliveryEstimateBox h3 {
+  margin: 4px 0 0;
+  font-size: 18px;
+}
+
+.deliveryEstimateBox span {
+  background: #111;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.orderProgressBar {
+  width: 100%;
+  height: 9px;
+  background: #eeeeee;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 18px 0 24px;
+}
+
+.orderProgressFill {
+  height: 100%;
+  background: #111111;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}

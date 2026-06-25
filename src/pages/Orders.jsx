@@ -34,6 +34,16 @@ function Orders({ reorderItems }) {
     "Delivered",
   ];
 
+  const getEstimatedDelivery = (createdAt) => {
+    const date = new Date(createdAt);
+    date.setDate(date.getDate() + 5);
+    return date.toLocaleDateString();
+  };
+
+  const getProgressPercent = (currentIndex) => {
+    return Math.round(((currentIndex + 1) / trackingSteps.length) * 100);
+  };
+
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("veltrixx_token");
@@ -44,7 +54,9 @@ function Orders({ reorderItems }) {
 
       const data = await res.json();
 
-      if (data.success) setOrders(data.orders || []);
+      if (data.success) {
+        setOrders(data.orders || []);
+      }
     } catch (error) {
       console.log(error);
       alert("Could not fetch orders");
@@ -58,7 +70,9 @@ function Orders({ reorderItems }) {
       const res = await fetch(PRODUCT_API);
       const data = await res.json();
 
-      if (data.success) setProducts(data.products || []);
+      if (data.success) {
+        setProducts(data.products || []);
+      }
     } catch (error) {
       console.log("Could not fetch products:", error);
     }
@@ -104,7 +118,7 @@ function Orders({ reorderItems }) {
         return;
       }
 
-      setInvoiceLoading({ ...invoiceLoading, [orderId]: true });
+      setInvoiceLoading((prev) => ({ ...prev, [orderId]: true }));
 
       const res = await fetch(`${INVOICE_API}/${orderId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -130,7 +144,7 @@ function Orders({ reorderItems }) {
       console.log("Invoice download error:", error);
       alert("Something went wrong while downloading invoice");
     } finally {
-      setInvoiceLoading({ ...invoiceLoading, [orderId]: false });
+      setInvoiceLoading((prev) => ({ ...prev, [orderId]: false }));
     }
   };
 
@@ -301,6 +315,7 @@ function Orders({ reorderItems }) {
         <div className="ordersList">
           {orders.map((order) => {
             const currentIndex = getCurrentIndex(order.orderStatus);
+            const progressPercent = getProgressPercent(currentIndex);
             const isCancelled = order.orderStatus === "Cancelled";
             const isDelivered = order.orderStatus === "Delivered";
 
@@ -339,6 +354,26 @@ function Orders({ reorderItems }) {
                     <div className="timelineTitle">
                       <Truck size={20} />
                       <h3>Order Tracking</h3>
+                    </div>
+
+                    <div className="deliveryEstimateBox">
+                      <div>
+                        <p>Estimated Delivery</p>
+                        <h3>
+                          {isDelivered
+                            ? "Delivered"
+                            : getEstimatedDelivery(order.createdAt)}
+                        </h3>
+                      </div>
+
+                      <span>{progressPercent}% Complete</span>
+                    </div>
+
+                    <div className="orderProgressBar">
+                      <div
+                        className="orderProgressFill"
+                        style={{ width: `${progressPercent}%` }}
+                      />
                     </div>
 
                     <div className="premiumTimeline">

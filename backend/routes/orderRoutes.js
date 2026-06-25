@@ -120,7 +120,7 @@ router.get("/my-orders", protect, async (req, res) => {
   }
 });
 
-/* DOWNLOAD INVOICE */
+/* DOWNLOAD PROFESSIONAL INVOICE */
 router.get("/invoice/:id", protect, async (req, res) => {
   try {
     const order = await Order.findOne({
@@ -135,7 +135,7 @@ router.get("/invoice/:id", protect, async (req, res) => {
       });
     }
 
-    const doc = new PDFDocument({ margin: 50, size: "A4" });
+    const doc = new PDFDocument({ margin: 40, size: "A4" });
 
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader(
@@ -145,103 +145,204 @@ router.get("/invoice/:id", protect, async (req, res) => {
 
     doc.pipe(res);
 
-    doc.fontSize(24).text("THE VELTRIXX", { align: "center" });
-    doc.fontSize(10).text("Premium Custom Phone Cases", { align: "center" });
+    const pageWidth = doc.page.width;
+    const left = 40;
+    const right = pageWidth - 40;
 
-    doc.moveDown(2);
+    const formatAmount = (value) => `Rs. ${Number(value || 0).toFixed(2)}`;
+    const safe = (value) => String(value || "N/A");
 
-    doc.fontSize(18).text("INVOICE", { align: "left" });
-    doc.moveDown();
+    doc.rect(0, 0, pageWidth, 105).fill("#111111");
 
-    doc.fontSize(11);
-    doc.text(`Invoice No: INV-${order._id.toString().slice(-8).toUpperCase()}`);
-    doc.text(`Order ID: ${order._id}`);
-    doc.text(`Order Date: ${new Date(order.createdAt).toLocaleDateString()}`);
-    doc.text(`Order Status: ${order.orderStatus}`);
-    doc.text(`Payment Method: ${order.paymentMethod}`);
-    doc.text(`Payment Status: ${order.paymentStatus}`);
+    doc.fillColor("#ffffff").fontSize(26).text("THE VELTRIXX", left, 28);
+    doc.fontSize(10).text("Premium Custom Phone Cases", left, 60);
+    doc.fontSize(10).text("www.theveltrixx.co.in", left, 76);
 
-    doc.moveDown();
-
-    doc.fontSize(14).text("Bill To");
-    doc.fontSize(11);
-    doc.text(order.customer?.name || "Customer");
-    doc.text(`Phone: ${order.customer?.phone || "N/A"}`);
-    doc.text(
-      `${order.customer?.address || ""}${
-        order.customer?.landmark ? ", " + order.customer.landmark : ""
-      }`
-    );
-    doc.text(
-      `${order.customer?.city || ""}, ${order.customer?.state || ""} - ${
-        order.customer?.pincode || ""
-      }`
-    );
-
-    doc.moveDown();
-
-    doc.fontSize(14).text("Order Items");
-    doc.moveDown(0.5);
-
-    doc.fontSize(11).text("Product", 50, doc.y, { continued: true });
-    doc.text("Qty", 300, doc.y, { continued: true });
-    doc.text("Price", 370, doc.y, { continued: true });
-    doc.text("Amount", 470, doc.y);
-
-    doc.moveTo(50, doc.y + 5).lineTo(550, doc.y + 5).stroke();
-    doc.moveDown();
-
-    order.items.forEach((item) => {
-      const amount = Number(item.price || 0) * Number(item.qty || 1);
-
-      doc.fontSize(10).text(item.name || "Product", 50, doc.y, {
-        width: 230,
-        continued: false,
-      });
-
-      doc.fontSize(9).text(
-        `${item.brand || ""} ${item.selectedModel || item.model || ""} ${
-          item.selectedColor ? "• " + item.selectedColor : ""
-        }`,
-        50,
-        doc.y,
-        { width: 230 }
-      );
-
-      const rowY = doc.y - 25;
-
-      doc.fontSize(10).text(String(item.qty || 1), 300, rowY);
-      doc.text(`Rs. ${item.price || 0}`, 370, rowY);
-      doc.text(`Rs. ${amount}`, 470, rowY);
-
-      doc.moveDown();
-    });
-
-    doc.moveTo(50, doc.y + 5).lineTo(550, doc.y + 5).stroke();
-    doc.moveDown();
-
-    if (order.couponCode) {
-      doc.fontSize(11).text(`Coupon Applied: ${order.couponCode}`, {
-        align: "right",
-      });
-    }
-
-    if (order.discount > 0) {
-      doc.fontSize(11).text(`Discount: Rs. ${order.discount}`, {
-        align: "right",
-      });
-    }
-
-    doc.fontSize(16).text(`Total Amount: Rs. ${order.total || 0}`, {
+    doc.fontSize(22).text("INVOICE", 420, 32, { align: "right" });
+    doc.fontSize(10).text(`INV-${order._id.toString().slice(-8).toUpperCase()}`, 420, 62, {
       align: "right",
     });
 
-    doc.moveDown(2);
+    doc.fillColor("#111111");
 
-    doc.fontSize(10).text(
-      "Thank you for shopping with THE VELTRIXX. For support, contact us through our website.",
-      { align: "center" }
+    let y = 135;
+
+    doc.fontSize(12).text("Invoice Details", left, y);
+    doc.fontSize(10);
+    y += 22;
+
+    const detailRows = [
+      ["Order ID", order._id],
+      ["Invoice Date", new Date(order.createdAt).toLocaleDateString("en-IN")],
+      ["Order Status", order.orderStatus || "Order Placed"],
+      ["Payment Method", order.paymentMethod || "N/A"],
+      ["Payment Status", order.paymentStatus || "Pending"],
+    ];
+
+    detailRows.forEach(([label, value]) => {
+      doc.fillColor("#666").text(label, left, y);
+      doc.fillColor("#111").text(safe(value), 160, y);
+      y += 18;
+    });
+
+    y += 18;
+
+    const boxY = y;
+    const boxH = 115;
+
+    doc.roundedRect(left, boxY, 245, boxH, 12).stroke("#dddddd");
+    doc.roundedRect(310, boxY, 245, boxH, 12).stroke("#dddddd");
+
+    doc.fillColor("#111").fontSize(13).text("Bill To", left + 18, boxY + 18);
+    doc.fontSize(10);
+    doc.text(safe(order.customer?.name), left + 18, boxY + 42);
+    doc.text(`Phone: ${safe(order.customer?.phone)}`, left + 18, boxY + 58);
+    doc.text(
+      `${safe(order.customer?.address)}${order.customer?.landmark ? ", " + order.customer.landmark : ""}`,
+      left + 18,
+      boxY + 74,
+      { width: 205 }
     );
+    doc.text(
+      `${safe(order.customer?.city)}, ${safe(order.customer?.state)} - ${safe(
+        order.customer?.pincode
+      )}`,
+      left + 18,
+      boxY + 92,
+      { width: 205 }
+    );
+
+    doc.fillColor("#111").fontSize(13).text("Ship To", 328, boxY + 18);
+    doc.fontSize(10);
+    doc.text(safe(order.customer?.name), 328, boxY + 42);
+    doc.text(`Phone: ${safe(order.customer?.phone)}`, 328, boxY + 58);
+    doc.text(
+      `${safe(order.customer?.address)}${order.customer?.landmark ? ", " + order.customer.landmark : ""}`,
+      328,
+      boxY + 74,
+      { width: 205 }
+    );
+    doc.text(
+      `${safe(order.customer?.city)}, ${safe(order.customer?.state)} - ${safe(
+        order.customer?.pincode
+      )}`,
+      328,
+      boxY + 92,
+      { width: 205 }
+    );
+
+    y = boxY + boxH + 35;
+
+    doc.fontSize(14).fillColor("#111").text("Order Items", left, y);
+    y += 25;
+
+    doc.rect(left, y, right - left, 30).fill("#111111");
+    doc.fillColor("#ffffff").fontSize(10);
+    doc.text("Product", left + 12, y + 10);
+    doc.text("Qty", 330, y + 10);
+    doc.text("Price", 390, y + 10);
+    doc.text("Amount", 470, y + 10);
+
+    y += 30;
+
+    order.items.forEach((item) => {
+      const qty = Number(item.qty || 1);
+      const price = Number(item.price || 0);
+      const amount = qty * price;
+
+      doc.rect(left, y, right - left, 58).stroke("#eeeeee");
+
+      doc.fillColor("#111").fontSize(10).text(item.name || "Product", left + 12, y + 10, {
+        width: 250,
+      });
+
+      doc
+        .fillColor("#666")
+        .fontSize(9)
+        .text(
+          `${item.brand || ""} • ${item.selectedModel || item.model || ""} • ${
+            item.selectedColor || "Default"
+          }`,
+          left + 12,
+          y + 28,
+          { width: 250 }
+        );
+
+      doc.fillColor("#111").fontSize(10);
+      doc.text(String(qty), 330, y + 18);
+      doc.text(formatAmount(price), 390, y + 18);
+      doc.text(formatAmount(amount), 470, y + 18);
+
+      y += 58;
+    });
+
+    y += 25;
+
+    const summaryX = 335;
+    const summaryW = 220;
+
+    doc.roundedRect(summaryX, y, summaryW, 125, 12).stroke("#dddddd");
+
+    const summaryRows = [
+      ["Subtotal", order.subtotal],
+      ["Shipping", order.shipping],
+      ["Discount", `- ${formatAmount(order.discount)}`],
+    ];
+
+    let sy = y + 18;
+
+    summaryRows.forEach(([label, value]) => {
+      doc.fillColor("#666").fontSize(10).text(label, summaryX + 16, sy);
+      doc
+        .fillColor("#111")
+        .text(
+          typeof value === "string" ? value : formatAmount(value),
+          summaryX + 115,
+          sy,
+          { width: 85, align: "right" }
+        );
+      sy += 22;
+    });
+
+    doc.moveTo(summaryX + 16, sy).lineTo(summaryX + summaryW - 16, sy).stroke("#dddddd");
+    sy += 16;
+
+    doc.fillColor("#111").fontSize(13).text("Grand Total", summaryX + 16, sy);
+    doc.fontSize(15).text(formatAmount(order.total), summaryX + 115, sy - 2, {
+      width: 85,
+      align: "right",
+    });
+
+    y += 155;
+
+    if (order.couponCode) {
+      doc.fillColor("#16a34a").fontSize(10).text(`Coupon Applied: ${order.couponCode}`, left, y);
+      y += 18;
+    }
+
+    doc
+      .fillColor("#111")
+      .fontSize(10)
+      .text(`Order Status: ${order.orderStatus || "Order Placed"}`, left, y);
+
+    y += 18;
+
+    doc
+      .fontSize(10)
+      .text(`Payment Status: ${order.paymentStatus || "Pending"}`, left, y);
+
+    doc.rect(0, 760, pageWidth, 82).fill("#111111");
+    doc.fillColor("#ffffff").fontSize(11).text("Thank you for shopping with THE VELTRIXX.", 40, 782, {
+      align: "center",
+      width: pageWidth - 80,
+    });
+    doc
+      .fontSize(9)
+      .fillColor("#dddddd")
+      .text("For support, visit www.theveltrixx.co.in or contact us through the website.", 40, 802, {
+        align: "center",
+        width: pageWidth - 80,
+      });
 
     doc.end();
   } catch (error) {

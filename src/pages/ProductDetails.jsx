@@ -496,6 +496,14 @@ function ProductDetails({ products = [], addToCart }) {
               {Number(product.stock) <= 0 ? "Out of Stock" : "Add to Cart"}
             </button>
 
+            <button
+  className="shareProductBtn"
+  onClick={shareProduct}
+>
+  <Share2 size={18} />
+  Share Product
+</button>
+
             <div className="detailsTrustBox">
               <div>
                 <ShieldCheck size={22} />

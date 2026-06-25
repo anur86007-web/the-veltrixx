@@ -187,7 +187,7 @@ function Payment({ cart, placeOrder }) {
 
     if (order) {
       alert("Order placed successfully");
-      navigate("/orders");
+      navigate(`/order-success/${order._id}`);
     }
   };
 
@@ -236,7 +236,7 @@ Payment Method: WhatsApp Payment
     );
 
     alert("Order created. Continue payment on WhatsApp.");
-    navigate("/orders");
+    navigate(`/order-success/${order._id}`);
   };
 
   const handleRazorpayPayment = async () => {
@@ -296,7 +296,7 @@ Payment Method: WhatsApp Payment
 
         if (order) {
           alert("Payment successful. Order placed.");
-          navigate("/orders");
+          navigate(`/order-success/${order._id}`);
         }
       },
     };

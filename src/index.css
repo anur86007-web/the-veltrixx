@@ -9409,3 +9409,70 @@ body {
   background: #111;
   color: #fff;
 }
+.orderSuccessPage {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.orderSuccessCard {
+  background: #fff;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  padding: 50px;
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.successIcon {
+  font-size: 70px;
+  margin-bottom: 20px;
+}
+
+.orderSuccessCard h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.orderIdText {
+  margin-top: 15px;
+  font-size: 17px;
+}
+
+.deliveryEstimate {
+  margin-top: 20px;
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.successBtns {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.trackBtn,
+.shopBtn {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.trackBtn {
+  background: #111;
+  color: white;
+}
+
+.shopBtn {
+  background: #16a34a;
+  color: white;
+}

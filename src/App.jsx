@@ -19,7 +19,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import RefundPolicy from "./pages/RefundPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
-
+import OrderSuccess from "./pages/OrderSuccess";
 const API = "https://the-veltrixx-backend.onrender.com/api";
 
 function AdminProtectedRoute({ user, children }) {
@@ -311,6 +311,10 @@ function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
+        <Route
+  path="/order-success/:orderId"
+  element={<OrderSuccess />}
+/>
 
         <Route
           path="/product/:id"

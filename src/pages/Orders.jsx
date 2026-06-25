@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PackageCheck, Truck, XCircle, ShoppingBag, Star } from "lucide-react";
+import {
+  PackageCheck,
+  Truck,
+  XCircle,
+  ShoppingBag,
+  Star,
+  FileText,
+} from "lucide-react";
 
 const API = "https://the-veltrixx-backend.onrender.com/api/orders/my-orders";
 const CANCEL_API = "https://the-veltrixx-backend.onrender.com/api/orders/cancel";
+const INVOICE_API = "https://the-veltrixx-backend.onrender.com/api/orders/invoice";
 const REVIEW_API = "https://the-veltrixx-backend.onrender.com/api/reviews";
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 
@@ -14,6 +22,7 @@ function Orders() {
   const [reviewSubmitting, setReviewSubmitting] = useState({});
   const [reviewSubmitted, setReviewSubmitted] = useState({});
   const [products, setProducts] = useState([]);
+  const [invoiceLoading, setInvoiceLoading] = useState({});
 
   const trackingSteps = [
     "Order Placed",
@@ -94,6 +103,47 @@ function Orders() {
     } catch (error) {
       console.log(error);
       alert("Cancel failed");
+    }
+  };
+
+  const downloadInvoice = async (orderId) => {
+    try {
+      const token = localStorage.getItem("veltrixx_token");
+
+      if (!token) {
+        alert("Please login first");
+        return;
+      }
+
+      setInvoiceLoading({ ...invoiceLoading, [orderId]: true });
+
+      const res = await fetch(`${INVOICE_API}/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        alert("Invoice download failed");
+        return;
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `veltrixx-invoice-${orderId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.log("Invoice download error:", error);
+      alert("Something went wrong while downloading invoice");
+    } finally {
+      setInvoiceLoading({ ...invoiceLoading, [orderId]: false });
     }
   };
 
@@ -283,11 +333,7 @@ function Orders() {
                       isCancelled ? "cancelStatusPill" : "orderStatusPill"
                     }
                   >
-                    {isCancelled ? (
-                      <XCircle size={16} />
-                    ) : (
-                      <PackageCheck size={16} />
-                    )}
+                    {isCancelled ? <XCircle size={16} /> : <PackageCheck size={16} />}
                     {order.orderStatus}
                   </span>
                 </div>
@@ -344,10 +390,7 @@ function Orders() {
                           );
                         }}
                       >
-                        <img
-                          src={item.selectedImage || item.image}
-                          alt={item.name}
-                        />
+                        <img src={item.selectedImage || item.image} alt={item.name} />
 
                         <div>
                           <h3>{item.name}</h3>
@@ -407,6 +450,18 @@ function Orders() {
                     )}
 
                     <h2>Total: ₹{order.total}</h2>
+
+                    <button
+                      type="button"
+                      className="invoiceBtn"
+                      onClick={() => downloadInvoice(order._id)}
+                      disabled={invoiceLoading[order._id]}
+                    >
+                      <FileText size={17} />
+                      {invoiceLoading[order._id]
+                        ? "Downloading..."
+                        : "Download Invoice"}
+                    </button>
                   </div>
                 </div>
 
@@ -420,7 +475,7 @@ function Orders() {
                       <span>Feedback helps other customers</span>
                     </div>
 
-                    {order.items.map((item, index) => {
+                    {order.items.map((item) => {
                       const reviewKey = getReviewKey(order._id, item);
                       const form = getReviewForm(reviewKey);
                       const productId = getProductId(item);
@@ -428,10 +483,7 @@ function Orders() {
                       return (
                         <div className="productReviewCard" key={reviewKey}>
                           <div className="productReviewInfo">
-                            <img
-                              src={item.selectedImage || item.image}
-                              alt={item.name}
-                            />
+                            <img src={item.selectedImage || item.image} alt={item.name} />
 
                             <div>
                               <h4>{item.name}</h4>
@@ -485,12 +537,8 @@ function Orders() {
                               <button
                                 type="button"
                                 className="submitReviewBtn"
-                                disabled={
-                                  reviewSubmitting[reviewKey] || !productId
-                                }
-                                onClick={() =>
-                                  submitProductReview(order._id, item, index)
-                                }
+                                disabled={reviewSubmitting[reviewKey] || !productId}
+                                onClick={() => submitProductReview(order._id, item)}
                               >
                                 {reviewSubmitting[reviewKey]
                                   ? "Submitting..."

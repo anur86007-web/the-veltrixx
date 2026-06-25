@@ -9111,3 +9111,28 @@ body {
   font-size: 12px;
   font-weight: 500;
 }
+.invoiceBtn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 13px 16px;
+  border: none;
+  border-radius: 14px;
+  background: #111;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.invoiceBtn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.invoiceBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

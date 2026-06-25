@@ -1,4 +1,5 @@
 const express = require("express");
+const PDFDocument = require("pdfkit");
 const Order = require("../models/Order");
 const Coupon = require("../models/Coupon");
 const { protect } = require("../middleware/authMiddleware");
@@ -112,6 +113,138 @@ router.get("/my-orders", protect, async (req, res) => {
       success: true,
       orders,
     });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+/* DOWNLOAD INVOICE */
+router.get("/invoice/:id", protect, async (req, res) => {
+  try {
+    const order = await Order.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    const doc = new PDFDocument({ margin: 50, size: "A4" });
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=veltrixx-invoice-${order._id}.pdf`
+    );
+
+    doc.pipe(res);
+
+    doc.fontSize(24).text("THE VELTRIXX", { align: "center" });
+    doc.fontSize(10).text("Premium Custom Phone Cases", { align: "center" });
+
+    doc.moveDown(2);
+
+    doc.fontSize(18).text("INVOICE", { align: "left" });
+    doc.moveDown();
+
+    doc.fontSize(11);
+    doc.text(`Invoice No: INV-${order._id.toString().slice(-8).toUpperCase()}`);
+    doc.text(`Order ID: ${order._id}`);
+    doc.text(`Order Date: ${new Date(order.createdAt).toLocaleDateString()}`);
+    doc.text(`Order Status: ${order.orderStatus}`);
+    doc.text(`Payment Method: ${order.paymentMethod}`);
+    doc.text(`Payment Status: ${order.paymentStatus}`);
+
+    doc.moveDown();
+
+    doc.fontSize(14).text("Bill To");
+    doc.fontSize(11);
+    doc.text(order.customer?.name || "Customer");
+    doc.text(`Phone: ${order.customer?.phone || "N/A"}`);
+    doc.text(
+      `${order.customer?.address || ""}${
+        order.customer?.landmark ? ", " + order.customer.landmark : ""
+      }`
+    );
+    doc.text(
+      `${order.customer?.city || ""}, ${order.customer?.state || ""} - ${
+        order.customer?.pincode || ""
+      }`
+    );
+
+    doc.moveDown();
+
+    doc.fontSize(14).text("Order Items");
+    doc.moveDown(0.5);
+
+    doc.fontSize(11).text("Product", 50, doc.y, { continued: true });
+    doc.text("Qty", 300, doc.y, { continued: true });
+    doc.text("Price", 370, doc.y, { continued: true });
+    doc.text("Amount", 470, doc.y);
+
+    doc.moveTo(50, doc.y + 5).lineTo(550, doc.y + 5).stroke();
+    doc.moveDown();
+
+    order.items.forEach((item) => {
+      const amount = Number(item.price || 0) * Number(item.qty || 1);
+
+      doc.fontSize(10).text(item.name || "Product", 50, doc.y, {
+        width: 230,
+        continued: false,
+      });
+
+      doc.fontSize(9).text(
+        `${item.brand || ""} ${item.selectedModel || item.model || ""} ${
+          item.selectedColor ? "• " + item.selectedColor : ""
+        }`,
+        50,
+        doc.y,
+        { width: 230 }
+      );
+
+      const rowY = doc.y - 25;
+
+      doc.fontSize(10).text(String(item.qty || 1), 300, rowY);
+      doc.text(`Rs. ${item.price || 0}`, 370, rowY);
+      doc.text(`Rs. ${amount}`, 470, rowY);
+
+      doc.moveDown();
+    });
+
+    doc.moveTo(50, doc.y + 5).lineTo(550, doc.y + 5).stroke();
+    doc.moveDown();
+
+    if (order.couponCode) {
+      doc.fontSize(11).text(`Coupon Applied: ${order.couponCode}`, {
+        align: "right",
+      });
+    }
+
+    if (order.discount > 0) {
+      doc.fontSize(11).text(`Discount: Rs. ${order.discount}`, {
+        align: "right",
+      });
+    }
+
+    doc.fontSize(16).text(`Total Amount: Rs. ${order.total || 0}`, {
+      align: "right",
+    });
+
+    doc.moveDown(2);
+
+    doc.fontSize(10).text(
+      "Thank you for shopping with THE VELTRIXX. For support, contact us through our website.",
+      { align: "center" }
+    );
+
+    doc.end();
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -264,6 +397,13 @@ router.put("/cancel/:id", protect, async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Order not found",
+      });
+    }
+
+    if (order.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Not allowed",
       });
     }
 

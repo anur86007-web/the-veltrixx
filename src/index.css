@@ -9205,3 +9205,18 @@ body {
   border-radius: 999px;
   transition: width 0.4s ease;
 }
+.adminBadgeRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.adminBadgeRow span {
+  background: #111;
+  color: #fff;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}

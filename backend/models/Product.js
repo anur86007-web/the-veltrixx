@@ -145,6 +145,23 @@ const productSchema = new mongoose.Schema(
       default: false,
     },
 
+    // ⭐ NEW PROFESSIONAL BADGES
+
+    isBestSeller: {
+      type: Boolean,
+      default: false,
+    },
+
+    isNewArrival: {
+      type: Boolean,
+      default: false,
+    },
+
+    isTrending: {
+      type: Boolean,
+      default: false,
+    },
+
     rating: {
       type: Number,
       default: 4.8,

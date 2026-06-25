@@ -48,6 +48,9 @@ function Admin({ refreshProducts }) {
     seoDescription: "",
     status: "active",
     featured: false,
+    isBestSeller: false,
+    isNewArrival: false,
+    isTrending: false,
   };
 
   const emptyCouponForm = {
@@ -287,6 +290,9 @@ function Admin({ refreshProducts }) {
     seoDescription: form.seoDescription,
     status: form.status,
     featured: form.featured,
+    isBestSeller: form.isBestSeller,
+    isNewArrival: form.isNewArrival,
+    isTrending: form.isTrending,
   });
 
   const handleSubmitProduct = async () => {
@@ -359,6 +365,9 @@ function Admin({ refreshProducts }) {
       seoDescription: item.seoDescription || "",
       status: item.status || "active",
       featured: item.featured || false,
+      isBestSeller: item.isBestSeller || false,
+      isNewArrival: item.isNewArrival || false,
+      isTrending: item.isTrending || false,
     });
 
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1264,6 +1273,39 @@ function Admin({ refreshProducts }) {
                   />
                   Featured Product
                 </label>
+
+                <label className="checkRow">
+                  <input
+                    type="checkbox"
+                    checked={form.isBestSeller}
+                    onChange={(e) =>
+                      setForm({ ...form, isBestSeller: e.target.checked })
+                    }
+                  />
+                  🔥 Best Seller
+                </label>
+
+                <label className="checkRow">
+                  <input
+                    type="checkbox"
+                    checked={form.isNewArrival}
+                    onChange={(e) =>
+                      setForm({ ...form, isNewArrival: e.target.checked })
+                    }
+                  />
+                  ✨ New Arrival
+                </label>
+
+                <label className="checkRow">
+                  <input
+                    type="checkbox"
+                    checked={form.isTrending}
+                    onChange={(e) =>
+                      setForm({ ...form, isTrending: e.target.checked })
+                    }
+                  />
+                  ⭐ Trending
+                </label>
               </div>
 
               <div className="adminProductActions">
@@ -1316,6 +1358,13 @@ function Admin({ refreshProducts }) {
 
                       <p>Stock: {item.stock}</p>
                       <p>Status: {item.status}</p>
+
+                      <div className="adminBadgeRow">
+                        {item.isBestSeller && <span>🔥 Best Seller</span>}
+                        {item.isNewArrival && <span>✨ New Arrival</span>}
+                        {item.isTrending && <span>⭐ Trending</span>}
+                        {item.featured && <span>Featured</span>}
+                      </div>
                     </div>
 
                     <div>

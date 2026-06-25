@@ -37,27 +37,17 @@ function ProductCard({ product, wishlist, addToCart, toggleWishlist }) {
 
         <div className="productBadgeStack">
           {product.isBestSeller && (
-            <span className="productBadge bestSellerBadge">
-              🔥 Best Seller
-            </span>
+            <span className="productBadge bestSellerBadge">🔥 Best Seller</span>
           )}
 
           {product.isNewArrival && (
-            <span className="productBadge newArrivalBadge">
-              ✨ New Arrival
-            </span>
+            <span className="productBadge newArrivalBadge">✨ New Arrival</span>
           )}
 
           {product.isTrending && (
-            <span className="productBadge trendingBadge">
-              ⭐ Trending
-            </span>
+            <span className="productBadge trendingBadge">⭐ Trending</span>
           )}
         </div>
-
-        <span className={isOutOfStock ? "velStock out" : "velStock"}>
-          {isOutOfStock ? "Out of Stock" : "In Stock"}
-        </span>
       </Link>
 
       <button

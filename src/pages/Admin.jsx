@@ -421,6 +421,35 @@ function Admin({ refreshProducts }) {
     }
   };
 
+  const deleteOrder = async (orderId) => {
+  if (!window.confirm("Delete this order permanently?")) return;
+
+  try {
+    const res = await fetch(
+      `https://the-veltrixx-backend.onrender.com/api/orders/admin/delete/${orderId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert(data.message || "Delete failed");
+      return;
+    }
+
+    alert("Order deleted successfully");
+    fetchOrders();
+  } catch (error) {
+    console.log(error);
+    alert("Something went wrong");
+  }
+};
+
 
   const formatCurrency = (value) => {
     const amount = Number(value || 0);
@@ -1510,6 +1539,14 @@ function Admin({ refreshProducts }) {
             >
               Download Invoice
             </button>
+
+            <button
+  type="button"
+  className="deleteOrderBtn"
+  onClick={() => deleteOrder(order._id)}
+>
+  Delete Order
+</button>
 
           </div>
         ))}

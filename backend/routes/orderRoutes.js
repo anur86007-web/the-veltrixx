@@ -2,7 +2,7 @@ const express = require("express");
 const PDFDocument = require("pdfkit");
 const Order = require("../models/Order");
 const Coupon = require("../models/Coupon");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, adminOnly } = require("../middleware/authMiddleware");
 const nodemailer = require("nodemailer");
 const router = express.Router();
 
@@ -371,7 +371,7 @@ router.put("/admin/all/:id/status", protect, async (req, res) => {
 });
 
 /* ADMIN DELETE ORDER */
-router.delete("/admin/delete/:id", protect, async (req, res) => {
+router.delete("/admin/delete/:id", protect, adminOnly, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
 

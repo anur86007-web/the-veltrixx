@@ -32,7 +32,8 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/custom-prices", customPriceRoutes);
+app.use("/api/custom-price", customPriceRoutes);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AdminCustomDesigns from "./AdminCustomDesigns";
 
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 const ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/all";
@@ -223,6 +224,7 @@ function Admin({ refreshProducts }) {
     if (activeTab === "reviews") fetchReviews();
     if (activeTab === "coupons") fetchCoupons();
     if (activeTab === "users") fetchUsers(userSearch);
+    if (activeTab === "customDesigns") fetchOrders();
   }, [activeTab]);
 
   const parsedColors = form.colorOptions
@@ -924,6 +926,7 @@ function Admin({ refreshProducts }) {
         <button onClick={() => setActiveTab("reviews")}>Reviews</button>
         <button onClick={() => setActiveTab("coupons")}>Coupons</button>
         <button onClick={() => setActiveTab("users")}>Users</button>
+        <button onClick={() => setActiveTab("customDesigns")}>Custom Designs</button>
       </aside>
 
       <main>
@@ -933,8 +936,16 @@ function Admin({ refreshProducts }) {
             <h1>
               {activeTab === "products"
                 ? "Products"
+                : activeTab === "orders"
+                ? "Manage Orders"
+                : activeTab === "reviews"
+                ? "Reviews"
                 : activeTab === "coupons"
                 ? "Coupons"
+                : activeTab === "users"
+                ? "Users"
+                : activeTab === "customDesigns"
+                ? "Custom Designs"
                 : "Dashboard"}
             </h1>
           </div>
@@ -1748,6 +1759,10 @@ function Admin({ refreshProducts }) {
               </div>
             )}
           </div>
+        )}
+
+        {activeTab === "customDesigns" && (
+          <AdminCustomDesigns />
         )}
 
         {activeTab === "users" && (

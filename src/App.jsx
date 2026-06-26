@@ -20,6 +20,7 @@ import Terms from "./pages/Terms";
 import RefundPolicy from "./pages/RefundPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import OrderSuccess from "./pages/OrderSuccess";
+import CustomizeCase from "./pages/CustomizeCase";
 const API = "https://the-veltrixx-backend.onrender.com/api";
 
 function AdminProtectedRoute({ user, children }) {
@@ -306,6 +307,7 @@ function App() {
 
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/customize-case" element={<CustomizeCase addToCart={addToCart} />} />
 
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<Terms />} />

@@ -191,7 +191,7 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
               Shop Now <ArrowRight size={18} />
             </a>
 
-            <Link to="/contact" className="outlineHeroBtn">
+            <Link to="/customize-case" className="outlineHeroBtn">
               Customize Case
             </Link>
           </div>

@@ -1,0 +1,1210 @@
+/* =========================================
+   THE VELTRIXX CUSTOMIZER - PRO SECTIONS
+========================================= */
+
+.velStudioPage {
+  min-height: 100vh;
+  background: #fffdf9;
+  color: #111;
+  padding: 24px 2%;
+}
+
+.studioStepHeader {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.studioCrumbs {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: #444;
+  font-weight: 700;
+}
+
+.studioSteps {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 999px;
+  padding: 10px 24px;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+}
+
+.studioSteps span {
+  color: #777;
+  font-weight: 800;
+}
+
+.studioSteps .activeStudioStep {
+  color: #111;
+}
+
+.studioSteps i {
+  width: 55px;
+  height: 1px;
+  background: #ddd;
+}
+
+.howItWorksBtn {
+  justify-self: end;
+  border: 1px solid #d8aa48;
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px 22px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.velStudioGrid {
+  display: grid;
+  grid-template-columns: 390px minmax(550px, 1fr) 350px;
+  gap: 22px;
+  align-items: start;
+}
+
+.studioLeftPanel,
+.studioCanvasPanel,
+.studioSummaryPanel {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.studioPanelTitle,
+.summaryTitleBar {
+  background: #111;
+  color: #fff;
+  padding: 16px 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.studioPanelTitle h2,
+.summaryTitleBar h2 {
+  margin: 0;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+.studioLeftBody {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+}
+
+.studioIconRail {
+  border-right: 1px solid #eee;
+  padding: 12px 8px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.studioIconRail button {
+  min-height: 66px;
+  background: #fff;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.studioIconRail .activeStudioTool {
+  border-color: #d8aa48;
+  background: #fff8e8;
+  color: #8a5a00;
+}
+
+.studioToolContent {
+  padding: 18px;
+  max-height: 720px;
+  overflow-y: auto;
+}
+
+.studioToolContent h3 {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: .9px;
+  font-size: 13px;
+}
+
+.studioUploadArea {
+  min-height: 120px;
+  width: 100%;
+  border: 2px dashed #d8aa48;
+  background: #fffaf0;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dragActiveUpload {
+  background: #fff0ca;
+  transform: scale(.99);
+}
+
+.studioUploadArea span {
+  color: #777;
+  font-size: 12px;
+}
+
+.studioSectionHead {
+  margin: 20px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.studioSectionHead h3 {
+  margin: 0;
+}
+
+.studioSectionHead p {
+  margin: 5px 0 0;
+  color: #555;
+  font-size: 12px;
+}
+
+.studioSectionHead button {
+  border: none;
+  background: transparent;
+  color: #8a5a00;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.recentDesignGrid,
+.fontPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.recentDesignGrid button {
+  height: 58px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  cursor: pointer;
+}
+
+.studioTextInput,
+.textMiniControls select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  outline: none;
+}
+
+.textMiniControls {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 42px 36px 36px;
+  gap: 7px;
+}
+
+.textMiniControls input {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.textMiniControls button {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.fontPreviewGrid {
+  margin-top: 14px;
+}
+
+.fontPreviewGrid button {
+  height: 62px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.fontPreviewGrid small {
+  display: block;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+}
+
+.addTextBtn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px;
+  border: 1px solid #d8aa48;
+  background: #fff8e8;
+  color: #8a5a00;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* Professional Stickers */
+.stickerTabs,
+.shapeTabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid #eee;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.shapeTabs {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.stickerTabs button,
+.shapeTabs button {
+  border: 0;
+  background: #fff;
+  padding: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.activeStickerTab,
+.activeShapeTab {
+  background: #111 !important;
+  color: #fff;
+}
+
+.stickerSearchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.stickerSearchBox input {
+  border: 0;
+  outline: 0;
+  width: 100%;
+}
+
+.stickerCategoryRow {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  margin-bottom: 14px;
+}
+
+.stickerCategoryRow button {
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.activeStickerCategory {
+  background: #fff8e8 !important;
+  border-color: #d8aa48 !important;
+  color: #8a5a00;
+}
+
+.premiumStickerGrid,
+.professionalShapeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.premiumStickerGrid button,
+.professionalShapeGrid button {
+  min-height: 74px;
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+}
+
+.premiumStickerGrid b,
+.professionalShapeGrid b {
+  font-size: 25px;
+}
+
+.premiumStickerGrid span,
+.professionalShapeGrid span {
+  font-size: 11px;
+  color: #555;
+}
+
+.stickerCategoryCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.stickerCategoryCards div {
+  border: 1px solid #eee;
+  border-radius: 13px;
+  padding: 13px;
+  background: #fafafa;
+}
+
+.stickerCategoryCards span {
+  display: block;
+  color: #777;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.uploadStickerBox {
+  width: 100%;
+  min-height: 115px;
+  border: 2px dashed #d8aa48;
+  background: #fffaf0;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #111;
+  font-weight: 900;
+  margin-top: 12px;
+}
+
+.uploadStickerBox span {
+  color: #777;
+  font-size: 12px;
+}
+
+.emptyStickerState {
+  padding: 20px;
+  border: 1px dashed #ddd;
+  border-radius: 14px;
+  background: #fafafa;
+  color: #777;
+  text-align: center;
+}
+
+.myStickerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+}
+
+.myStickerGrid button {
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 13px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.myStickerGrid img {
+  width: 100%;
+  height: 72px;
+  object-fit: contain;
+}
+
+/* Professional Shapes */
+.professionalShapeGrid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.recentShapesRow {
+  display: flex;
+  gap: 16px;
+  margin: 14px 0;
+}
+
+.recentShapesRow span {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.studioTipBox {
+  margin-top: 16px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+  color: #666;
+  font-size: 12px;
+}
+
+/* Layers professional */
+.layerCountBox {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 13px;
+  margin-bottom: 12px;
+}
+
+.professionalLayerList {
+  display: grid;
+  gap: 9px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.professionalLayerList button {
+  width: 100%;
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 18px 28px 1fr 22px 22px;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  text-align: left;
+}
+
+.activeProfessionalLayer {
+  background: #fff8e8 !important;
+  border-color: #d8aa48 !important;
+}
+
+.dragDots {
+  color: #999;
+}
+
+.layerTypeIcon {
+  font-weight: 900;
+  color: #8a5a00;
+}
+
+.layerName b {
+  display: block;
+  font-size: 12px;
+}
+
+.layerName small {
+  color: #777;
+}
+
+.layerActionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.layerActionGrid button {
+  min-height: 42px;
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.layerActionGrid .deleteLayerWide {
+  grid-column: 1 / 3;
+  color: #dc2626;
+  background: #fff1f2;
+}
+
+/* Canvas */
+.studioCanvasPanel {
+  padding: 18px;
+}
+
+.studioBrandTabs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.studioBrandTabs button {
+  min-width: 128px;
+  padding: 13px 22px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.studioBrandTabs .activeBrandStudio {
+  border-color: #d8aa48;
+  background: #fff8e8;
+  color: #8a5a00;
+}
+
+.studioWorkspace {
+  min-height: 575px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.floatingLayersBox {
+  position: absolute;
+  left: 10px;
+  top: 130px;
+  background: rgba(255,255,255,.93);
+  border: 1px solid #eee;
+  border-radius: 16px;
+  width: 180px;
+  padding: 12px;
+  box-shadow: 0 16px 35px rgba(0,0,0,.08);
+  z-index: 6;
+}
+
+.floatingLayersBox h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.floatingLayersBox button {
+  width: 100%;
+  border: none;
+  background: #fff;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 18px 1fr 14px;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.floatingLayersBox .activeFloatingLayer {
+  background: #fff8e8;
+  color: #8a5a00;
+  border-radius: 9px;
+}
+
+.layerActionRow {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.layerActionRow button {
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  background: #f5f5f5;
+  grid-template-columns: 1fr;
+}
+
+.phoneCanvasStage {
+  transform-origin: center;
+  transition: .2s ease;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,.28));
+}
+
+.floatingToolRail {
+  position: absolute;
+  right: 12px;
+  top: 95px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 16px 35px rgba(0,0,0,.08);
+  z-index: 7;
+  display: grid;
+  gap: 8px;
+}
+
+.floatingToolRail button {
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.floatingToolRail button:disabled {
+  opacity: .4;
+}
+
+.selectedEditPanel {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  margin: 12px auto 0;
+  max-width: 720px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 150px 1fr 140px 90px 90px 90px;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 12px 26px rgba(0,0,0,.06);
+}
+
+.selectedEditPanel div b {
+  display: block;
+}
+
+.selectedEditPanel div span {
+  font-size: 12px;
+  color: #777;
+}
+
+.selectedEditPanel input,
+.selectedEditPanel select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.selectedEditPanel label {
+  font-size: 12px;
+  color: #777;
+  font-weight: 800;
+}
+
+.selectedEditPanel button {
+  min-height: 40px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.deleteSelectedLayerBtn {
+  color: #ef4444;
+}
+
+.studioZoomBar {
+  margin: 10px auto 0;
+  width: fit-content;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  box-shadow: 0 12px 26px rgba(0,0,0,.06);
+}
+
+.studioZoomBar button {
+  border: none;
+  background: #f5f5f5;
+  border-radius: 9px;
+  padding: 8px 12px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.studioTipText {
+  color: #777;
+  text-align: center;
+  font-size: 12px;
+}
+
+/* Summary */
+.studioSummaryPanel {
+  padding-bottom: 18px;
+}
+
+.summaryPriceRow,
+.summaryInfoRows,
+.studioSummaryPanel label,
+.optionChipGrid,
+.qtySummary,
+.totalSummary,
+.addCartGoldBtn,
+.saveDesignBtn,
+.whatsappOrderBtn,
+.summaryBadgeRow,
+.studioSummaryPanel select {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.summaryPriceRow {
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summaryPriceRow b {
+  font-size: 40px;
+  color: #d89a24;
+}
+
+.summaryPriceRow span {
+  color: #666;
+  font-size: 12px;
+}
+
+.summaryInfoRows {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 14px 0;
+}
+
+.summaryInfoRows p,
+.qtySummary,
+.totalSummary {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.summaryInfoRows span,
+.qtySummary span {
+  color: #555;
+}
+
+.studioSummaryPanel label {
+  display: block;
+  margin-top: 18px;
+  font-weight: 900;
+}
+
+.studioSummaryPanel select {
+  width: calc(100% - 40px);
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 11px;
+  margin-top: 9px;
+}
+
+.optionChipGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.optionChipGrid button {
+  min-height: 48px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 11px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.optionChipGrid .activeOptionChip {
+  border-color: #d8aa48;
+  background: #fff8e8;
+  color: #8a5a00;
+}
+
+.qtySummary {
+  align-items: center;
+  margin-top: 20px;
+}
+
+.qtySummary div {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  display: flex;
+  overflow: hidden;
+}
+
+.qtySummary button {
+  width: 35px;
+  border: none;
+  background: #f5f5f5;
+  cursor: pointer;
+}
+
+.qtySummary b {
+  width: 40px;
+  text-align: center;
+  line-height: 34px;
+}
+
+.totalSummary {
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.totalSummary b {
+  color: #d89a24;
+}
+
+.addCartGoldBtn,
+.saveDesignBtn,
+.whatsappOrderBtn {
+  width: calc(100% - 40px);
+  padding: 15px;
+  border-radius: 13px;
+  border: none;
+  margin-top: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+}
+
+.addCartGoldBtn {
+  background: linear-gradient(135deg, #c47a13, #e0a638);
+  color: #fff;
+}
+
+.saveDesignBtn {
+  background: #fff;
+  border: 1px solid #d8aa48;
+}
+
+.whatsappOrderBtn {
+  background: #fff;
+  border: 1px solid #22c55e;
+  color: #16a34a;
+}
+
+.summaryBadgeRow {
+  margin-top: 15px;
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #8a5a00;
+}
+
+.summaryBadgeRow span {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.studioQualityStrip {
+  width: 44%;
+  min-width: 620px;
+  margin: 20px auto 0;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+}
+
+.studioQualityStrip div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.studioQualityStrip svg {
+  color: #d89a24;
+}
+
+.studioQualityStrip b {
+  font-size: 13px;
+}
+
+.studioQualityStrip span {
+  font-size: 11px;
+  color: #777;
+}
+
+@media (max-width: 1250px) {
+  .velStudioGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .studioQualityStrip {
+    width: 96%;
+    min-width: 0;
+  }
+
+  .floatingLayersBox,
+  .floatingToolRail {
+    display: none;
+  }
+
+  .selectedEditPanel {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .velStudioPage {
+    padding: 16px 12px;
+  }
+
+  .studioStepHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .studioSteps {
+    overflow-x: auto;
+  }
+
+  .howItWorksBtn {
+    justify-self: start;
+  }
+
+  .studioLeftBody {
+    grid-template-columns: 1fr;
+  }
+
+  .studioIconRail {
+    display: flex;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .studioIconRail button {
+    min-width: 75px;
+  }
+
+  .phoneCanvasStage {
+    transform: scale(.9) !important;
+  }
+
+  .studioWorkspace {
+    min-height: 560px;
+  }
+
+  .optionChipGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .studioQualityStrip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .selectedEditPanel {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Preview and How It Works */
+.studioSteps button {
+  border: 0;
+  background: transparent;
+  color: #777;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+}
+
+.studioSteps button.activeStudioStep {
+  color: #111;
+}
+
+.customPreviewSection {
+  margin: 0 0 18px;
+}
+
+.previewCardLarge {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.06);
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 1fr 260px 260px;
+  gap: 22px;
+  align-items: center;
+}
+
+.previewCardLarge span {
+  color: #d89a24;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+
+.previewCardLarge h2 {
+  margin: 6px 0;
+  font-size: 28px;
+}
+
+.previewCardLarge p {
+  color: #666;
+}
+
+.previewImageFrame {
+  height: 300px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.previewImageFrame img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.previewActions {
+  display: grid;
+  gap: 10px;
+}
+
+.previewActions button,
+.goldPreviewBtn {
+  padding: 14px 18px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.previewActions .goldPreviewBtn,
+.goldPreviewBtn {
+  background: linear-gradient(135deg, #c47a13, #e0a638);
+  color: #fff;
+  border: none;
+}
+
+.howModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.howModalBox {
+  width: min(820px, 96vw);
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 35px 100px rgba(0,0,0,.25);
+}
+
+.closeHowModal {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  border: 0;
+  background: #f5f5f5;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.howModalBox > span {
+  color: #d89a24;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+
+.howModalBox h2 {
+  margin: 8px 0 20px;
+  font-size: 34px;
+}
+
+.howStepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.howStepsGrid div {
+  border: 1px solid #eee;
+  background: #fffdf8;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.howStepsGrid b {
+  width: 36px;
+  height: 36px;
+  background: #111;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.howStepsGrid h3 {
+  margin: 0 0 8px;
+}
+
+.howStepsGrid p {
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .previewCardLarge {
+    grid-template-columns: 1fr;
+  }
+
+  .howStepsGrid {
+    grid-template-columns: 1fr;
+  }
+}

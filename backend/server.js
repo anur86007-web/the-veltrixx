@@ -11,6 +11,7 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const couponRoutes = require("./routes/couponRoutes");
 const userRoutes = require("./routes/userRoutes");
+const customPriceRoutes = require("./routes/customPriceRoutes");
 
 const app = express();
 
@@ -31,7 +32,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/custom-prices", customPriceRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

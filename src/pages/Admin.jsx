@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminCustomDesigns from "./AdminCustomDesigns";
+import AdminCustomPrice from "./AdminCustomPrice";
 
 const PRODUCT_API = "https://the-veltrixx-backend.onrender.com/api/products";
 const ORDER_API = "https://the-veltrixx-backend.onrender.com/api/orders/admin/all";
@@ -927,6 +928,7 @@ function Admin({ refreshProducts }) {
         <button onClick={() => setActiveTab("coupons")}>Coupons</button>
         <button onClick={() => setActiveTab("users")}>Users</button>
         <button onClick={() => setActiveTab("customDesigns")}>Custom Designs</button>
+        <button onClick={() => setActiveTab("customPrice")}>Custom Price</button>
       </aside>
 
       <main>
@@ -946,6 +948,8 @@ function Admin({ refreshProducts }) {
                 ? "Users"
                 : activeTab === "customDesigns"
                 ? "Custom Designs"
+                : activeTab === "customPrice"
+                ? "Custom Price"
                 : "Dashboard"}
             </h1>
           </div>
@@ -1763,6 +1767,10 @@ function Admin({ refreshProducts }) {
 
         {activeTab === "customDesigns" && (
           <AdminCustomDesigns />
+        )}
+
+        {activeTab === "customPrice" && (
+          <AdminCustomPrice />
         )}
 
         {activeTab === "users" && (

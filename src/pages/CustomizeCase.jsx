@@ -46,6 +46,8 @@ import {
 } from "lucide-react";
 import "../customizer.css";
 
+const CUSTOM_PRICE_API = "https://the-veltrixx-backend.onrender.com/api/custom-price";
+
 const brandModels = {
   iPhone: ["iPhone 15", "iPhone 15 Pro", "iPhone 16", "iPhone 17 Pro"],
   Samsung: ["Samsung S24 Ultra", "Samsung S24", "Samsung S23", "Samsung A55"],
@@ -319,6 +321,21 @@ function CustomizeCase({ addToCart }) {
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
 
+  const [priceConfig, setPriceConfig] = useState({
+    basePrice: 499,
+    imageUploadCharge: 50,
+    caseTypePrices: {
+      hardCase: 0,
+      siliconeCase: 80,
+      toughCase: 140,
+    },
+    finishPrices: {
+      glossy: 0,
+      matte: 60,
+      frosted: 90,
+    },
+  });
+
   const [elements, setElements] = useState([
     {
       id: "shadow-box",
@@ -380,15 +397,69 @@ function CustomizeCase({ addToCart }) {
   const selected = elements.find((item) => item.id === selectedId);
   const selectedCanStyle = selected && (selected.type === "text" || selected.type === "sticker");
 
+  useEffect(() => {
+    const fetchCustomPrice = async () => {
+      try {
+        const res = await fetch(CUSTOM_PRICE_API);
+        const data = await res.json();
+
+        if (data.success && data.price) {
+          setPriceConfig({
+            basePrice: Number(data.price.basePrice ?? 499),
+            imageUploadCharge: Number(data.price.imageUploadCharge ?? 50),
+            caseTypePrices: {
+              hardCase: Number(data.price.caseTypePrices?.hardCase ?? 0),
+              siliconeCase: Number(data.price.caseTypePrices?.siliconeCase ?? 80),
+              toughCase: Number(data.price.caseTypePrices?.toughCase ?? 140),
+            },
+            finishPrices: {
+              glossy: Number(data.price.finishPrices?.glossy ?? 0),
+              matte: Number(data.price.finishPrices?.matte ?? 60),
+              frosted: Number(data.price.finishPrices?.frosted ?? 90),
+            },
+          });
+        }
+      } catch (error) {
+        console.log("Custom price fetch failed:", error);
+      }
+    };
+
+    fetchCustomPrice();
+  }, []);
+
   const price = useMemo(() => {
-    let amount = 499;
-    if (caseType === "Silicone Case") amount += 80;
-    if (caseType === "Tough Case") amount += 140;
-    if (finish === "Matte") amount += 60;
-    if (finish === "Frosted") amount += 90;
-    if (elements.some((item) => item.type === "image")) amount += 50;
+    let amount = Number(priceConfig.basePrice || 499);
+
+    if (caseType === "Hard Case") {
+      amount += Number(priceConfig.caseTypePrices?.hardCase || 0);
+    }
+
+    if (caseType === "Silicone Case") {
+      amount += Number(priceConfig.caseTypePrices?.siliconeCase || 0);
+    }
+
+    if (caseType === "Tough Case") {
+      amount += Number(priceConfig.caseTypePrices?.toughCase || 0);
+    }
+
+    if (finish === "Glossy") {
+      amount += Number(priceConfig.finishPrices?.glossy || 0);
+    }
+
+    if (finish === "Matte") {
+      amount += Number(priceConfig.finishPrices?.matte || 0);
+    }
+
+    if (finish === "Frosted") {
+      amount += Number(priceConfig.finishPrices?.frosted || 0);
+    }
+
+    if (elements.some((item) => item.type === "image")) {
+      amount += Number(priceConfig.imageUploadCharge || 0);
+    }
+
     return amount;
-  }, [caseType, finish, elements]);
+  }, [caseType, finish, elements, priceConfig]);
 
   const total = price * qty;
 
@@ -695,7 +766,15 @@ function CustomizeCase({ addToCart }) {
       image: preview,
       selectedImage: preview,
       isCustomCase: true,
-      customDesign: { brand, model, caseType, finish, background, elements },
+      customDesign: {
+        brand,
+        model,
+        caseType,
+        finish,
+        background,
+        elements,
+        priceConfig,
+      },
     };
 
     if (addToCart) addToCart(product);

@@ -11162,3 +11162,162 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* ==============================
+   ADMIN CUSTOM CASE PRICE
+============================== */
+
+.adminCustomPriceWrap {
+  padding: 28px;
+}
+
+.adminCustomPriceHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.adminCustomPriceHead p {
+  margin: 0 0 6px;
+  color: #d89a24;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+
+.adminCustomPriceHead h1 {
+  margin: 0;
+  font-size: 38px;
+}
+
+.adminCustomPriceHead span {
+  color: #666;
+}
+
+.adminCustomPriceHead button {
+  border: none;
+  background: #111;
+  color: #fff;
+  border-radius: 999px;
+  padding: 13px 18px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.priceSettingsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.priceSettingCard,
+.pricePreviewBox {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.05);
+}
+
+.priceSettingCard svg {
+  color: #d89a24;
+}
+
+.priceSettingCard h2,
+.pricePreviewBox h2 {
+  margin: 0 0 8px;
+}
+
+.priceSettingCard p {
+  color: #666;
+  margin-bottom: 18px;
+}
+
+.priceSettingCard label {
+  display: block;
+  font-weight: 900;
+  margin: 16px 0 8px;
+}
+
+.priceSettingCard input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  outline: none;
+  font-size: 16px;
+}
+
+.priceSettingCard input:focus {
+  border-color: #d89a24;
+}
+
+.mainPriceCard {
+  background: #fffdf8;
+  border-color: #f0dfb4;
+}
+
+.pricePreviewBox {
+  margin-top: 20px;
+}
+
+.pricePreviewBox div {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.pricePreviewBox span {
+  color: #555;
+  font-weight: 800;
+}
+
+.pricePreviewBox b {
+  font-size: 22px;
+  color: #d89a24;
+}
+
+.saveCustomPriceBtn {
+  margin-top: 22px;
+  width: 100%;
+  border: none;
+  background: linear-gradient(135deg, #c47a13, #e0a638);
+  color: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.saveCustomPriceBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.adminPriceLoading {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  font-weight: 900;
+}
+
+@media (max-width: 900px) {
+  .adminCustomPriceHead {
+    flex-direction: column;
+  }
+
+  .priceSettingsGrid {
+    grid-template-columns: 1fr;
+  }
+}

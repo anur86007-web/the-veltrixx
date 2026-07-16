@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import AnnouncementBar from "../components/AnnouncementBar";
 
 function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlist }) {
   const [selectedBrand, setSelectedBrand] = useState("All");
@@ -78,6 +79,7 @@ function Home({ user, logout, products, cart, wishlist, addToCart, toggleWishlis
 
   return (
     <>
+      <AnnouncementBar />
       <nav className="homePremiumNav">
         <div className="homeNavTop">
           <Link to="/" className="brandArea">

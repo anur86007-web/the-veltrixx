@@ -11533,3 +11533,13 @@ body {
   }
 
 }
+/* =========================
+   BLACK BORDER FOR CARDS
+   ========================= */
+
+.velProductCard {
+  border: 1px solid #111;
+}
+.velProductCard:hover {
+  border: 1.5px solid #000;
+}

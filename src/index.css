@@ -11450,29 +11450,86 @@ body {
 .velBottom button {
   display: none;
 }
-/* ===============================
-   DESKTOP / LAPTOP FIX ONLY
-   =============================== */
+/* =====================================
+   PREMIUM DESKTOP PRODUCT LAYOUT
+   ===================================== */
 
 @media (min-width: 1024px) {
 
   .shopSection {
-    max-width: 1400px;
+    max-width: 1380px;
     margin: 0 auto;
-    padding: 40px 40px 80px;
+    padding: 60px 40px 100px;
   }
 
   .productGrid {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 32px !important;
-    overflow: visible !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 40px 28px !important;
+    align-items: stretch;
   }
 
   .velProductCard {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+  }
+
+  .velProductCard:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Professional Image Ratio */
+  .velProductImageBox {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: #f6f6f6;
+  }
+
+  .velProductImageBox img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+  }
+
+  .velProductCard:hover .velProductImageBox img {
+    transform: scale(1.05);
+  }
+
+  /* Product Info */
+  .velProductInfo {
+    padding: 18px 8px 12px;
+  }
+
+  .velBrand {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 6px;
+  }
+
+  .velProductName {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+
+  .velProductName:hover {
+    text-decoration: underline;
+  }
+
+  .velBottom h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 8px;
   }
 
 }

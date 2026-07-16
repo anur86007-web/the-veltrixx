@@ -11342,3 +11342,9 @@ body {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+.productGrid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 20px !important;
+  background: red;
+}

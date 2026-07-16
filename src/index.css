@@ -11344,10 +11344,6 @@ body {
     grid-template-columns: 1fr;
   }
 }
-/* ===============================
-   THRYVN STYLE PRODUCT GRID
-   =============================== */
-
 .shopSection {
   max-width: 1200px;
   margin: 0 auto;
@@ -11391,7 +11387,7 @@ body {
 /* Image Box */
 .velProductImageBox {
   width: 100%;
-  aspect-ratio: 3/4;   /* ✅ Proper fashion ratio */
+  aspect-ratio: 4/5;   /* ✅ Proper fashion ratio */
   overflow: hidden;
   position: relative;
   background: #f5f5f5;
@@ -11420,7 +11416,7 @@ body {
 
 /* Product Info */
 .velProductInfo {
-  padding: 12px 6px 4px;
+  padding: 8px 4px;
 }
 
 /* Category small text */

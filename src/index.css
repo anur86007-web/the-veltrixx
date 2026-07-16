@@ -11450,3 +11450,29 @@ body {
 .velBottom button {
   display: none;
 }
+/* ===============================
+   DESKTOP / LAPTOP FIX ONLY
+   =============================== */
+
+@media (min-width: 1024px) {
+
+  .shopSection {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+  }
+
+  .productGrid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 32px !important;
+    overflow: visible !important;
+  }
+
+  .velProductCard {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+}

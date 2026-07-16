@@ -11575,3 +11575,51 @@ body {
   display: flex;
   align-items: center;
 }
+/* =================================
+   PREMIUM ANNOUNCEMENT BAR
+   ================================= */
+
+.announcementBar {
+  width: 100%;
+  background: #0f0f0f;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 42px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  z-index: 9999;
+}
+
+.announcementText {
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Arrows */
+.arrowBtn {
+  position: absolute;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.3s ease;
+}
+
+.arrowBtn:hover {
+  opacity: 1;
+}
+
+.arrowBtn:first-of-type {
+  left: 20px;
+}
+
+.arrowBtn:last-of-type {
+  right: 20px;
+}

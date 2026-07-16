@@ -8082,11 +8082,11 @@ body {
   }
 
   .velProductCard {
-    min-width: 68%;
-    max-width: 68%;
-    flex: 0 0 68%;
+    min-width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
     scroll-snap-align: start;
-    border-radius: 20px;
+    border-radius: 14px;
     box-shadow: none;
   }
 
@@ -11319,5 +11319,26 @@ body {
 
   .priceSettingsGrid {
     grid-template-columns: 1fr;
+  }
+}
+/* ===== PRODUCT GRID FIX ===== */
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Mobile me 2 products */
+  gap: 20px;
+  padding: 20px 0;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .productGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .productGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
